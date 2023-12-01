@@ -96,7 +96,7 @@ function Register() {
             <div className="col-md-6">
               <div className="card bg-theme">
                 <div className="card-header">
-                  <h4>Create an account in Carrier Service</h4>
+                  <h4>Create an account for Matromoni</h4>
                 </div>
                 <div className="card-body">
                   <label className={"w-100"}>

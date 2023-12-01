@@ -24,7 +24,7 @@ const { accessChat, fetchChats } = require("../controllers/chatController");
 const { validateTokenMiddleware } = require("../middleware/auth");
 
 
-// -------------------- Customer Profile Route ----------------------------------------------------------------------------------
+// -------------------- User Profile Route ----------------------------------------------------------------------------------
 
 router.post("/customer/register", addUser);
 router.post("/customer/login", login);

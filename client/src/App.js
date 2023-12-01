@@ -9,8 +9,9 @@ import PasswordReset from "./components/modules/PasswordReset";
 import ChatPage from "./pages/ChatPage";
 import SuccessfulPasswordChangeMsg from "./components/modules/SuccessfulPasswordChangeMsg";
 import HomePage from "./pages/HomePage";
-import LobbyScreen from "./components/screens/Lobby";
-import RoomPage from "./components/screens/Room";
+import LobbyScreen from "./components/screens/LobbyScreen";
+import RoomPage from "./components/screens/RoomPage";
+
 
 function App() {
   const token = localStorage.getItem("token");
@@ -44,7 +45,7 @@ function App() {
                 element={<ChatPage token={token} userInfo={userInfo} />}
               />
 
-              <Route exact path="/video" element={<LobbyScreen />} />
+              <Route exact path="/lobby" element={<LobbyScreen />} />
               <Route path="/room/:roomId" element={<RoomPage />} />
             </>
           )}
