@@ -11,6 +11,7 @@ import SuccessfulPasswordChangeMsg from "./components/modules/SuccessfulPassword
 import HomePage from "./pages/HomePage";
 import LobbyScreen from "./components/screens/LobbyScreen";
 import RoomPage from "./components/screens/RoomPage";
+import Login from "./components/modules/auth/Login";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <div className="container">
         <Routes>
           <Route exact path="/" element={<HomePage />} />
+          <Route exact path="/login" element={<Login />} />
           <Route exact path="/404" element={<NotFound />} />
           <Route exact path="/forgotpass" element={<ForgotPass />} />
 

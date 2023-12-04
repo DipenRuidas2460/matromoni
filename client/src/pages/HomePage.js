@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import Login from "../components/modules/auth/Login";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/miscellaneous/Navbar";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -14,7 +14,20 @@ function HomePage() {
 
   return (
     <div>
-      <Login />
+      <Navbar />
+      <div>
+        <img
+          src="https://www.shaadisquad.com/images/slider/1.jpg"
+          alt="shaadiPhoto"
+          style={{objectFit:"cover"}}
+        />
+        <div className="co-ho">
+          sam
+        </div>
+      </div>
+      <div className="home-conten">
+          ple
+      </div>
     </div>
   );
 }
