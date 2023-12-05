@@ -12,7 +12,7 @@ const Navbar = () => {
         </div>
         <div className="navbar-con-1">
           <p>Already a member?</p>
-          <button>LOGIN</button>
+          <button className="navbar-con-1-button">LOGIN</button>
         </div>
       </div>
     </div>

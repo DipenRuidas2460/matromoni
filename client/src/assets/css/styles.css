@@ -657,7 +657,6 @@ progress {
   color: #6c757d;
 }
 
-.container,
 .container-fluid,
 .container-xxl,
 .container-xl,
@@ -674,20 +673,20 @@ progress {
 }
 
 .container {
-  background-color: #332827;
+  position: relative;
 }
 
 @media (min-width: 576px) {
   .container-sm,
   .container {
-    max-width: 540px;
+    max-width: 100%;
   }
 }
 @media (min-width: 768px) {
   .container-md,
   .container-sm,
   .container {
-    max-width: 720px;
+    max-width: 100%;
   }
 }
 @media (min-width: 992px) {
@@ -695,7 +694,7 @@ progress {
   .container-md,
   .container-sm,
   .container {
-    max-width: 960px;
+    max-width: 100%;
   }
 }
 @media (min-width: 1200px) {
@@ -704,7 +703,7 @@ progress {
   .container-md,
   .container-sm,
   .container {
-    max-width: 1140px;
+    max-width: 100%;
   }
 }
 @media (min-width: 1400px) {
@@ -714,9 +713,10 @@ progress {
   .container-md,
   .container-sm,
   .container {
-    max-width: 1550px;
+    max-width: 100%;
   }
 }
+
 .row {
   --bs-gutter-x: 1.5rem;
   --bs-gutter-y: 0;
@@ -11726,7 +11726,6 @@ body {
 .App {
   min-height: 100vh;
   display: flex;
-  /* background-image: url("../images/background.png"); */
   background-size: cover;
   background-position: center;
 }
@@ -11777,7 +11776,8 @@ body {
   align-items: center;
   justify-content: space-evenly;
   background-color: #c52f2f;
-  border-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   list-style: none;
   color: white;
   height: 45px;
@@ -11789,7 +11789,7 @@ body {
   justify-content: space-around;
   padding-top: 2%;
   height: 100px;
-  background-color: white;
+  background-color: #e7e4e4;
 }
 
 .navbar-con-1 {
@@ -11798,28 +11798,255 @@ body {
   justify-content: space-around;
 }
 
+@media (max-width: 300px) {
+  .navbar-con-1 {
+    width: 30%;
+  }
+
+  .navbar-con-1-button {
+    margin: 6px;
+    width: 100%;
+    font-size: 9px;
+    padding: 3px;
+    background-color: #9e1717;
+    color: white;
+    border-radius: 5px;
+    height: 20%;
+  }
+}
+
+@media (min-width: 300px) and (max-width: 500px) {
+  .navbar-con-1 {
+    width: 35%;
+  }
+
+  .navbar-con-1-button {
+    margin: 10px;
+    width: 100%;
+    font-size: 12px;
+    padding: 6px;
+    background-color: #9e1717;
+    color: white;
+    border-radius: 10px;
+    height: 30%;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 800px) {
+  .navbar-con-1 {
+    width: 25%;
+  }
+
+  .navbar-con-1-button {
+    margin: 5px;
+    width: 25%;
+    font-size: 12px;
+    padding: 5px;
+    background-color: #9e1717;
+    color: white;
+    border-radius: 10px;
+    height: 40%;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 1200px) {
+  .navbar-con-1 {
+    width: 30%;
+  }
+
+  .navbar-con-1-button {
+    margin: 2px;
+    width: 20%;
+    font-size: 12px;
+    padding: 6px;
+    background-color: #9e1717;
+    color: white;
+    border-radius: 10px;
+    height: 40%;
+  }
+
+  .btn-info{
+    width: 20%;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1400px) {
+  .navbar-con-1 {
+    width: 23%;
+  }
+
+  .navbar-con-1-button {
+    width: 20%;
+    font-size: 12px;
+    padding: 6px;
+    background-color: #9e1717;
+    color: white;
+    border-radius: 10px;
+    height: 40%;
+  }
+
+  .btn-info{
+    width: 40%;
+  }
+}
+
+@media (max-width: 2400px) {
+  .navbar-con-1 {
+    width: 20%;
+  }
+
+  .navbar-con-1-button {
+    background-color: #9e1717;
+    color: white;
+    width: 30%;
+    padding: 6px;
+    border-radius: 10px;
+    font-size: 15px;
+    height: 50%;
+  }
+}
+
+.home-main {
+  height: 100vh;
+}
+
+.co-ho {
+  background-color: #fff;
+  height: 110px;
+  position: relative;
+  bottom: 53px;
+  margin-left: 10%;
+  margin-right: 10%;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.form-co-ho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .home-conten {
   width: 100%;
-  height: 300px;
+  height: 350px;
   background-color: #81414d;
-  left: 10px;
+  position: relative;
 }
 
-.navbar-con-1 > button {
-  background-color: #9e1717;
-  color: white;
-  width: 30%;
-  padding: 6px;
-  border-radius: 10px;
-  font-size: 15px;
-  height: 50%;
+.home-conten-box1 {
+  width: 100%;
+  height: 350px;
+  background-color: #efeeee;
+  position: relative;
 }
 
-@media (min-width: 300px) {
-  .header-ul-style {
-    display: flex;
-    align-items: center;
-  }
+.home-conten-box2 {
+  width: 100%;
+  height: 350px;
+  background-color: #e7e4e4;
+  position: relative;
+}
+
+.home-conten-box3 {
+  width: 100%;
+  height: 350px;
+  background-color: #efeeee;
+  position: relative;
+}
+
+.home-conten-box4 {
+  width: 100%;
+  height: 200px;
+  background-color: #464242;
+  position: relative;
+}
+
+.home-conten-box5 {
+  width: 100%;
+  height: 50px;
+  background-color: #292727;
+  position: relative;
+}
+
+.parent-box {
+  position: relative;
+  bottom: 110px;
+}
+
+.form-main {
+  margin-top: 0.75rem;
+}
+
+.form-label-1 {
+  margin-bottom: 0.5rem;
+  padding-left: 10%;
+}
+
+.form-label-2 {
+  margin-bottom: 0.5rem;
+  padding-left: 20%;
+}
+
+.form-label-3 {
+  margin-bottom: 0.5rem;
+  padding-left: 10%;
+}
+
+.form-label-4 {
+  margin-bottom: 0.5rem;
+  padding-left: 10%;
+}
+
+.form-aged-inp{
+  display: flex;
+  width: 80%;
+  padding-left: 20%;
+}
+
+.btn-info{
+  width: 10%;
+  margin-top: 2.45rem;
+  margin-right: 1.5rem;
+}
+
+.looking-inp,
+.datatable-input {
+  display: block;
+  width: 80%;
+  margin-left: 20px;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.375rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.aged-inp,
+.datatable-input {
+  display: block;
+  width: 40%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.375rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .header-container {
@@ -11958,8 +12185,4 @@ body {
   .custom-parent {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-}
-.co-ho{
-  background-color: #fff;
-  height:100px;
 }
