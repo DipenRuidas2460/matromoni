@@ -11793,29 +11793,63 @@ body {
 }
 
 .navbar-con-1 {
-  width: 23%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 @media (max-width: 300px) {
-  .diapo-boxes{
+  .home-conten-box1 {
+    height: 125px;
+  }
+
+  .box1-heading {
+    width: 45%;
+    height: 66%;
+    top: 7%;
+    left: 13%;
+  }
+  
+  .box1-line{
+    width: 18%;
+    height: 0;
+    border: 3px solid #ab2020;
+    border-radius: 10px;
+    margin-left: 6px;
+  }
+  
+  .box1-heading > h2 {
+    padding: 3%;
+    font-size: 13px;
+  }
+  
+  .box1-heading > h4 {
+    padding: 3%;
+    font-size: 9px
+  }
+
+  .navbar-logo-img{
+    width: 39%;
+    height: 28%;
+  }
+
+  .diapo-boxes {
     height: 243px;
     width: 45px;
     padding-top: 30px;
     font-size: 6px;
   }
 
-  .home-con-heading{
+  .home-con-heading {
     left: 23%;
-    top: 20%;
+    top: 22%;
     font-size: 11px;
   }
 
   .looking-inp,
   .datatable-input {
-    width: 70%;
-    margin-left: 20px;
+    width: 80%;
+    margin-left: 16px;
+    padding: 0.375rem 0.5rem;
   }
 
   .navbar-para-one {
@@ -11834,14 +11868,14 @@ body {
 
   .co-ho {
     height: 90px;
-    margin-left: 1%;
-    margin-right: 2%;
+    margin-left: 3%;
+    margin-right: 4%;
   }
 
   .btn-info {
     width: 23%;
     margin-top: 2.53rem;
-    margin-left: 0.5rem;
+    margin-left: 0.85rem;
     margin-right: 0.5rem;
     font-size: 6px;
   }
@@ -11853,7 +11887,7 @@ body {
 
   .form-label-1 {
     margin-bottom: 0.5rem;
-    padding-left: 5px;
+    padding-left: 2px;
     font-size: 8px;
   }
 
@@ -11871,7 +11905,7 @@ body {
 
   .form-label-4 {
     margin-bottom: 0.5rem;
-    padding-left: 15%;
+    padding-left: 31%;
     font-size: 8px;
   }
 
@@ -11891,19 +11925,53 @@ body {
   }
 
   .form-aged-inp > p {
+    padding: 3px;
     font-size: 8px;
   }
 }
 
 @media (min-width: 300px) and (max-width: 500px) {
-  .diapo-boxes{
+  .home-conten-box1 {
+    height: 155px;
+  }
+
+  .box1-heading {
+    width: 45%;
+    height: 66%;
+    top: 7%;
+    left: 13%;
+  }
+  
+  .box1-line{
+    width: 18%;
+    height: 0;
+    border: 3px solid #ab2020;
+    border-radius: 10px;
+    margin-left: 5px;
+  }
+  
+  .box1-heading > h2 {
+    padding: 3%;
+    font-size: 16px;
+  }
+  
+  .box1-heading > h4 {
+    padding: 3%;
+    font-size: 14px
+  }
+
+  .navbar-logo-img{
+    width: 37%;
+    height: 33%;
+  }
+  .diapo-boxes {
     height: 186px;
     width: 50px;
     padding-top: 30px;
     font-size: 6px;
   }
 
-  .home-con-heading{
+  .home-con-heading {
     left: 23%;
     top: 19%;
     font-size: 14px;
@@ -11913,6 +11981,7 @@ body {
   .datatable-input {
     width: 80%;
     margin-left: 20px;
+    padding: 0.375rem 0.75rem;
   }
 
   .navbar-para-one {
@@ -11950,7 +12019,7 @@ body {
 
   .form-label-1 {
     margin-bottom: 0.5rem;
-    padding-left: 5px;
+    padding-left: 15%;
     font-size: 8px;
   }
 
@@ -11988,26 +12057,60 @@ body {
   }
 
   .form-aged-inp > p {
+    padding: 5px;
     font-size: 8px;
   }
 }
 
 @media (min-width: 500px) and (max-width: 800px) {
-  .diapo-boxes{
+  .home-conten-box1 {
+    height: 255px;
+  }
+
+  .box1-heading {
+    width: 45%;
+    height: 66%;
+    top: 7%;
+    left: 13%;
+  }
+  
+  .box1-line{
+    width: 18%;
+    height: 0;
+    border: 3px solid #ab2020;
+    border-radius: 10px;
+    margin-left: 11px;
+  }
+  
+  .box1-heading > h2 {
+    padding: 3%;
+    font-size: 26px;
+  }
+  
+  .box1-heading > h4 {
+    padding: 3%;
+    font-size: 14px
+  }
+
+  .navbar-logo-img{
+    width: 23%;
+    height: 40%;
+  }
+  .diapo-boxes {
     height: 170px;
     width: 104px;
     padding-top: 30px;
     font-size: 12px;
   }
 
-  .home-con-heading{
+  .home-con-heading {
     left: 18%;
     top: 20%;
     font-size: 28px;
   }
 
   .navbar-con-1 {
-    width: 30%;
+    width: 40%;
   }
 
   .navbar-para-one {
@@ -12022,6 +12125,8 @@ body {
 
   .navbar-para-three {
     font-size: 13px;
+    padding-left: 13%;
+    padding-top: 3%;
   }
 
   .form-aged-inp > p {
@@ -12032,6 +12137,7 @@ body {
   .datatable-input {
     width: 75%;
     margin-left: 20px;
+    padding: 0.375rem 0.75rem;
   }
 
   .co-ho {
@@ -12041,7 +12147,7 @@ body {
   }
 
   .btn-info {
-    width: 23%;
+    width: 25%;
     margin-top: 2.53rem;
     margin-right: 0.5rem;
     font-size: 12px;
@@ -12054,7 +12160,7 @@ body {
 
   .form-label-1 {
     margin-bottom: 0.5rem;
-    padding-left: 13px;
+    padding-left: 12px;
     font-size: 12px;
   }
 
@@ -12078,7 +12184,7 @@ body {
 
   .navbar-con-1-button {
     margin-left: 5px;
-    width: 40%;
+    width: 25%;
     font-size: 12px;
     padding: 5px;
     background-color: #9e1717;
@@ -12086,17 +12192,55 @@ body {
     border-radius: 10px;
     height: 40%;
   }
+
+  .form-aged-inp > p {
+    padding: 5px;
+  }
 }
 
 @media (min-width: 800px) and (max-width: 1150px) {
-  .diapo-boxes{
+  .home-conten-box1 {
+    height: 360px;
+  }
+
+  .box1-heading {
+    width: 40%;
+    height: 60%;
+    top: 15%;
+    left: 13%;
+  }
+  
+  .box1-line{
+    width: 18%;
+    height: 0;
+    border: 3px solid #ab2020;
+    border-radius: 10px;
+    margin-left: 13px;
+  }
+  
+  .box1-heading > h2 {
+    padding: 3%;
+    font-size: 37px;
+  }
+  
+  .box1-heading > h4 {
+    padding: 3%;
+    font-size: 18px
+  }
+
+  .navbar-logo-img{
+    width: 16%;
+    height: 45%;
+  }
+
+  .diapo-boxes {
     height: 150px;
     width: 165px;
     padding-top: 30px;
     font-size: 21px;
   }
 
-  .home-con-heading{
+  .home-con-heading {
     left: 25%;
     top: 20%;
     font-size: 33px;
@@ -12117,13 +12261,16 @@ body {
   }
 
   .navbar-para-three {
-    font-size: 18px;
+    font-size: 16px;
+    width: 63%;
+    padding-left: 6%;
   }
 
   .looking-inp,
   .datatable-input {
     width: 80%;
     margin-left: 20px;
+    padding: 0.375rem 0.75rem;
   }
 
   .co-ho {
@@ -12134,7 +12281,7 @@ body {
 
   .navbar-con-1-button {
     margin-left: 5px;
-    width: 30%;
+    width: 31%;
     font-size: 12px;
     padding: 6px;
     background-color: #9e1717;
@@ -12172,17 +12319,55 @@ body {
     margin-bottom: 0.5rem;
     padding-left: 15%;
   }
+
+  .form-aged-inp > p {
+    padding: 5px;
+  }
 }
 
 @media (min-width: 1150px) and (max-width: 1420px) {
-  .diapo-boxes{
+  .home-conten-box1 {
+    height: 450px;
+  }
+
+  .box1-heading {
+    width: 35%;
+    height: 53%;
+    top: 21%;
+    left: 17%;
+  }
+  
+  .box1-line{
+    width: 18%;
+    height: 0;
+    border: 3px solid #ab2020;
+    border-radius: 10px;
+    margin-left: 16px;
+  }
+  
+  .box1-heading > h2 {
+    padding: 3%;
+    font-size: 48px;
+  }
+  
+  .box1-heading > h4 {
+    padding: 3%;
+    font-size: 23px
+  }
+
+  .navbar-logo-img{
+    width: 14%;
+    height: 50%;
+  }
+
+  .diapo-boxes {
     height: 150px;
     width: 250px;
     padding-top: 30px;
     font-size: 28px;
   }
 
-  .home-con-heading{
+  .home-con-heading {
     left: 30%;
     top: 22%;
     font-size: 35px;
@@ -12199,6 +12384,8 @@ body {
 
   .navbar-para-three {
     font-size: 18px;
+    padding-left: 6%;
+    width: 72%;
   }
 
   .navbar-para-two {
@@ -12210,6 +12397,7 @@ body {
   .datatable-input {
     width: 80%;
     margin-left: 20px;
+    padding: 0.375rem 0.75rem;
   }
 
   .co-ho {
@@ -12257,18 +12445,55 @@ body {
     margin-bottom: 0.5rem;
     padding-left: 10%;
   }
+
+  .form-aged-inp > p {
+    padding: 5px;
+  }
 }
 
 @media (min-width: 1421px) {
+  .home-conten-box1 {
+    height: 500px;
+  }
 
-  .diapo-boxes{
+  .box1-heading {
+    width: 30%;
+    height: 50%;
+    top: 25%;
+    left: 17%;
+  }
+  
+  .box1-line{
+    width: 18%;
+    height: 0;
+    border: 3px solid #ab2020;
+    border-radius: 10px;
+    margin-left: 15px;
+  }
+  
+  .box1-heading > h2 {
+    padding: 3%;
+    font-size: 51px;
+  }
+  
+  .box1-heading > h4 {
+    padding: 3%;
+    font-size: 24px
+  }
+
+  .navbar-logo-img{
+    width: 15%;
+    height: 70%;
+  }
+
+  .diapo-boxes {
     height: 150px;
     width: 250px;
     padding-top: 30px;
     font-size: 28px;
   }
 
-  .home-con-heading{
+  .home-con-heading {
     left: 33%;
     top: 20%;
     font-size: 37px;
@@ -12296,6 +12521,7 @@ body {
   .datatable-input {
     width: 80%;
     margin-left: 20px;
+    padding: 0.375rem 0.75rem;
   }
 
   .co-ho {
@@ -12307,7 +12533,7 @@ body {
   .navbar-con-1-button {
     background-color: #9e1717;
     color: white;
-    width: 30%;
+    width: 24%;
     padding: 6px;
     border-radius: 10px;
     font-size: 15px;
@@ -12343,9 +12569,25 @@ body {
     margin-bottom: 0.5rem;
     padding-left: 10%;
   }
+
+  .form-aged-inp > p {
+    padding: 5px;
+  }
 }
 
-.diapo-parent{
+.box1-heading {
+  position: absolute;
+}
+
+.box1-heading > h2 {
+  color: #d21212;
+}
+
+.box1-heading > h4 {
+  color: #5e5959;
+}
+
+.diapo-parent {
   height: 200px;
   width: 100%;
   position: absolute;
@@ -12355,16 +12597,14 @@ body {
   align-items: center;
 }
 
-.diapo-boxes{
-  /* background-color: #4c0121; */
+.diapo-boxes {
   border-radius: 15px;
   color: #fff;
   text-align: center;
   background: linear-gradient(to bottom, #4c0121, #66023c);
 }
 
-
-.home-con-heading{
+.home-con-heading {
   color: #fff;
   position: absolute;
 }
@@ -12390,16 +12630,21 @@ body {
 
 .home-conten {
   width: 100%;
-  height: 350px;
+  height: 365px;
   background-color: #66023c;
   position: relative;
 }
 
 .home-conten-box1 {
   width: 100%;
-  height: 350px;
   background-color: #efeeee;
   position: relative;
+}
+
+.box1-img {
+  position: absolute;
+  right: 15%;
+  top: 5%;
 }
 
 .home-conten-box2 {
@@ -12444,7 +12689,6 @@ body {
 .looking-inp,
 .datatable-input {
   display: block;
-  padding: 0.375rem 0.75rem;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;

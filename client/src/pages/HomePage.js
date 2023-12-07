@@ -17,15 +17,15 @@ function HomePage() {
       <Navbar />
       <div>
         <img
-          src="https://i.pinimg.com/originals/0a/53/17/0a5317e60c5b378846fe384e23671f6c.png"
+          src="/shaadi.png"
           alt="shaadiPhoto"
-          style={{ objectFit: "cover", width:"100%"}}
+          style={{ objectFit: "cover", width: "100%" }}
         />
         <div className="co-ho">
           <form className="form-co-ho">
             <div className="form-main">
               <label htmlFor="inp1" className="form-label-1">
-                I'am looking for
+                I'm looking for
               </label>
               <input type="text" className="looking-inp" id="inp1" />
             </div>
@@ -35,7 +35,7 @@ function HomePage() {
               </label>
               <div className="form-aged-inp">
                 <input type="text" className="aged-inp" id="inp2" />
-                <p className="p-2">to</p>
+                <p>to</p>
                 <input type="text" className="aged-inp" id="inp2" />
               </div>
             </div>
@@ -59,9 +59,7 @@ function HomePage() {
       </div>
       <div className="parent-box">
         <div className="home-conten">
-          <div className="home-con-heading">
-            Why Choose Indian Diaspora
-          </div>
+          <div className="home-con-heading">Why Choose Indian Diaspora</div>
           <div className="diapo-parent">
             <div className="diapo-boxes">Global Diaspora Indian Roots</div>
             <div className="diapo-boxes">100% Verified Profiles</div>
@@ -69,7 +67,24 @@ function HomePage() {
             <div className="diapo-boxes">Voice & Video Calling Features</div>
           </div>
         </div>
-        <div className="home-conten-box1"></div>
+        <div className="home-conten-box1">
+          <div className="box1-heading">
+            <h2>Connect with matches sequrely</h2>
+            <div className="box1-line"></div>
+            <h4>
+              Video Calling inbuilt with Website No need to share Personal Skype
+              ID
+            </h4>
+          </div>
+
+          <img
+            className="box1-img"
+            src="/videoCall.png"
+            alt="videoCall"
+            height="10%"
+            width="28%"
+          />
+        </div>
         <div className="home-conten-box2"></div>
         <div className="home-conten-box3"></div>
         <div className="home-conten-box4"></div>
