@@ -5,6 +5,9 @@ import Carousel from "../components/carousel/Carousel";
 import Middlebar from "../components/miscellaneous/Middlebar";
 import Info from "../components/miscellaneous/Info";
 import MidInfo from "../components/miscellaneous/MidInfo";
+import CardInfo from "../components/cardInfo/CardInfo";
+import Footer from "../components/miscellaneous/Footer";
+import CountryAndPrivacy from "../components/miscellaneous/CountryAndPrivacy";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -19,14 +22,14 @@ function HomePage() {
   return (
     <div className="home-main">
       <Navbar />
-      <Middlebar/>
+      <Middlebar />
       <div className="parent-box">
-        <MidInfo/>
-        <Info/>
+        <MidInfo />
+        <Info />
         <Carousel />
-        <div className="home-conten-box3"></div>
-        <div className="home-conten-box4"></div>
-        <div className="home-conten-box5"></div>
+        <CardInfo />
+        <CountryAndPrivacy />
+        <Footer />
       </div>
     </div>
   );

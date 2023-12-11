@@ -34,7 +34,7 @@ const data = [
     her profile. She is well educated, which is one of the things I
     was lokking for in a life partner," begins Naresh.`,
     name: "Kajal & Naresh",
-    photo: "/jodi-new.jpg",
+    photo: "/jodi-5.jpg",
   },
 ];
 

@@ -721,8 +721,6 @@ progress {
   flex-shrink: 0;
   width: 100%;
   max-width: 100%;
-  /* padding-right: calc(var(--bs-gutter-x) * 0.5);
-  padding-left: calc(var(--bs-gutter-x) * 0.5); */
   margin-top: var(--bs-gutter-y);
 }
 
@@ -5647,17 +5645,19 @@ fieldset:disabled .btn {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: var(--bs-backdrop-zindex);
+  z-index: 3;
   width: 100vw;
   height: 100vh;
   background-color: var(--bs-backdrop-bg);
 }
+
 .modal-backdrop.fade {
-  opacity: 0;
+  opacity: -1;
 }
-.modal-backdrop.show {
-  opacity: var(--bs-backdrop-opacity);
-}
+
+/* .modal-backdrop.show {
+  opacity: 1;
+} */
 
 .modal-header {
   display: flex;
@@ -5673,9 +5673,13 @@ fieldset:disabled .btn {
 .modal-header .btn-close {
   padding: calc(var(--bs-modal-header-padding-y) * 0.5)
     calc(var(--bs-modal-header-padding-x) * 0.5);
-  margin: calc(-0.5 * var(--bs-modal-header-padding-y))
+  margin: calc(-0.999 * var(--bs-modal-header-padding-y))
     calc(-0.5 * var(--bs-modal-header-padding-x))
     calc(-0.5 * var(--bs-modal-header-padding-y)) auto;
+  border-radius: 50%;
+  background-color: #e8e9e8;
+  height: 6px;
+  width: 6px;
 }
 
 .modal-title {
@@ -5694,7 +5698,7 @@ fieldset:disabled .btn {
   flex-shrink: 0;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   padding: calc(var(--bs-modal-padding) - var(--bs-modal-footer-gap) * 0.5);
   background-color: var(--bs-modal-footer-bg);
   border-top: var(--bs-modal-footer-border-width) solid
@@ -11794,6 +11798,89 @@ body {
 }
 
 @media (max-width: 300px) {
+  .home-conten-box5 {
+    height: 35px;
+ }
+ .footer-content > p {
+   padding-top: 8px;
+   color: white;
+   font-size: 8px;
+ }
+  .box4-child-info > h6 {
+    color: whitesmoke;
+    font-size: 9px;
+  }
+
+  .box4-child-info > ul {
+    color: whitesmoke;
+    list-style: none;
+    padding-top: 8px;
+    font-size: 9px;
+  }
+
+  .box-4-main{
+    display: flex;
+    justify-content: space-between;
+    height: 175px;
+    width: 90%;
+    position: relative;
+    top: 20%;
+  }
+
+  .home-conten-box4 {
+    height: 220px;
+  }
+
+  .home-conten-box3 {
+    height: 260px;
+  }
+
+  .parent-card-info{
+    display: flex;
+    justify-content: space-evenly;
+    height: 208px;
+    width: 95%;
+    position: relative;
+    top: 20%;
+  }
+  
+  .child-card-info{
+    display: inline-block;
+    position: relative;
+    width: 30%;
+    height: 208px;
+  }
+  
+  .child-card-img{
+    position: relative;
+    left: 11%;
+    height: 86px;
+    width: 80%;
+  }
+
+  .child-text > strong{
+    color: #3c3838;
+    font-size: 6px;
+  }
+
+  .child-text > p{
+    font-size: 7px;
+  }
+  
+  .child-first-arrow{
+    height: 20px;
+    width: 13%;
+    position: relative;
+    top: 12%;
+  }
+  
+  .child-second-arrow{
+    height: 20px;
+    width: 13%;
+    position: relative;
+    top: 5%;
+  }
+
   .marrage-name {
     position: relative;
     font-size: 11px;
@@ -11846,7 +11933,7 @@ body {
 
   .stories{
     position: absolute;
-    top: 5%;
+    top: 6%;
     font-size: 14px;
   }
 
@@ -12003,6 +12090,89 @@ body {
 }
 
 @media (min-width: 300px) and (max-width: 500px) {
+  .home-conten-box5 {
+    height: 40px;
+ }
+ .footer-content > p {
+   padding-top: 8px;
+   color: white;
+   font-size: 10px;
+ }
+  .box4-child-info > h6 {
+    color: whitesmoke;
+    font-size: 10px;
+  }
+
+  .box4-child-info > ul {
+    color: whitesmoke;
+    list-style: none;
+    padding-top: 8px;
+    font-size: 10px;
+  }
+
+  .box-4-main{
+    display: flex;
+    justify-content: space-between;
+    height: 175px;
+    width: 93%;
+    position: relative;
+    top: 20%;
+  }
+
+  .home-conten-box4 {
+    height: 220px;
+  }
+
+  .home-conten-box3 {
+    height: 300px;
+  }
+
+  .parent-card-info{
+    display: flex;
+    justify-content: space-evenly;
+    height: 238px;
+    width: 95%;
+    position: relative;
+    top: 20%;
+  }
+  
+  .child-card-info{
+    display: inline-block;
+    position: relative;
+    width: 30%;
+    height: 238px;
+  }
+  
+  .child-card-img{
+    position: relative;
+    left: 11%;
+    height: 106px;
+    width: 80%;
+  }
+
+  .child-text > strong{
+    color: #3c3838;
+    font-size: 7px;
+  }
+
+  .child-text > p{
+    font-size: 8px;
+  }
+  
+  .child-first-arrow{
+    height: 20px;
+    width: 13%;
+    position: relative;
+    top: 14%;
+  }
+  
+  .child-second-arrow{
+    height: 20px;
+    width: 13%;
+    position: relative;
+    top: 6%;
+  }
+
   .marrage-name {
     position: relative;
     font-size: 14px;
@@ -12055,7 +12225,7 @@ body {
 
   .stories{
     position: absolute;
-    top: 5%;
+    top: 6%;
     font-size: 16px;
   }
 
@@ -12211,6 +12381,89 @@ body {
 }
 
 @media (min-width: 500px) and (max-width: 800px) {
+  .home-conten-box5 {
+    height: 40px;
+ }
+ .footer-content > p {
+  font-size: 12px;
+   padding-top: 8px;
+   color: white;
+ }
+  .box4-child-info > h6 {
+    color: whitesmoke;
+    font-size: 12px;
+  }
+
+  .box4-child-info > ul {
+    color: whitesmoke;
+    list-style: none;
+    padding-top: 8px;
+    font-size: 12px;
+  }
+
+  .box-4-main{
+    display: flex;
+    justify-content: space-between;
+    height: 200px;
+    width: 85%;
+    position: relative;
+    top: 20%;
+  }
+
+  .home-conten-box4 {
+    height: 250px;
+  }
+
+  .home-conten-box3 {
+    height: 350px;
+  }
+
+  .parent-card-info{
+    display: flex;
+    justify-content: space-evenly;
+    height: 278px;
+    width: 90%;
+    position: relative;
+    top: 20%;
+  }
+  
+  .child-card-info{
+    display: inline-block;
+    position: relative;
+    width: 30%;
+    height: 278px;
+  }
+  
+  .child-card-img{
+    position: relative;
+    left: 12%;
+    height: 140px;
+    width: 70%;
+  }
+
+  .child-text > strong{
+    color: #3c3838;
+    font-size: 11px;
+  }
+
+  .child-text > p{
+    font-size: 10px;
+  }
+  
+  .child-first-arrow{
+    height: 20px;
+    width: 13%;
+    position: relative;
+    top: 16%;
+  }
+  
+  .child-second-arrow{
+    height: 20px;
+    width: 13%;
+    position: relative;
+    top: 8%;
+  }
+
   .marrage-name {
     position: relative;
     font-size: 16px;
@@ -12263,7 +12516,7 @@ body {
 
   .stories{
     position: absolute;
-    top: 5%;
+    top: 6%;
     font-size: 20px;
   }
 
@@ -12423,6 +12676,89 @@ body {
 }
 
 @media (min-width: 800px) and (max-width: 1150px) {
+  .home-conten-box5 {
+    height: 40px;
+ }
+ .footer-content > p {
+   padding-top: 8px;
+   color: white;
+   font-size: 13px;
+ }
+  .box4-child-info > h6 {
+    color: whitesmoke;
+    font-size: 14px;
+  }
+
+  .box4-child-info > ul {
+    color: whitesmoke;
+    list-style: none;
+    padding-top: 8px;
+    font-size: 14px;
+  }
+
+  .box-4-main{
+    display: flex;
+    justify-content: space-between;
+    height: 224px;
+    width: 80%;
+    position: relative;
+    top: 20%;
+  }
+
+  .home-conten-box4 {
+    height: 280px;
+  }
+
+  .home-conten-box3 {
+    height: 400px;
+  }
+
+  .parent-card-info{
+    display: flex;
+    justify-content: space-evenly;
+    height: 320px;
+    width: 90%;
+    position: relative;
+    top: 20%;
+  }
+  
+  .child-card-info{
+    display: inline-block;
+    position: relative;
+    width: 30%;
+    height: 320px;
+  }
+  
+  .child-card-img{
+    position: relative;
+    left: 14%;
+    height: 209px;
+    width: 70%;
+  }
+
+  .child-text > strong{
+    color: #3c3838;
+    font-size: 15px;
+  }
+
+  .child-text > p{
+    font-size: 12px;
+  }
+  
+  .child-first-arrow{
+    height: 20px;
+    width: 12%;
+    position: relative;
+    top: 30%;
+  }
+  
+  .child-second-arrow{
+    height: 20px;
+    width: 12%;
+    position: relative;
+    top: 10%;
+  }
+
   .marrage-name {
     position: relative;
     font-size: 18px;
@@ -12474,7 +12810,7 @@ body {
 
   .stories{
     position: absolute;
-    top: 5%;
+    top: 6%;
   }
 
   .diapo-parent {
@@ -12624,6 +12960,87 @@ body {
 }
 
 @media (min-width: 1150px) and (max-width: 1420px) {
+  .home-conten-box5 {
+    height: 40px;
+ }
+ .footer-content > p {
+   padding-top: 8px;
+   color: white;
+   font-size: 14px;
+ }
+
+  .box4-child-info > h6 {
+    color: whitesmoke;
+  }
+
+  .box4-child-info > ul {
+    color: whitesmoke;
+    list-style: none;
+    padding-top: 8px;
+  }
+
+  .box-4-main{
+    display: flex;
+    justify-content: space-between;
+    height: 254px;
+    width: 75%;
+    position: relative;
+    top: 20%;
+  }
+
+  .home-conten-box4 {
+    height: 320px;
+  }
+
+  .home-conten-box3 {
+    height: 450px;
+  }
+
+  .parent-card-info{
+    display: flex;
+    justify-content: space-evenly;
+    height: 310px;
+    width: 78%;
+    position: relative;
+    top: 20%;
+  }
+  
+  .child-card-info{
+    display: inline-block;
+    position: relative;
+    width: 30%;
+    height: 310px;
+  }
+  
+  .child-card-img{
+    position: relative;
+    left: 16%;
+    height: 210px;
+    width: 70%;
+  }
+
+  .child-text > strong{
+    color: #3c3838;
+  }
+
+  .child-text > p{
+    font-size: 13px;
+  }
+  
+  .child-first-arrow{
+    height: 20px;
+    width: 12%;
+    position: relative;
+    top: 30%;
+  }
+  
+  .child-second-arrow{
+    height: 20px;
+    width: 12%;
+    position: relative;
+    top: 10%;
+  }
+
   .marrage-name {
     position: relative;
     font-size: 20px;
@@ -12674,7 +13091,7 @@ body {
   }
   .stories{
     position: absolute;
-    top: 5%;
+    top: 6%;
   }
 
   .diapo-parent {
@@ -12823,6 +13240,87 @@ body {
 }
 
 @media (min-width: 1421px) {
+  .home-conten-box5 {
+     height: 40px;
+  }
+  .footer-content > p {
+    padding-top: 8px;
+    color: white;
+    font-size: 14px;
+  }
+
+  .box4-child-info > h6 {
+    color: whitesmoke;
+  }
+
+  .box4-child-info > ul {
+    color: whitesmoke;
+    list-style: none;
+    padding-top: 8px;
+  }
+
+  .box-4-main{
+    display: flex;
+    justify-content: space-between;
+    height: 254px;
+    width: 75%;
+    position: relative;
+    top: 20%;
+  }
+
+  .home-conten-box4 {
+    height: 320px;
+  }
+
+  .home-conten-box3 {
+    height: 450px;
+  }
+
+  .parent-card-info{
+    display: flex;
+    justify-content: space-evenly;
+    height: 310px;
+    width: 75%;
+    position: relative;
+    top: 20%;
+  }
+  
+  .child-card-info{
+    display: inline-block;
+    position: relative;
+    width: 26%;
+    height: 310px;
+  }
+  
+  .child-card-img{
+    position: relative;
+    left: 16%;
+    height: 220px;
+    width: 70%;
+  }
+
+  .child-text > strong{
+    color: #3c3838;
+  }
+
+  .child-text > p{
+    font-size: 15px;
+  }
+  
+  .child-first-arrow{
+    height: 20px;
+    width: 12%;
+    position: relative;
+    top: 35%;
+  }
+  
+  .child-second-arrow{
+    height: 20px;
+    width: 12%;
+    position: relative;
+    top: 10%;
+  }
+
   .marrage-name {
     position: relative;
     font-size: 20px;
@@ -12874,7 +13372,7 @@ body {
 
   .stories{
     position: absolute;
-    top: 5%;
+    top: 6%;
   }
 
   .diapo-parent {
@@ -13020,7 +13518,15 @@ body {
   }
 }
 
+.footer-content{
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
 
+.child-text{
+  text-align: center;
+}
 
 .box1-heading {
   position: absolute;
@@ -13098,23 +13604,26 @@ body {
 
 .home-conten-box3 {
   width: 100%;
-  height: 350px;
   background-color: #efeeee;
   position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .home-conten-box4 {
   width: 100%;
-  height: 200px;
   background-color: #464242;
   position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .home-conten-box5 {
   width: 100%;
-  height: 50px;
   background-color: #292727;
   position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .parent-box {
@@ -13300,4 +13809,9 @@ body {
   .custom-parent {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
+
+.middlebar-main-img{
+  object-fit: cover;
+  width: 100%;
 }
