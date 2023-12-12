@@ -51,8 +51,8 @@ function Carousel() {
       <h2 className="stories">Happy Stories on Indian Diaspora</h2>
       <div className="deatils-stories">
       <Slider {...settings}>
-        {data.map((d) => (
-          <div className="cotaion-details">
+        {data.map((d, i) => (
+          <div className="cotaion-details" key={i}>
             <div className="stroies-text-details">
               <img className="coation-img" src={d.logo} alt="cotation" />
               <p className="story-para">{d.text}</p>

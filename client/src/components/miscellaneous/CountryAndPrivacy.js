@@ -34,6 +34,15 @@ function CountryAndPrivacy() {
             <li>Terms & Condition</li>
           </ul>
         </div>
+        <div className="box4-child-info">
+          <h6>Help & Support</h6>
+          <ul>
+            <li>24x7 Live Help</li>
+            <li>Contact Us</li>
+            <li>Feedback</li>
+            <li>FAQ</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

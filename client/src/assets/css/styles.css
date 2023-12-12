@@ -3137,36 +3137,40 @@ fieldset:disabled .btn {
 
 .btn-info {
   --bs-btn-color: #000;
-  --bs-btn-bg: #0dcaf0;
-  --bs-btn-border-color: #0dcaf0;
+  --bs-btn-bg: #E70045;
+  --bs-btn-border-color: #E70045;
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: #31d2f2;
-  --bs-btn-hover-border-color: #25cff2;
+  --bs-btn-hover-bg: #E70045;
+  --bs-btn-hover-border-color: #E70045;
   --bs-btn-focus-shadow-rgb: 11, 172, 204;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: #3dd5f3;
-  --bs-btn-active-border-color: #25cff2;
+  --bs-btn-active-bg: #E70045;
+  --bs-btn-active-border-color: #E70045;
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: #0dcaf0;
-  --bs-btn-disabled-border-color: #0dcaf0;
+  --bs-btn-disabled-bg: #E70045;
+  --bs-btn-disabled-border-color: #E70045;
+  color: #fff;
 }
 
 .btn-warning {
   --bs-btn-color: #000;
-  --bs-btn-bg: #ffc107;
-  --bs-btn-border-color: #ffc107;
+  --bs-btn-bg: #D40000;
+  --bs-btn-border-color: #D40000;
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: #ffca2c;
-  --bs-btn-hover-border-color: #ffc720;
+  --bs-btn-hover-bg: #D40000;
+  --bs-btn-hover-border-color: #D40000;
   --bs-btn-focus-shadow-rgb: 217, 164, 6;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: #ffcd39;
-  --bs-btn-active-border-color: #ffc720;
+  --bs-btn-active-bg: #D40000;
+  --bs-btn-active-border-color: #D40000;
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: #ffc107;
-  --bs-btn-disabled-border-color: #ffc107;
+  --bs-btn-disabled-bg: #D40000;
+  --bs-btn-disabled-border-color: #D40000;
+  width: 40%;
+  border-radius: 20px;
+  color: #fff;
 }
 
 .btn-danger {
@@ -5629,6 +5633,7 @@ fieldset:disabled .btn {
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 370px;
   color: var(--bs-modal-color);
   pointer-events: auto;
   background-color: var(--bs-modal-bg);
@@ -5655,15 +5660,16 @@ fieldset:disabled .btn {
   opacity: -1;
 }
 
-/* .modal-backdrop.show {
-  opacity: 1;
-} */
+.modal-backdrop.show {
+  opacity: -1;
+}
 
 .modal-header {
   display: flex;
   flex-shrink: 0;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  position: relative;
   padding: var(--bs-modal-header-padding);
   border-bottom: var(--bs-modal-header-border-width) solid
     var(--bs-modal-header-border-color);
@@ -5673,9 +5679,11 @@ fieldset:disabled .btn {
 .modal-header .btn-close {
   padding: calc(var(--bs-modal-header-padding-y) * 0.5)
     calc(var(--bs-modal-header-padding-x) * 0.5);
-  margin: calc(-0.999 * var(--bs-modal-header-padding-y))
-    calc(-0.5 * var(--bs-modal-header-padding-x))
+  margin: calc(-0.5 * var(--bs-modal-header-padding-y))
+    calc(-0.05 )
     calc(-0.5 * var(--bs-modal-header-padding-y)) auto;
+  position: relative;
+  left: 32%;
   border-radius: 50%;
   background-color: #e8e9e8;
   height: 6px;
@@ -5690,7 +5698,7 @@ fieldset:disabled .btn {
 .modal-body {
   position: relative;
   flex: 1 1 auto;
-  padding: var(--bs-modal-padding);
+  padding: 0;
 }
 
 .modal-footer {
@@ -5709,6 +5717,8 @@ fieldset:disabled .btn {
 .modal-footer > * {
   margin: calc(var(--bs-modal-footer-gap) * 0.5);
 }
+
+
 
 @media (min-width: 576px) {
   .modal {
@@ -12077,7 +12087,7 @@ body {
     width: 100%;
     font-size: 9px;
     padding: 3px;
-    background-color: #9e1717;
+    background: linear-gradient(90deg, #D40000 0%, #5C2F47 100%);
     color: white;
     border-radius: 5px;
     height: 20%;
@@ -12368,7 +12378,7 @@ body {
     width: 60%;
     font-size: 10px;
     padding: 6px;
-    background-color: #9e1717;
+    background: linear-gradient(90deg, #D40000 0%, #5C2F47 100%);
     color: white;
     border-radius: 10px;
     height: 30%;
@@ -12664,7 +12674,7 @@ body {
     width: 25%;
     font-size: 12px;
     padding: 5px;
-    background-color: #9e1717;
+    background: linear-gradient(90deg, #D40000 0%, #5C2F47 100%);
     color: white;
     border-radius: 10px;
     height: 40%;
@@ -12918,7 +12928,7 @@ body {
     width: 31%;
     font-size: 12px;
     padding: 6px;
-    background-color: #9e1717;
+    background: linear-gradient(90deg, #D40000 0%, #5C2F47 100%);
     color: white;
     border-radius: 10px;
     height: 40%;
@@ -13198,7 +13208,7 @@ body {
     width: 30%;
     font-size: 12px;
     padding: 6px;
-    background-color: #9e1717;
+    background: linear-gradient(90deg, #D40000 0%, #5C2F47 100%);
     color: white;
     border-radius: 10px;
     height: 40%;
@@ -13336,7 +13346,7 @@ body {
     right: 5%;
     top: 10%;
     height: 90%;
-    width: 30%;
+    width: 27%;
     border-radius: 10px;
   }
   
@@ -13474,7 +13484,7 @@ body {
   }
 
   .navbar-con-1-button {
-    background-color: #9e1717;
+    background: linear-gradient(90deg, #D40000 0%, #5C2F47 100%);
     color: white;
     width: 24%;
     padding: 6px;
@@ -13814,4 +13824,9 @@ body {
 .middlebar-main-img{
   object-fit: cover;
   width: 100%;
+}
+
+.button-register{
+  background: linear-gradient(104deg, #E88B00 0%, #E70045 100%); 
+  border-radius: 4px
 }

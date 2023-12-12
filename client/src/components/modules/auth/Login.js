@@ -30,7 +30,8 @@ function Login() {
             position: "top-right",
           });
           // navigate("/new-chats");
-          navigate("/lobby");
+          // navigate("/lobby");
+          navigate("/dashboard");
           window.location.reload();
         } else {
           navigate("/register");
@@ -70,7 +71,7 @@ function Login() {
             <div className="col-md-6">
               <div className="card bg-theme">
                 <div className="card-header">
-                  <h4>Matromoni Login</h4>
+                  <h4>Indian Diaspora Matrimony Login</h4>
                 </div>
                 <div className="card-body">
                   <label className={"w-100"}>
@@ -114,15 +115,6 @@ function Login() {
                   >
                     Forgot Password?
                   </span>
-                  <p className="mt-2" style={{ color: "white" }}>
-                    Don't have any account please{" "}
-                    <span
-                      onClick={() => navigate("/register")}
-                      style={{ color: "yellow", cursor: "pointer" }}
-                    >
-                      Register
-                    </span>
-                  </p>
                 </div>
               </div>
             </div>

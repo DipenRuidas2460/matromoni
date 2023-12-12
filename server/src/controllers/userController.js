@@ -58,21 +58,36 @@ const addUser = asyncHandler(async (req, res) => {
     const mailData = {
       respMail: reqBody.email,
       subject: "Welcome",
-      text: `Hi, ${reqBody.fullName}. Welcome to Matromoni Site.`,
+      text: `Hi, ${reqBody.firstName} ${reqBody.lastName}. Welcome to Indian Diaspora Matrimony Site.`,
     };
     await sendMail(mailData);
 
     if (response) {
-      const { id, fullName, email, phoneNumber, role, photo } = response;
-
-      const registerUserData = {
+      const {
         id,
-        fullName,
+        firstName,
+        lastName,
+        gender,
+        profileFor,
+        dob,
         email,
         phoneNumber,
         role,
         photo,
-      }
+      } = response;
+
+      const registerUserData = {
+        id,
+        firstName,
+        lastName,
+        gender,
+        profileFor,
+        dob,
+        email,
+        phoneNumber,
+        role,
+        photo,
+      };
 
       res.header("Authorization", `Bearer ${token}`);
 
@@ -80,7 +95,11 @@ const addUser = asyncHandler(async (req, res) => {
         status: 200,
         registerUserData,
         id,
-        fullName,
+        firstName,
+        lastName,
+        gender,
+        profileFor,
+        dob,
         email,
         phoneNumber,
         role,
@@ -135,7 +154,11 @@ const login = asyncHandler(async (req, res) => {
     );
     const data = {
       userId: userDetails.id,
-      fullName: userDetails.fullName,
+      firstName: userDetails.firstName,
+      lastName: userDetails.lastName,
+      dob:userDetails.dob,
+      gender:userDetails.gender,
+      profileFor:userDetails.profileFor,
       email: userDetails.email,
       phoneNumber: userDetails.phoneNumber,
       role: userDetails.role,
@@ -289,7 +312,7 @@ const getUserById = asyncHandler(async (req, res) => {
   try {
     const response = await Customer.findOne({
       where: { id: req.person.id },
-      attributes: ["id", "fullName", "email", "phoneNumber", "role", "photo"],
+      attributes: ["id", "firstName", "lastName", "dob", "gender", "profileFor", "email", "phoneNumber", "role", "photo"],
     });
 
     return res.status(200).json({
@@ -312,7 +335,8 @@ const getAllUsers = asyncHandler(async (req, res) => {
     const keyword = req.query.search
       ? {
           [Op.or]: [
-            { fullName: { [Op.like]: `%${req.query.search}%` } },
+            { firstName: { [Op.like]: `%${req.query.search}%` } },
+            { lastName: { [Op.like]: `%${req.query.search}%` } },
             { email: { [Op.like]: `%${req.query.search}%` } },
           ],
         }

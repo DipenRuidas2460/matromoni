@@ -1,7 +1,14 @@
 import React from "react";
 import Header from "./Header";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  
+  const handleClickLogin = () => {
+    navigate("/login")
+  };
+
   return (
     <div>
       <Header />
@@ -14,7 +21,9 @@ const Navbar = () => {
 
         <div className="navbar-con-1">
           <p className="navbar-para-three">Already a member?</p>
-          <button className="navbar-con-1-button">LOGIN</button>
+          <button className="navbar-con-1-button" onClick={handleClickLogin}>
+            LOGIN
+          </button>
         </div>
       </div>
     </div>
