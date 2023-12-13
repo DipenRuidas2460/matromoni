@@ -13,6 +13,9 @@ import LobbyScreen from "./components/screens/LobbyScreen";
 import RoomPage from "./components/screens/RoomPage";
 import Login from "./components/modules/auth/Login";
 import Dashboard from "./components/dashboard/Dashboard";
+import PrivacyPolicy from "./components/privacy-policy and T&C/PrivacyPolicy";
+import TermsCondition from "./components/privacy-policy and T&C/TermsCondition";
+import RefundPolicy from "./components/miscellaneous/RefundPolicy";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -26,6 +29,9 @@ function App() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/404" element={<NotFound />} />
           <Route exact path="/forgotpass" element={<ForgotPass />} />
+          <Route exact path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route exact path="/refund-policy" element={<RefundPolicy />} />
+          <Route exact path="/terms-con" element={<TermsCondition />} />
 
           <Route
             exact

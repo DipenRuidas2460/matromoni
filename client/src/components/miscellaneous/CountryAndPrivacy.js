@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function CountryAndPrivacy() {
   return (
@@ -29,9 +30,9 @@ function CountryAndPrivacy() {
           <ul>
             <li>About Us</li>
             <li>Member Fees</li>
-            <li>Privacy Policy</li>
-            <li>Refund Policy</li>
-            <li>Terms & Condition</li>
+            <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+            <li><Link to="/refund-policy">Refund Policy</Link></li>
+            <li><Link to="/terms-con">Terms & Condition</Link></li>
           </ul>
         </div>
         <div className="box4-child-info">

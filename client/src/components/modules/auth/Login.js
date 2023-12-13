@@ -115,6 +115,15 @@ function Login() {
                   >
                     Forgot Password?
                   </span>
+                  <p className="mt-2" style={{ color: "white" }}>
+                    Don't have any account please{" "}
+                    <span
+                      onClick={() => navigate("/")}
+                      style={{ color: "yellow", cursor: "pointer" }}
+                    >
+                      Register
+                    </span>
+                  </p>
                 </div>
               </div>
             </div>
