@@ -20,9 +20,15 @@ const {
 
 const { accessChat, fetchChats } = require("../controllers/chatController");
 
-
 const { validateTokenMiddleware } = require("../middleware/auth");
 
+const {
+  createSearch,
+  fetchAllSearch,
+  updateSearch,
+  deleteSearch,
+  fetchSearchBySearchId,
+} = require("../controllers/searchController");
 
 // -------------------- User Profile Route ----------------------------------------------------------------------------------
 
@@ -49,5 +55,23 @@ router.get("/chat", validateTokenMiddleware, fetchChats);
 
 router.post("/message", validateTokenMiddleware, sendMessage);
 router.get("/message/:chatId", validateTokenMiddleware, allMessages);
+
+// --------------------- Search Routes -------------------------------------------------------------------------------------------
+
+// --------------------- Message Routes -------------------------------------------------------------------------------------------
+
+router.post("/create-search", createSearch);
+router.get("/fetchAll-search", validateTokenMiddleware, fetchAllSearch);
+router.get(
+  "/fetch-search-bySearchId",
+  validateTokenMiddleware,
+  fetchSearchBySearchId
+);
+router.put("/update-search/:searchId", validateTokenMiddleware, updateSearch);
+router.delete(
+  "/delete-search/:searchId",
+  validateTokenMiddleware,
+  deleteSearch
+);
 
 module.exports = router;
