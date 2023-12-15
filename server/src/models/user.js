@@ -11,41 +11,30 @@ const User = sequelize.define(
     },
     firstName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     lastName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
-    profileFor: {
+    lookingFor: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     dob: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     gender: {
-      type: DataTypes.ENUM("Male", "Female"),
-      allowNull: false,
+      type: DataTypes.STRING,
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     countryPhoneCode: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     phoneNumber: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
     },
     role: {
       type: DataTypes.ENUM("user", "admin"),

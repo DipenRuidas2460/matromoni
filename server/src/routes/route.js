@@ -10,7 +10,7 @@ const {
   updateUser,
   getUserById,
   updatePassword,
-  getAllUsers,
+  getAllUsersByQuery,
 } = require("../controllers/userController");
 
 const {
@@ -44,7 +44,7 @@ router.patch(
   updatePassword
 );
 router.get("/customer/getUserById", validateTokenMiddleware, getUserById);
-router.get("/customer/getAllUsers", validateTokenMiddleware, getAllUsers);
+router.get("/customer/getAllUsers", validateTokenMiddleware, getAllUsersByQuery);
 
 // --------------------- Chat Routes ----------------------------------------------------------------------------------------------
 

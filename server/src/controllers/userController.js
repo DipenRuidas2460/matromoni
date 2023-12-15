@@ -1,4 +1,3 @@
-const Customer = require("../models/user");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -10,43 +9,74 @@ const {
 const moment = require("moment");
 const { sendMail } = require("../helper/sendMail");
 const { Op } = require("sequelize");
+const User = require("../models/user");
 
 const secretKey = process.env.TOKEN_secret_key;
 const expiresIn = "24h";
 
 const addUser = asyncHandler(async (req, res) => {
   try {
-    const reqBody = req.body;
+    const {
+      firstName,
+      lastName,
+      lookingFor,
+      phoneNumber,
+      email,
+      password,
+      role,
+      photo,
+      day,
+      month,
+      year,
+      gender,
+      countryPhoneCode,
+      fpToken,
+    } = req.body;
 
     const currentDate = moment().tz("Asia/Kolkata").format("YYYY-MM-DD, HH:mm");
 
-    const findEmail = await Customer.findOne({
-      where: { email: reqBody.email },
-    });
-
-    const findPhoneNumber = await Customer.findOne({
-      where: { phoneNumber: reqBody.phoneNumber },
-    });
-
-    if (findEmail) {
-      return res
-        .status(409)
-        .json({ status: "email conflict", msg: "Email is already present!" });
-    }
-
-    if (findPhoneNumber) {
-      return res.status(409).json({
-        status: "phone conflict",
-        msg: "Phone Number is already present!",
+    if (email != "" || phoneNumber != "") {
+      const findEmail = await User.findOne({
+        where: { email: email },
       });
+
+      const findPhoneNumber = await User.findOne({
+        where: { phoneNumber: phoneNumber },
+      });
+
+      if (findEmail) {
+        return res
+          .status(409)
+          .json({ status: "email conflict", msg: "Email is already present!" });
+      }
+
+      if (findPhoneNumber) {
+        return res.status(409).json({
+          status: "phone conflict",
+          msg: "Phone Number is already present!",
+        });
+      }
     }
 
-    reqBody.password = await encryptPassword(reqBody.password);
+    const passwrd = await encryptPassword(password);
 
-    const userDetails = await Customer.create({
-      ...reqBody,
+    const newReqData = {
+      firstName,
+      lastName,
+      lookingFor,
+      dob: `${day}-${month}-${year}`,
+      email,
+      password: passwrd,
+      countryPhoneCode,
+      phoneNumber,
+      gender,
+      role,
+      photo,
+      fpToken,
       createdTime: currentDate,
-    });
+    };
+
+    const userDetails = await User.create(newReqData);
     const response = await userDetails.save();
 
     const token = jwt.sign(
@@ -56,9 +86,9 @@ const addUser = asyncHandler(async (req, res) => {
     );
 
     const mailData = {
-      respMail: reqBody.email,
+      respMail: email,
       subject: "Welcome",
-      text: `Hi, ${reqBody.firstName} ${reqBody.lastName}. Welcome to Indian Diaspora Matrimony Site.`,
+      text: `Hi, ${firstName} ${lastName}. Welcome to Indian Diaspora Matrimony Site.`,
     };
     await sendMail(mailData);
 
@@ -67,8 +97,8 @@ const addUser = asyncHandler(async (req, res) => {
         id,
         firstName,
         lastName,
+        lookingFor,
         gender,
-        profileFor,
         dob,
         email,
         phoneNumber,
@@ -80,8 +110,8 @@ const addUser = asyncHandler(async (req, res) => {
         id,
         firstName,
         lastName,
+        lookingFor,
         gender,
-        profileFor,
         dob,
         email,
         phoneNumber,
@@ -92,13 +122,13 @@ const addUser = asyncHandler(async (req, res) => {
       res.header("Authorization", `Bearer ${token}`);
 
       return res.status(201).json({
-        status: 200,
+        status: "success",
         registerUserData,
         id,
         firstName,
         lastName,
+        lookingFor,
         gender,
-        profileFor,
         dob,
         email,
         phoneNumber,
@@ -131,7 +161,7 @@ const login = asyncHandler(async (req, res) => {
       });
     }
 
-    const userDetails = await Customer.findOne({ where: { email: email } });
+    const userDetails = await User.findOne({ where: { email: email } });
 
     if (!userDetails) {
       return res
@@ -156,9 +186,9 @@ const login = asyncHandler(async (req, res) => {
       userId: userDetails.id,
       firstName: userDetails.firstName,
       lastName: userDetails.lastName,
-      dob:userDetails.dob,
-      gender:userDetails.gender,
-      profileFor:userDetails.profileFor,
+      lookingFor:userDetails.lookingFor,
+      dob: userDetails.dob,
+      gender: userDetails.gender,
       email: userDetails.email,
       phoneNumber: userDetails.phoneNumber,
       role: userDetails.role,
@@ -200,7 +230,7 @@ const forgetPass = asyncHandler(async (req, res) => {
   try {
     const { email } = req.body;
 
-    const userDetails = await Customer.findOne({
+    const userDetails = await User.findOne({
       where: { email: email },
     });
     if (!userDetails) {
@@ -208,7 +238,7 @@ const forgetPass = asyncHandler(async (req, res) => {
     }
 
     const token = generateString(20);
-    await Customer.update({ fpToken: token }, { where: { email: email } });
+    await User.update({ fpToken: token }, { where: { email: email } });
 
     const mailData = {
       respMail: email,
@@ -250,7 +280,7 @@ const fpUpdatePass = asyncHandler(async (req, res) => {
 
     const { token } = req.body;
 
-    const userInfo = await Customer.findOne({ where: { fpToken: token } });
+    const userInfo = await User.findOne({ where: { fpToken: token } });
     if (!userInfo)
       return res
         .status(400)
@@ -260,7 +290,7 @@ const fpUpdatePass = asyncHandler(async (req, res) => {
       reqBody.password = await encryptPassword(reqBody.password);
     }
 
-    const response = await Customer.update(
+    const response = await User.update(
       { password: reqBody.password },
       {
         where: { fpToken: token },
@@ -291,7 +321,9 @@ const updateUser = asyncHandler(async (req, res) => {
       reqBody.password = await encryptPassword(reqBody.password);
     }
 
-    const response = await Customer.update(reqBody, {
+    reqBody.dob = `${reqBody.day}-${reqBody.month}-${reqBody.year}`;
+
+    const response = await User.update(reqBody, {
       where: { id: req.person.id },
     });
 
@@ -310,9 +342,20 @@ const updateUser = asyncHandler(async (req, res) => {
 
 const getUserById = asyncHandler(async (req, res) => {
   try {
-    const response = await Customer.findOne({
+    const response = await User.findOne({
       where: { id: req.person.id },
-      attributes: ["id", "firstName", "lastName", "dob", "gender", "profileFor", "email", "phoneNumber", "role", "photo"],
+      attributes: [
+        "id",
+        "firstName",
+        "lastName",
+        "lookingFor",
+        "dob",
+        "gender",
+        "email",
+        "phoneNumber",
+        "role",
+        "photo",
+      ],
     });
 
     return res.status(200).json({
@@ -330,7 +373,7 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
-const getAllUsers = asyncHandler(async (req, res) => {
+const getAllUsersByQuery = asyncHandler(async (req, res) => {
   try {
     const keyword = req.query.search
       ? {
@@ -342,7 +385,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
         }
       : {};
 
-    const response = await Customer.findAll({
+    const response = await User.findAll({
       where: {
         ...keyword,
         id: { [Op.not]: req.person.id },
@@ -366,7 +409,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 
 const updatePassword = asyncHandler(async (req, res) => {
   try {
-    const response = await Customer.findOne({ where: { id: req.person.id } });
+    const response = await User.findOne({ where: { id: req.person.id } });
 
     const { oldPassword, password } = req.body;
 
@@ -418,5 +461,5 @@ module.exports = {
   updateUser,
   getUserById,
   updatePassword,
-  getAllUsers,
+  getAllUsersByQuery,
 };

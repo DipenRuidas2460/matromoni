@@ -32,7 +32,7 @@ function Login() {
           // navigate("/new-chats");
           // navigate("/lobby");
           navigate("/dashboard");
-          window.location.reload();
+          window.location.reload()
         } else {
           navigate("/register");
           toast({

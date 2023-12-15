@@ -53,9 +53,9 @@ function App() {
                 element={<ChatPage token={token} userInfo={userInfo} />}
               />
 
-              <Route exact path="/dashboard" element={<Dashboard />} />
-              <Route exact path="/lobby" element={<LobbyScreen />} />
-              <Route path="/room/:roomId" element={<RoomPage />} />
+              <Route exact path="/dashboard" element={<Dashboard token={token}/>} />
+              <Route exact path="/lobby" element={<LobbyScreen token={token} />} />
+              <Route path="/room/:roomId" element={<RoomPage token={token} />} />
             </>
           )}
 

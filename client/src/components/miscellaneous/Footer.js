@@ -5,8 +5,7 @@ const Footer = () => {
     <div className="home-conten-box5">
       <footer className="footer-content">
         <p>
-          &copy; {new Date().getFullYear()} Indian Diaspora Matrimony. All Rights
-          Reserved.
+          Copyright {new Date().getFullYear()} IndianDiaspora.com&reg;
         </p>
       </footer>
     </div>

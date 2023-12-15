@@ -42,7 +42,7 @@ const Middlebar = () => {
   const [formData2, setFormData2] = useState({
     firstName: "",
     lastName: "",
-    profileFor: "",
+    lookingFor:"",
     day: "",
     month: "",
     year: "",
@@ -127,44 +127,6 @@ const Middlebar = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleHomeFormSubmit = (e) => {
-    e.preventDefault();
-
-    if (validateForm()) {
-      axios
-        .post(`${host}/create-search`, formData1)
-        .then((result) => {
-          if (result.data.status === "success") {
-            toast({
-              title: "Search Data Store Successfully!",
-              status: "success",
-              duration: 3000,
-              isClosable: true,
-              position: "top-right",
-            });
-          }
-        })
-        .catch((er) => {
-          console.log(er.message);
-          toast({
-            title: "Something Went wrong!",
-            status: "warning",
-            duration: 3000,
-            isClosable: true,
-            position: "top-right",
-          });
-        });
-    } else {
-      toast({
-        title: "Form validation failed!",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-    handleFirstModalOpen();
-  };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData1({
@@ -222,17 +184,95 @@ const Middlebar = () => {
     });
   };
 
-  const handleSelectChange = (e) => {
-    const { name, value } = e.target;
-    setFormData2({
-      ...formData2,
-      [name]: value,
-    });
+  const handleHomeFormSubmit = (e) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      axios
+        .post(`${host}/create-search`, formData1)
+        .then((result) => {
+          if (result.data.status === "success") {
+            toast({
+              title: "Search Data Store Successfully!",
+              status: "success",
+              duration: 3000,
+              isClosable: true,
+              position: "top-right",
+            });
+          }
+        })
+        .catch((er) => {
+          console.log(er.message);
+          toast({
+            title: "Something Went wrong!",
+            status: "warning",
+            duration: 3000,
+            isClosable: true,
+            position: "top-right",
+          });
+        });
+    } else {
+      toast({
+        title: "Form validation failed!",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    handleFirstModalOpen();
+  };
+
+  const onSubmitModal1 = (e) => {
+    handleNext();
+  };
+
+  const onSubmitModal2 = (e) => {
+    handleNext();
+  };
+
+  const onSubmitModal3 = (e) => {
+    handleNext();
   };
 
   const onSubmit = (e) => {
     handleNext();
-    console.log("Form:-", formData2);
+    if (
+      formData2.firstName !== "" ||
+      formData2.lastName !== "" ||
+      formData2.lookingFor !== "" ||
+      formData2.day !== "" ||
+      formData2.month !== "" ||
+      formData2.year !== "" ||
+      formData2.phoneNumber !== "" ||
+      formData2.email !== "" ||
+      formData2.password !== "" ||
+      formData2.countryPhoneCode !== "" ||
+      formData2.gender !== ""
+    ) {
+      axios
+        .post(`${host}/customer/register`, formData2)
+        .then((result) => {
+          if (step === 4 && result.data.status === "success") {
+            toast({
+              title: "User Data Store Successfully!",
+              status: "success",
+              duration: 3000,
+              isClosable: true,
+              position: "top-right",
+            });
+          }
+        })
+        .catch((er) => {
+          console.log(er.message);
+          toast({
+            title: "Something Went wrong!",
+            status: "warning",
+            duration: 3000,
+            isClosable: true,
+            position: "top-right",
+          });
+        });
+    }
     if (step === 4) {
       setStep(1);
       onClose();
@@ -333,7 +373,7 @@ const Middlebar = () => {
 
             <ModalCloseButton />
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmitModal1)}>
               <ModalBody>
                 <Box
                   height="150px"
@@ -451,7 +491,7 @@ const Middlebar = () => {
               </Flex>
             </ModalHeader>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmitModal2)}>
               <ModalBody>
                 <Box
                   height="280px"
@@ -534,7 +574,7 @@ const Middlebar = () => {
               </Flex>
             </ModalHeader>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmitModal3)}>
               <ModalBody>
                 <Box height="280px" width="100%">
                   <FormControl isInvalid={errors.firstName}>
@@ -543,13 +583,13 @@ const Middlebar = () => {
                       type="text"
                       placeholder="First Name"
                       backgroundColor="#ebe9e9"
-                      id="inp-101"
-                      name="firstName"
-                      value={formData2.firstName}
-                      onChange={(e) => handleInput(e)}
                       {...register("firstName", {
                         required: "This field is required",
                       })}
+                      id="firstName"
+                      name="firstName"
+                      value={formData2.firstName}
+                      onChange={handleInput}
                     />
                     <FormErrorMessage>
                       {errors.firstName && errors.firstName.message}
@@ -562,13 +602,13 @@ const Middlebar = () => {
                       backgroundColor="#ebe9e9"
                       mt="25px"
                       mb="25px"
-                      id="inp-104"
-                      name="lastName"
-                      value={formData2.lastName}
-                      onChange={(e) => handleInput(e)}
                       {...register("lastName", {
                         required: "This field is required",
                       })}
+                      id="lastName"
+                      name="lastName"
+                      value={formData2.lastName}
+                      onChange={handleInput}
                     />
                     <FormErrorMessage>
                       {errors.lastName && errors.lastName.message}
@@ -584,12 +624,12 @@ const Middlebar = () => {
                         placeholder="Day"
                         bg="#ebe9e9"
                         marginRight="15px"
-                        name="day"
-                        value={formData2.day}
-                        onChange={(e) => handleSelectChange(e)}
                         {...register("day", {
                           required: "This field is required",
                         })}
+                        name="day"
+                        value={formData2.day}
+                        onChange={handleInput}
                       >
                         {daysOptions.map((day) => (
                           <option key={day} value={day}>
@@ -602,12 +642,12 @@ const Middlebar = () => {
                         placeholder="Month"
                         bg="#ebe9e9"
                         marginRight="15px"
-                        name="month"
-                        value={formData2.month}
-                        onChange={(e) => handleSelectChange(e)}
                         {...register("month", {
                           required: "This field is required",
                         })}
+                        name="month"
+                        value={formData2.month}
+                        onChange={handleInput}
                       >
                         {monthsOptions.map((month) => (
                           <option key={month} value={month}>
@@ -619,12 +659,12 @@ const Middlebar = () => {
                       <Select
                         placeholder="Year"
                         bg="#ebe9e9"
-                        name="year"
-                        value={formData2.year}
-                        onChange={(e) => handleSelectChange(e)}
                         {...register("year", {
                           required: "This field is required",
                         })}
+                        name="year"
+                        value={formData2.year}
+                        onChange={handleInput}
                       >
                         {yearsOptions.map((year) => (
                           <option key={year} value={year}>
@@ -722,13 +762,13 @@ const Middlebar = () => {
                       placeholder="Email ID"
                       backgroundColor="#ebe9e9"
                       mb="10px"
+                      {...register("email", {
+                        required: "This field is required",
+                      })}
                       id="inp-1"
                       name="email"
                       value={formData2.email}
                       onChange={(e) => handleInput(e)}
-                      {...register("email", {
-                        required: "This field is required",
-                      })}
                     />
                     <FormErrorMessage>
                       {errors.email && errors.email.message}
@@ -743,13 +783,13 @@ const Middlebar = () => {
                         placeholder="Password"
                         backgroundColor="#ebe9e9"
                         mb="10px"
+                        {...register("password", {
+                          required: "This field is required",
+                        })}
                         id="inp-2"
                         name="password"
                         value={formData2.password}
                         onChange={(e) => handleInput(e)}
-                        {...register("password", {
-                          required: "This field is required",
-                        })}
                       />
                       <Box
                         display="flex"
@@ -776,12 +816,12 @@ const Middlebar = () => {
                         placeholder="Select"
                         mr="20px"
                         width="40%"
-                        name="countryPhoneCode"
-                        value={formData2.countryPhoneCode}
-                        onChange={(e) => handleSelectChange(e)}
                         {...register("countryPhoneCode", {
                           required: "Please select a value",
                         })}
+                        name="countryPhoneCode"
+                        value={formData2.countryPhoneCode}
+                        onChange={handleInput}
                       >
                         {countryCodes.map(({ code, label }) => (
                           <option key={code} value={code}>
@@ -794,13 +834,13 @@ const Middlebar = () => {
                         placeholder="Phone No"
                         backgroundColor="#ebe9e9"
                         mb="10px"
+                        {...register("phoneNumber", {
+                          required: "This field is required",
+                        })}
                         id="inp-3"
                         name="phoneNumber"
                         value={formData2.phoneNumber}
                         onChange={(e) => handleInput(e)}
-                        {...register("phoneNumber", {
-                          required: "This field is required",
-                        })}
                       />
                     </Box>
                     <FormErrorMessage>
