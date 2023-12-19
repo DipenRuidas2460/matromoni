@@ -361,7 +361,7 @@ const getUserById = asyncHandler(async (req, res) => {
     return res.status(200).json({
       status: "success",
       data: response,
-      message: response.length
+      message: response
         ? "Successfully fetch data"
         : "User Not Present!",
     });

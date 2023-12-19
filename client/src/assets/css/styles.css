@@ -11804,48 +11804,93 @@ body {
   justify-content: space-between;
 }
 
+.link-dashboard{
+  color: #949494;  
+  font-family: Montserrat; 
+  font-weight: 500; 
+  word-wrap: break-word
+}
+
 @media (max-width: 300px) {
+  .upload-parent-box{
+    left: 10%;
+    bottom: 25%;
+    width: 80%;
+  }
+
+  .upload-photo-heading{
+    font-size: 16px; 
+  }
+
+  .upload-photo-text{
+    font-size: 9px; 
+  }
+
+  .upload-preview-box{
+    height: 100px;
+    width: 100px;
+  }
+
+  .add-photo-upload-button{
+    font-size: 12px;
+    height: 35px;
+    width: 40%;
+  }
+
+  .link-dashboard{
+    font-size: 12px;
+  }
+
+  .video-create-button{
+    top: 15%;
+    width: 85%;
+    height: 10%;
+    font-size: 10px;
+  }
+
   .dashboard-middle {
     height: 380px;
-    width: 80%;
-    left: 10%;
+    width: 95%;
+    left: 2%;
     bottom: 40%;
   }
   
   .dashboard-middle-part-1 {
-    width: 26%;
+    width: 30%;
     height: 380px;
   }
   
   .dashboard-photo {
-    height: 110px;
-    width: 110px;
+    height: 60px;
+    width: 60px;
     top: 7%;
   }
   
   .dashboard-img {
-    height: 110px;
-    width: 110px;
+    height: 60px;
+    width: 60px;
   }
   
   .dashboard-photo-addButton {
-    width: 90px;
-    height: 22px;
+    color: #fff;
+    font-size: 9px;
+    width: 63px;
+    height: 20px;
     top: 5%;
   }
   
   .photo-addButton-label {
-    font-size: 11px;
+    font-size: 10px;
   }
   
   .dashboard-name {
-    font-size: 18px;
+    font-size: 9px;
     font-weight: 600;
     top: 10%;
   }
   
   .login-user-id {
-    font-size: 15px;
+    font-size: 9px;
     font-weight: 500;
     top: 12%;
   }
@@ -11856,29 +11901,30 @@ body {
   }
   
   .dash-account-type {
-    height: 50px;
-    width: 80%;
+    height: 95px;
+    width: 92%;
     top: 17%;
   }
   
   .account-type-inn {
-    width: 76%;
+    width: 77%;
   }
   
   .account-upgrade {
-    width: 24%;
-    font-size: 15px;
+    position: relative;
+    width: 54%;
+    font-size: 8px;
     font-weight: 600;
+    right: 10%;
   }
   
   .account-type-inn > p {
-    font-size: 15px;
+    font-size: 9px;
     font-weight: 500;
   }
   
   .account-type-inn > strong {
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 9px;
   }
   
   .dash-second-line {
@@ -11887,114 +11933,114 @@ body {
   }
   
   .dash-mobile-verified {
-    height: 60px;
-    width: 80%;
-    top: 21%;
+    height: 120px;
+    width: 92%;
+    top: 17%;
   }
   
   .mobile-verified-inn {
-    width: 76%;
+    width: 74%;
   }
   
   .mobile-verified-inn > p {
-    font-size: 15px;
+    font-size: 10px;
     font-weight: 500;
   }
   
   .verify-id{
-    font-size: 15px;
+    font-size: 10px;
     font-weight: 600;
   }
   
   .verify-img{
-    height: 30px;
-    width: 30px;
+    height: 28px;
+    width: 28px;
   }
   
   .dashboard-middle-part-2 {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    width: 70%;
+    width: 68%;
     height: 380px;
   }
   
   .part-2-first{
     height: 360px;
-    width: 53%;
+    width: 55%;
   }
   
   .activity-summ-text{
-    font-size: 15px;
+    font-size: 11px;
     font-weight: 600;
     top: 2%;
   }
   
   .summ-boxes{
-    height: 80px;
-    top: 5%;
+    height: 81px;
+    top: 3%;
   }
   
   .similar-box-1{
-    width: 127px; 
-    height: 65px; 
+    width: 32px; 
+    height: 70px; 
   }
   
   .similar-box-2{
-    width: 127px; 
-    height: 65px; 
+    width: 32px; 
+    height: 70px; 
   }
   
   .similar-box-3{
-    width: 127px; 
-    height: 65px; 
+    width: 32px; 
+    height: 70px; 
   }
   
   .similar-box-4{
-    width: 127px; 
-    height: 65px; 
+    width: 40px; 
+    height: 70px; 
   }
   
   .similar-box-5{
-    width: 127px; 
-    height: 65px; 
+    width: 40px; 
+    height: 70px; 
   }
   
   .under-box-text{
-    width: 85%;
+    width: 100%;
   }
   
   .number-text{
-    width: 30px;
-    font-size: 27px;
+    width: 15px;
+    font-size: 25px;
     font-weight: 600;
     bottom: 10%;
   }
   
+
   .description-text{
-    font-size: 11px;
+    font-size: 8px;
     font-weight: 500;
   }
   
   .premium-text{
-    font-size: 15px;
+    font-size: 11px;
     font-weight: 600;
-    top: 8%;
+    top: 5%;
   }
   
   .premium-boxes{
     height: 80px;
-    top: 13%;
-    width: 66%;
+    top: 7%;
+    width: 90%;
   }
   
   .featurs-third-line {
     width: 100%;
-    top: 17%;
+    top: 9%;
   }
   
   .dashboad-bootom-text{
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 500;
-    top: 20%;
+    top: 12%;
   }
   
   .part-2-second{
@@ -12013,10 +12059,9 @@ body {
   }
   
   .same-box{
-    width: 57px; 
+    width: 13px; 
     height: 39px; 
   }
-
 
   .avatar-menu {
     height: 86px;
@@ -12341,47 +12386,85 @@ body {
 }
 
 @media (min-width: 300px) and (max-width: 500px) {
+  .upload-parent-box{
+    left: 10%;
+    bottom: 25%;
+    width: 80%;
+  }
+
+  .upload-photo-heading{
+    font-size: 16px; 
+  }
+
+  .upload-photo-text{
+    font-size: 9px; 
+  }
+
+  .upload-preview-box{
+    height: 100px;
+    width: 100px;
+  }
+
+  .add-photo-upload-button{
+    font-size: 12px;
+    height: 35px;
+    width: 40%;
+  }
+
+  .link-dashboard{
+    font-size: 13px;
+  }
+
+  .video-create-button{
+    top: 15%;
+    width: 75%;
+    height: 10%;
+    font-size: 11px;
+  }
+
   .dashboard-middle {
     height: 380px;
-    width: 80%;
-    left: 10%;
+    width: 95%;
+    left: 2%;
     bottom: 40%;
   }
   
   .dashboard-middle-part-1 {
-    width: 26%;
+    width: 30%;
     height: 380px;
   }
   
   .dashboard-photo {
-    height: 110px;
-    width: 110px;
+    height: 60px;
+    width: 60px;
     top: 7%;
   }
   
   .dashboard-img {
-    height: 110px;
-    width: 110px;
+    height: 60px;
+    width: 60px;
   }
   
   .dashboard-photo-addButton {
-    width: 90px;
-    height: 22px;
+    color: #fff;
+    font-size: 10px;
+    width: 63px;
+    height: 20px;
     top: 5%;
   }
   
   .photo-addButton-label {
-    font-size: 11px;
+    font-size: 10px;
   }
   
   .dashboard-name {
-    font-size: 18px;
+    font-size: 9px;
     font-weight: 600;
     top: 10%;
   }
   
   .login-user-id {
-    font-size: 15px;
+    font-size: 9px;
     font-weight: 500;
     top: 12%;
   }
@@ -12392,29 +12475,28 @@ body {
   }
   
   .dash-account-type {
-    height: 50px;
-    width: 80%;
+    height: 95px;
+    width: 92%;
     top: 17%;
   }
   
   .account-type-inn {
-    width: 76%;
+    width: 77%;
   }
   
   .account-upgrade {
-    width: 24%;
-    font-size: 15px;
+    width: 54%;
+    font-size: 8px;
     font-weight: 600;
   }
   
   .account-type-inn > p {
-    font-size: 15px;
+    font-size: 9px;
     font-weight: 500;
   }
   
   .account-type-inn > strong {
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 9px;
   }
   
   .dash-second-line {
@@ -12423,114 +12505,114 @@ body {
   }
   
   .dash-mobile-verified {
-    height: 60px;
-    width: 80%;
-    top: 21%;
+    height: 120px;
+    width: 92%;
+    top: 17%;
   }
   
   .mobile-verified-inn {
-    width: 76%;
+    width: 74%;
   }
   
   .mobile-verified-inn > p {
-    font-size: 15px;
+    font-size: 10px;
     font-weight: 500;
   }
   
   .verify-id{
-    font-size: 15px;
+    font-size: 10px;
     font-weight: 600;
   }
   
   .verify-img{
-    height: 30px;
-    width: 30px;
+    height: 28px;
+    width: 28px;
   }
   
   .dashboard-middle-part-2 {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    width: 70%;
+    width: 68%;
     height: 380px;
   }
   
   .part-2-first{
     height: 360px;
-    width: 53%;
+    width: 55%;
   }
   
   .activity-summ-text{
-    font-size: 15px;
+    font-size: 11px;
     font-weight: 600;
     top: 2%;
   }
   
   .summ-boxes{
-    height: 80px;
-    top: 5%;
+    height: 81px;
+    top: 3%;
   }
   
   .similar-box-1{
-    width: 127px; 
-    height: 65px; 
+    width: 34px; 
+    height: 70px; 
   }
   
   .similar-box-2{
-    width: 127px; 
-    height: 65px; 
+    width: 34px; 
+    height: 70px; 
   }
   
   .similar-box-3{
-    width: 127px; 
-    height: 65px; 
+    width: 34px; 
+    height: 70px; 
   }
   
   .similar-box-4{
-    width: 127px; 
-    height: 65px; 
+    width: 45px; 
+    height: 70px; 
   }
   
   .similar-box-5{
-    width: 127px; 
-    height: 65px; 
+    width: 45px; 
+    height: 70px; 
   }
   
   .under-box-text{
-    width: 85%;
+    width: 100%;
   }
   
   .number-text{
-    width: 30px;
-    font-size: 27px;
+    width: 15px;
+    font-size: 25px;
     font-weight: 600;
     bottom: 10%;
   }
   
+
   .description-text{
-    font-size: 11px;
+    font-size: 8px;
     font-weight: 500;
   }
   
   .premium-text{
-    font-size: 15px;
+    font-size: 11px;
     font-weight: 600;
-    top: 8%;
+    top: 5%;
   }
   
   .premium-boxes{
     height: 80px;
-    top: 13%;
-    width: 66%;
+    top: 7%;
+    width: 90%;
   }
   
   .featurs-third-line {
     width: 100%;
-    top: 17%;
+    top: 9%;
   }
   
   .dashboad-bootom-text{
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 500;
-    top: 20%;
+    top: 12%;
   }
   
   .part-2-second{
@@ -12549,7 +12631,7 @@ body {
   }
   
   .same-box{
-    width: 57px; 
+    width: 13px; 
     height: 39px; 
   }
 
@@ -12876,31 +12958,69 @@ body {
 }
 
 @media (min-width: 500px) and (max-width: 800px) {
+  .upload-parent-box{
+    left: 22%;
+    bottom: 25%;
+    width: 56%;
+  }
+
+  .upload-photo-heading{
+    font-size: 18px; 
+  }
+
+  .upload-photo-text{
+    font-size: 11px; 
+  }
+
+  .upload-preview-box{
+    height: 120px;
+    width: 120px;
+  }
+
+  .add-photo-upload-button{
+    font-size: 14px;
+    height: 35px;
+    width: 40%;
+  }
+
+  .link-dashboard{
+    font-size: 14px;
+  }
+
+  .video-create-button{
+    top: 21%;
+    width: 65%;
+    height: 10%;
+    font-size: 11px;
+  }
+
   .dashboard-middle {
     height: 380px;
-    width: 80%;
-    left: 10%;
+    width: 92%;
+    left: 4%;
     bottom: 40%;
   }
   
   .dashboard-middle-part-1 {
-    width: 26%;
+    width: 27%;
     height: 380px;
   }
   
   .dashboard-photo {
-    height: 110px;
-    width: 110px;
+    height: 80px;
+    width: 80px;
     top: 7%;
   }
   
   .dashboard-img {
-    height: 110px;
-    width: 110px;
+    height: 80px;
+    width: 80px;
   }
   
   .dashboard-photo-addButton {
-    width: 90px;
+    color: #fff;
+    font-size: 12px;
+    width: 80px;
     height: 22px;
     top: 5%;
   }
@@ -12910,20 +13030,20 @@ body {
   }
   
   .dashboard-name {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 600;
     top: 10%;
   }
   
   .login-user-id {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
     top: 12%;
   }
   
   .dash-first-line {
     width: 80%;
-    top: 15%;
+    top: 14%;
   }
   
   .dash-account-type {
@@ -12933,47 +13053,47 @@ body {
   }
   
   .account-type-inn {
-    width: 76%;
+    width: 74%;
   }
   
   .account-upgrade {
-    width: 24%;
-    font-size: 15px;
+    width: 43%;
+    font-size: 10px;
     font-weight: 600;
   }
   
   .account-type-inn > p {
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 500;
   }
   
   .account-type-inn > strong {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 600;
   }
   
   .dash-second-line {
     width: 80%;
-    top: 19%;
+    top: 20%;
   }
   
   .dash-mobile-verified {
-    height: 60px;
+    height: 80px;
     width: 80%;
     top: 21%;
   }
   
   .mobile-verified-inn {
-    width: 76%;
+    width: 74%;
   }
   
   .mobile-verified-inn > p {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 500;
   }
   
   .verify-id{
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 600;
   }
   
@@ -12983,14 +13103,13 @@ body {
   }
   
   .dashboard-middle-part-2 {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    width: 70%;
+    width: 72%;
     height: 380px;
   }
   
   .part-2-first{
     height: 360px;
-    width: 53%;
+    width: 55%;
   }
   
   .activity-summ-text{
@@ -13005,41 +13124,42 @@ body {
   }
   
   .similar-box-1{
-    width: 127px; 
-    height: 65px; 
+    width: 59px; 
+    height: 70px; 
   }
   
   .similar-box-2{
-    width: 127px; 
-    height: 65px; 
+    width: 59px; 
+    height: 70px; 
   }
   
   .similar-box-3{
-    width: 127px; 
-    height: 65px; 
+    width: 59px; 
+    height: 70px; 
   }
   
   .similar-box-4{
-    width: 127px; 
-    height: 65px; 
+    width: 60px; 
+    height: 70px; 
   }
   
   .similar-box-5{
-    width: 127px; 
-    height: 65px; 
+    width: 60px; 
+    height: 70px; 
   }
   
   .under-box-text{
-    width: 85%;
+    width: 95%;
   }
   
   .number-text{
-    width: 30px;
-    font-size: 27px;
+    width: 15px;
+    font-size: 25px;
     font-weight: 600;
     bottom: 10%;
   }
   
+
   .description-text{
     font-size: 11px;
     font-weight: 500;
@@ -13054,18 +13174,18 @@ body {
   .premium-boxes{
     height: 80px;
     top: 13%;
-    width: 66%;
+    width: 68%;
   }
   
   .featurs-third-line {
     width: 100%;
-    top: 17%;
+    top: 15%;
   }
   
   .dashboad-bootom-text{
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 500;
-    top: 20%;
+    top: 18%;
   }
   
   .part-2-second{
@@ -13084,7 +13204,7 @@ body {
   }
   
   .same-box{
-    width: 57px; 
+    width: 25px; 
     height: 39px; 
   }
 
@@ -13408,10 +13528,46 @@ body {
 }
 
 @media (min-width: 800px) and (max-width: 1150px) {
+  .upload-parent-box{
+    left: 28%;
+    bottom: 25%;
+    width: 44%;
+  }
+
+  .upload-photo-heading{
+    font-size: 18px; 
+  }
+
+  .upload-photo-text{
+    font-size: 13px; 
+  }
+
+  .upload-preview-box{
+    height: 120px;
+    width: 120px;
+  }
+
+  .add-photo-upload-button{
+    font-size: 14px;
+    height: 35px;
+    width: 40%;
+  }
+
+  .link-dashboard{
+    font-size: 16px;
+  }
+
+  .video-create-button{
+    top: 20%;
+    width: 54%;
+    height: 10%;
+    font-size: 12px;
+  }
+
   .dashboard-middle {
     height: 380px;
-    width: 80%;
-    left: 10%;
+    width: 92%;
+    left: 4%;
     bottom: 40%;
   }
   
@@ -13432,6 +13588,8 @@ body {
   }
   
   .dashboard-photo-addButton {
+    color: #fff;
+    font-size: 12px;
     width: 90px;
     height: 22px;
     top: 5%;
@@ -13442,7 +13600,7 @@ body {
   }
   
   .dashboard-name {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 600;
     top: 10%;
   }
@@ -13465,22 +13623,22 @@ body {
   }
   
   .account-type-inn {
-    width: 76%;
+    width: 85%;
   }
   
   .account-upgrade {
-    width: 24%;
-    font-size: 15px;
+    width: 35%;
+    font-size: 13px;
     font-weight: 600;
   }
   
   .account-type-inn > p {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 500;
   }
   
   .account-type-inn > strong {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 600;
   }
   
@@ -13500,12 +13658,12 @@ body {
   }
   
   .mobile-verified-inn > p {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 500;
   }
   
   .verify-id{
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
   }
   
@@ -13515,14 +13673,13 @@ body {
   }
   
   .dashboard-middle-part-2 {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    width: 70%;
+    width: 73%;
     height: 380px;
   }
   
   .part-2-first{
     height: 360px;
-    width: 53%;
+    width: 55%;
   }
   
   .activity-summ-text{
@@ -13537,37 +13694,37 @@ body {
   }
   
   .similar-box-1{
-    width: 127px; 
-    height: 65px; 
+    width: 95px; 
+    height: 56px; 
   }
   
   .similar-box-2{
-    width: 127px; 
-    height: 65px; 
+    width: 95px; 
+    height: 56px; 
   }
   
   .similar-box-3{
-    width: 127px; 
-    height: 65px; 
+    width: 95px; 
+    height: 56px; 
   }
   
   .similar-box-4{
-    width: 127px; 
-    height: 65px; 
+    width: 95px; 
+    height: 56px; 
   }
   
   .similar-box-5{
-    width: 127px; 
-    height: 65px; 
+    width: 95px; 
+    height: 56px; 
   }
   
   .under-box-text{
-    width: 85%;
+    width: 95%;
   }
   
   .number-text{
-    width: 30px;
-    font-size: 27px;
+    width: 15px;
+    font-size: 25px;
     font-weight: 600;
     bottom: 10%;
   }
@@ -13591,13 +13748,13 @@ body {
   
   .featurs-third-line {
     width: 100%;
-    top: 17%;
+    top: 15%;
   }
   
   .dashboad-bootom-text{
     font-size: 15px;
     font-weight: 500;
-    top: 20%;
+    top: 17%;
   }
   
   .part-2-second{
@@ -13616,7 +13773,7 @@ body {
   }
   
   .same-box{
-    width: 57px; 
+    width: 38px; 
     height: 39px; 
   }
 
@@ -13929,6 +14086,48 @@ body {
 }
 
 @media (min-width: 1150px) and (max-width: 1420px) {
+  .upload-parent-box{
+    left: 30%;
+    bottom: 25%;
+    width: 40%;
+  }
+
+  .upload-photo-heading{
+    font-size: 18px; 
+  }
+
+  .upload-photo-text{
+    font-size: 16px; 
+  }
+
+  .upload-preview-box{
+    height: 150px;
+    width: 150px;
+  }
+
+  .add-photo-upload-button{
+    font-size: 16px;
+    height: 40px;
+    width: 40%;
+  }
+
+  .upload-parent-box{
+    left: 30%;
+    bottom: 25%;
+    width: 40%;
+  }
+
+  .link-dashboard{
+    font-size: 16px;
+  }
+
+  .video-create-button{
+    top: 20%;
+    width: 50%;
+    height: 10%;
+    font-size: 12px;
+  }
+
   .dashboard-middle {
     height: 380px;
     width: 80%;
@@ -13953,6 +14152,8 @@ body {
   }
   
   .dashboard-photo-addButton {
+    color: #fff;
+    font-size: 12px;
     width: 90px;
     height: 22px;
     top: 5%;
@@ -14054,7 +14255,7 @@ body {
   
   .summ-boxes{
     height: 80px;
-    top: 5%;
+    top: 3%;
   }
   
   .similar-box-1{
@@ -14101,24 +14302,24 @@ body {
   .premium-text{
     font-size: 15px;
     font-weight: 600;
-    top: 8%;
+    top: 5%;
   }
   
   .premium-boxes{
     height: 80px;
-    top: 13%;
+    top: 6%;
     width: 66%;
   }
   
   .featurs-third-line {
     width: 100%;
-    top: 17%;
+    top: 10%;
   }
   
   .dashboad-bootom-text{
     font-size: 15px;
     font-weight: 500;
-    top: 20%;
+    top: 14%;
   }
   
   .part-2-second{
@@ -14440,6 +14641,42 @@ body {
 }
 
 @media (min-width: 1421px) {
+  .upload-parent-box{
+    left: 30%;
+    bottom: 25%;
+    width: 40%;
+  }
+
+  .upload-photo-heading{
+    font-size: 18px; 
+  }
+
+  .upload-photo-text{
+    font-size: 16px; 
+  }
+
+  .upload-preview-box{
+    height: 150px;
+    width: 150px;
+  }
+
+  .add-photo-upload-button{
+    font-size: 16px;
+    height: 40px;
+    width: 40%;
+  }
+
+  .link-dashboard{
+    font-size: 18px;
+  }
+
+  .video-create-button{
+    top: 20%;
+    width: 45%;
+    height: 10%;
+    font-size: 12px;
+  }
+
   .dashboard-middle {
     height: 380px;
     width: 80%;
@@ -14464,6 +14701,8 @@ body {
   }
   
   .dashboard-photo-addButton {
+    color: #fff;
+    font-size: 12px;
     width: 90px;
     height: 22px;
     top: 5%;
@@ -14616,19 +14855,19 @@ body {
   
   .premium-boxes{
     height: 80px;
-    top: 13%;
-    width: 66%;
+    top: 10%;
+    width: 64%;
   }
   
   .featurs-third-line {
     width: 100%;
-    top: 17%;
+    top: 14%;
   }
   
   .dashboad-bootom-text{
     font-size: 15px;
     font-weight: 500;
-    top: 20%;
+    top: 17%;
   }
   
   .part-2-second{
@@ -14948,6 +15187,50 @@ body {
   }
 }
 
+.upload-parent-box{
+  height: 400px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); 
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.upload-photo-heading{
+  color: #777777; 
+  font-family: Montserrat; 
+  font-weight: 600; 
+  word-wrap: break-word;
+}
+
+.upload-photo-text{
+  color: #747474; 
+  font-family: Montserrat; 
+  font-weight: 400; 
+  word-wrap: break-word;
+}
+
+.upload-preview-box{
+  border-radius: 50%;
+  background-color: #D9D9D9;
+}
+
+.add-photo-upload-button{
+  background: linear-gradient(270deg, #00AFD5 0%, #4932A5 100%); 
+  border-radius: 20px;
+  color: #fff;
+}
+
+.video-create-button{
+  position: relative;
+  background-color: #0372D9;
+  border-radius: 4px;
+  color: #fff;
+}
+
 .dashboard-nav-1 {
   list-style: none;
   color: #747474;
@@ -14986,7 +15269,7 @@ body {
 
 .black-space-div {
   height: 180px;
-  background-color: #333333;
+  background-color: #A65973;
 }
 
 .white-space-div {
@@ -15203,6 +15486,7 @@ body {
 }
 
 .description-text{
+  position: relative;
   color: #fff;
   font-family: "Montserrat";
   word-wrap: break-word;

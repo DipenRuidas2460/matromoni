@@ -11,8 +11,20 @@ import {
   MenuItem,
   MenuList,
   useToast,
+  Box,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+  FormLabel,
+  Input,
 } from "@chakra-ui/react";
-import NotFound from "../partials/404";
+// import NotFound from "../partials/404";
 import axios from "axios";
 
 function Dashboard({ token }) {
@@ -20,6 +32,7 @@ function Dashboard({ token }) {
   const [userFullName, setUserFullName] = useState(null);
   const host = `http://localhost:3010`;
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
@@ -53,9 +66,9 @@ function Dashboard({ token }) {
         }
       })
       .catch((err) => {
-        console.log(err.message);
+        navigate("/404");
         toast({
-          title: "Something Went Wrong -- Data not access!",
+          title: err.message,
           status: "warning",
           duration: 3000,
           isClosable: true,
@@ -132,7 +145,7 @@ function Dashboard({ token }) {
                     alt=""
                   />
                 </div>
-                <div className="dashboard-photo-addButton">
+                {/* <div className="dashboard-photo-addButton">
                   <label
                     className="photo-addButton-label"
                     htmlFor="customFile2"
@@ -144,9 +157,17 @@ function Dashboard({ token }) {
                     accept="image/jpeg, image/jpg, image/png, image/webp, image/svg+xml, image/gif, image/avif, image/tiff"
                     className="dashboard-photo-input"
                     id="customFile2"
-                    onChange={(e) => handleFileChange(e, "selectedAvatar")}
+                    // onChange={(e) => handleFileChange(e, "selectedAvatar")}
+                    onClick={onOpen}
                   />
-                </div>
+                </div> */}
+                <button
+                  type="button"
+                  className="dashboard-photo-addButton"
+                  onClick={onOpen}
+                >
+                  + Add photo
+                </button>
                 <div className="dashboard-name">{userFullName}</div>
                 <div className="login-user-id">USA-5454029221</div>
                 <div className="dash-first-line"></div>
@@ -191,9 +212,7 @@ function Dashboard({ token }) {
                     <div className="similar-box-3">
                       <div className="under-box-text">
                         <div className="number-text">3</div>
-                        <div className="description-text">
-                          Recent Visits
-                        </div>
+                        <div className="description-text">Recent Visits</div>
                       </div>
                     </div>
                   </div>
@@ -202,17 +221,13 @@ function Dashboard({ token }) {
                     <div className="similar-box-4">
                       <div className="under-box-text">
                         <div className="number-text">0</div>
-                        <div className="description-text">
-                          Contacts Viewed
-                        </div>
+                        <div className="description-text">Contacts Viewed</div>
                       </div>
                     </div>
                     <div className="similar-box-5">
                       <div className="under-box-text">
                         <div className="number-text">5</div>
-                        <div className="description-text">
-                          Chats Initiated
-                        </div>
+                        <div className="description-text">Chats Initiated</div>
                       </div>
                     </div>
                   </div>
@@ -220,16 +235,7 @@ function Dashboard({ token }) {
                   <div className="dashboad-bootom-text">
                     Video Introduction increase visibility
                   </div>
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-md"
-                    style={{
-                      position: "relative",
-                      top: "23%",
-                      width: "45%",
-                      fontSize: "12px",
-                    }}
-                  >
+                  <button type="button" className="video-create-button">
                     + Create Video Introduction
                   </button>
                 </div>
@@ -246,11 +252,78 @@ function Dashboard({ token }) {
               </div>
             </div>
           </div>
+          <Modal size="lg" isOpen={isOpen} onClose={onClose} isCentered>
+            <ModalOverlay />
+            <ModalContent h="400px" width="90vw">
+              <ModalHeader
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Heading fontSize="20px" paddingTop={4}>
+                  Upload Profile Photo
+                </Heading>
+              </ModalHeader>
+
+              <ModalCloseButton />
+
+              <form>
+                <ModalBody>
+                  <Box
+                    height="200px"
+                    width="100%"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Box height="150px" width="150px" bg="#D9D9D9" borderRadius="50%">
+                    <FormLabel
+                    className="photo-addButton-label"
+                    htmlFor="customFile2"
+                    color="black"
+                  >
+                    click here to add photo
+                  </FormLabel>
+                  <Input
+                    type="file"
+                    accept="image/jpeg, image/jpg, image/png, image/webp, image/svg+xml, image/gif, image/avif, image/tiff"
+                    className="dashboard-photo-input"
+                    id="customFile2"
+                    onChange={(e) => handleFileChange(e, "selectedAvatar")}
+                    onClick={onOpen}
+                  />
+                    </Box>
+                  </Box>
+                </ModalBody>
+
+                <ModalFooter
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Button
+                    type="submit"
+                    bg="#00AFD5"
+                    width="40%"
+                    borderRadius="20px"
+                    color="#fff"
+                    _hover={{
+                      bg: "#00AFD5",
+                      color: "#fff",
+                    }}
+                    //   isDisabled={isButtonDisabled1}
+                  >
+                    Upload
+                  </Button>
+                </ModalFooter>
+              </form>
+            </ModalContent>
+          </Modal>
           <CountryAndPrivacy />
           <Footer />
         </div>
       ) : (
-        <NotFound />
+        navigate("/404")
       )}
     </div>
   );

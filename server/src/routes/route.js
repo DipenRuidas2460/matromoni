@@ -58,12 +58,10 @@ router.get("/message/:chatId", validateTokenMiddleware, allMessages);
 
 // --------------------- Search Routes -------------------------------------------------------------------------------------------
 
-// --------------------- Message Routes -------------------------------------------------------------------------------------------
-
 router.post("/create-search", createSearch);
 router.get("/fetchAll-search", validateTokenMiddleware, fetchAllSearch);
 router.get(
-  "/fetch-search-bySearchId",
+  "/fetch-search-bySearchId/:searchId",
   validateTokenMiddleware,
   fetchSearchBySearchId
 );

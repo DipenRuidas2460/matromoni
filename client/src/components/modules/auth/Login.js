@@ -31,10 +31,11 @@ function Login() {
           });
           // navigate("/new-chats");
           // navigate("/lobby");
-          navigate("/dashboard");
+          // navigate("/dashboard");
+          navigate("/upload-photo");
           window.location.reload()
         } else {
-          navigate("/register");
+          navigate("/");
           toast({
             title: "You don't any account please register first!",
             status: "warning",

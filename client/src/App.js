@@ -16,6 +16,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import PrivacyPolicy from "./components/privacy-policy and T&C/PrivacyPolicy";
 import TermsCondition from "./components/privacy-policy and T&C/TermsCondition";
 import RefundPolicy from "./components/miscellaneous/RefundPolicy";
+import UploadPhoto from "./components/uploadPhoto/UploadPhoto";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -53,6 +54,7 @@ function App() {
                 element={<ChatPage token={token} userInfo={userInfo} />}
               />
 
+              <Route exact path="/upload-photo" element={<UploadPhoto token={token}/>} />
               <Route exact path="/dashboard" element={<Dashboard token={token}/>} />
               <Route exact path="/lobby" element={<LobbyScreen token={token} />} />
               <Route path="/room/:roomId" element={<RoomPage token={token} />} />

@@ -29,7 +29,9 @@ const fetchSearchBySearchId = asyncHandler(async (req, res) => {
     return res.status(200).json({
       status: "success",
       searchData,
-      message: "Search Data fetch successfully!",
+      message: searchData
+        ? "Search Data fetch successfully!"
+        : "Search Data Not Present!",
     });
   } catch (error) {
     console.log(error.message);
@@ -51,7 +53,9 @@ const fetchAllSearch = asyncHandler(async (req, res) => {
       return res.status(200).json({
         status: "success",
         searchData,
-        message: "All Search Data fetch successfully!",
+        message: searchData.length
+        ? "All Search Data fetch successfully!"
+        : "Data Not Present!",
       });
     }
   } catch (error) {
@@ -75,9 +79,9 @@ const updateSearch = async function (req, res) {
         where: { id: searchId },
       });
       return res.status(200).json({
-        status: "success",
-        message: "Search Data Updated Successfully!",
+        status: updateSearchData[0] === 0 ? 404 : 200,
         updateSearchData,
+        message: updateSearchData[0] === 0 ? "Nothing updated" : "Search Data Updated Successfully!",
       });
     }
 
