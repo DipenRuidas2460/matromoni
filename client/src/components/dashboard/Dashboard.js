@@ -21,15 +21,16 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  FormLabel,
   Input,
+  Image,
 } from "@chakra-ui/react";
-// import NotFound from "../partials/404";
 import axios from "axios";
 
 function Dashboard({ token }) {
   const navigate = useNavigate();
   const [userFullName, setUserFullName] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [userProfilePhoto, setUserProfilePhoto] = useState(null);
   const host = `http://localhost:3010`;
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -43,6 +44,7 @@ function Dashboard({ token }) {
     const selectedImage = document.getElementById(elementId);
     const fileInput = event.target;
     if (fileInput.files && fileInput.files[0]) {
+      setSelectedFile(fileInput.files[0]);
       const reader = new FileReader();
 
       reader.onload = function (e) {
@@ -53,6 +55,46 @@ function Dashboard({ token }) {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const formData = new FormData();
+    formData.append("photo", selectedFile);
+    axios
+      .put(`${host}/customer/update`, formData, config)
+      .then((respon) => {
+        if (respon.data.status === 200) {
+          toast({
+            title: "Profile Photo Update Successfully!",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+            position: "top-right",
+          });
+          window.location.reload();
+        }
+      })
+      .catch((err) => {
+        console.log("err:-", err);
+        toast({
+          title: err.message,
+          status: "warning",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+      });
+
+    onClose();
+  };
+
+
   useEffect(() => {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
@@ -62,6 +104,9 @@ function Dashboard({ token }) {
       .get(`${host}/customer/getUserById`, config)
       .then(({ data }) => {
         if (data.status === "success") {
+          if (data.data.photo) {
+            setUserProfilePhoto(`${host}${data.profileImage}`);
+          }
           setUserFullName(`${data.data.firstName} ${data.data.lastName}`);
         }
       })
@@ -111,7 +156,12 @@ function Dashboard({ token }) {
                     bg="white"
                     rightIcon={<ChevronDownIcon />}
                   >
-                    <Avatar size="sm" cursor="pointer" src="/male-avatar.jpg" />
+                    <Avatar
+                      size="sm"
+                      cursor="pointer"
+                      src={userProfilePhoto}
+                      alt=""
+                    />
                   </MenuButton>
                   <MenuList h="10px" w="10px">
                     <MenuItem onClick={handleLogOut} fontSize="14px">
@@ -139,28 +189,11 @@ function Dashboard({ token }) {
               <div className="dashboard-middle-part-1">
                 <div className="dashboard-photo">
                   <img
-                    id="selectedAvatar"
-                    src="https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg"
+                    src={userProfilePhoto}
                     className="dashboard-img"
                     alt=""
                   />
                 </div>
-                {/* <div className="dashboard-photo-addButton">
-                  <label
-                    className="photo-addButton-label"
-                    htmlFor="customFile2"
-                  >
-                    + Add Photo
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/jpeg, image/jpg, image/png, image/webp, image/svg+xml, image/gif, image/avif, image/tiff"
-                    className="dashboard-photo-input"
-                    id="customFile2"
-                    // onChange={(e) => handleFileChange(e, "selectedAvatar")}
-                    onClick={onOpen}
-                  />
-                </div> */}
                 <button
                   type="button"
                   className="dashboard-photo-addButton"
@@ -267,32 +300,36 @@ function Dashboard({ token }) {
 
               <ModalCloseButton />
 
-              <form>
+              <form onSubmit={handleSubmit}>
                 <ModalBody>
                   <Box
                     height="200px"
                     width="100%"
                     display="flex"
-                    justifyContent="center"
+                    flexDirection="column"
+                    justifyContent="space-between"
                     alignItems="center"
                   >
-                    <Box height="150px" width="150px" bg="#D9D9D9" borderRadius="50%">
-                    <FormLabel
-                    className="photo-addButton-label"
-                    htmlFor="customFile2"
-                    color="black"
-                  >
-                    click here to add photo
-                  </FormLabel>
-                  <Input
-                    type="file"
-                    accept="image/jpeg, image/jpg, image/png, image/webp, image/svg+xml, image/gif, image/avif, image/tiff"
-                    className="dashboard-photo-input"
-                    id="customFile2"
-                    onChange={(e) => handleFileChange(e, "selectedAvatar")}
-                    onClick={onOpen}
-                  />
+                    <Box height="150px" width="150px">
+                      <Image
+                        height="150px"
+                        width="150px"
+                        objectFit="cover"
+                        src="https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg"
+                        alt=""
+                        id="selectedAvatar"
+                      />
                     </Box>
+                    <Input
+                      type="file"
+                      name="photo"
+                      accept="image/jpeg, image/jpg, image/png, image/webp"
+                      position="relative"
+                      width="50%"
+                      border="none"
+                      top="5%"
+                      onChange={(e) => handleFileChange(e, "selectedAvatar")}
+                    />
                   </Box>
                 </ModalBody>
 
@@ -311,7 +348,7 @@ function Dashboard({ token }) {
                       bg: "#00AFD5",
                       color: "#fff",
                     }}
-                    //   isDisabled={isButtonDisabled1}
+                    isDisabled={!selectedFile}
                   >
                     Upload
                   </Button>

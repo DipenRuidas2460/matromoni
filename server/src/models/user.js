@@ -42,8 +42,6 @@ const User = sequelize.define(
     },
     photo: {
       type: DataTypes.STRING,
-      defaultValue:
-        "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
     },
     fpToken: {
       type: DataTypes.STRING,

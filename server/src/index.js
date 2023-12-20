@@ -1,4 +1,5 @@
 const express = require("express");
+const upload = require('express-fileupload');
 const app = express();
 const cors = require("cors");
 require("./config/dbConfig");
@@ -6,6 +7,7 @@ require("dotenv").config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
+app.use(upload());
 const route = require("./routes/route");
 
 app.use(function (req, res, next) {
@@ -57,18 +59,17 @@ io.on("connection", (socket) => {
     io.to(to).emit("incoming:call", { from: socket.id, offer });
   });
 
-  socket.on("call:accepted", ({to, ans})=>{
+  socket.on("call:accepted", ({ to, ans }) => {
     io.to(to).emit("call:accepted", { from: socket.id, ans });
-  })
+  });
 
-  socket.on("peer:nego:needed", ({to, offer})=>{
+  socket.on("peer:nego:needed", ({ to, offer }) => {
     io.to(to).emit("peer:nego:needed", { from: socket.id, offer });
-  })
+  });
 
-  socket.on("peer:nego:done", ({to, ans})=>{
+  socket.on("peer:nego:done", ({ to, ans }) => {
     io.to(to).emit("peer:nego:final", { from: socket.id, ans });
-  })
-
+  });
 
   // -------------------------------- for One-to-one-chat ------------------------------------
 

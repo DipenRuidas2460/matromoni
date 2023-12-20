@@ -11831,6 +11831,11 @@ body {
     width: 100px;
   }
 
+  .upload-profile-photo-page{
+    height: 100px;
+    width: 100px;
+  }
+
   .add-photo-upload-button{
     font-size: 12px;
     height: 35px;
@@ -11872,7 +11877,6 @@ body {
   }
   
   .dashboard-photo-addButton {
-    color: #fff;
     font-size: 9px;
     width: 63px;
     height: 20px;
@@ -12405,6 +12409,11 @@ body {
     width: 100px;
   }
 
+  .upload-profile-photo-page{
+    height: 100px;
+    width: 100px;
+  }
+
   .add-photo-upload-button{
     font-size: 12px;
     height: 35px;
@@ -12446,7 +12455,6 @@ body {
   }
   
   .dashboard-photo-addButton {
-    color: #fff;
     font-size: 10px;
     width: 63px;
     height: 20px;
@@ -12977,6 +12985,11 @@ body {
     width: 120px;
   }
 
+  .upload-profile-photo-page{
+    height: 120px;
+    width: 120px;
+  }
+
   .add-photo-upload-button{
     font-size: 14px;
     height: 35px;
@@ -13018,7 +13031,6 @@ body {
   }
   
   .dashboard-photo-addButton {
-    color: #fff;
     font-size: 12px;
     width: 80px;
     height: 22px;
@@ -13547,6 +13559,11 @@ body {
     width: 120px;
   }
 
+  .upload-profile-photo-page{
+    height: 120px;
+    width: 120px;
+  }
+
   .add-photo-upload-button{
     font-size: 14px;
     height: 35px;
@@ -13588,7 +13605,6 @@ body {
   }
   
   .dashboard-photo-addButton {
-    color: #fff;
     font-size: 12px;
     width: 90px;
     height: 22px;
@@ -14105,6 +14121,11 @@ body {
     width: 150px;
   }
 
+  .upload-profile-photo-page{
+    height: 150px;
+    width: 150px;
+  }
+
   .add-photo-upload-button{
     font-size: 16px;
     height: 40px;
@@ -14152,7 +14173,6 @@ body {
   }
   
   .dashboard-photo-addButton {
-    color: #fff;
     font-size: 12px;
     width: 90px;
     height: 22px;
@@ -14660,6 +14680,11 @@ body {
     width: 150px;
   }
 
+  .upload-profile-photo-page{
+    height: 150px;
+    width: 150px;
+  }
+
   .add-photo-upload-button{
     font-size: 16px;
     height: 40px;
@@ -14701,7 +14726,6 @@ body {
   }
   
   .dashboard-photo-addButton {
-    color: #fff;
     font-size: 12px;
     width: 90px;
     height: 22px;
@@ -15187,6 +15211,11 @@ body {
   }
 }
 
+.upload-profile-photo-page{
+  object-fit: cover;
+  border-radius: 50%;
+}
+
 .upload-parent-box{
   height: 400px;
   position: absolute;
@@ -15310,6 +15339,7 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
+  color: #fff;
   border-radius: 10px;
   background: linear-gradient(90deg, #06d7cb 0%, #278cc5 100%);
 }
@@ -15319,9 +15349,6 @@ body {
   color: #fff;
 }
 
-.dashboard-photo-input {
-  display: none;
-}
 
 .dashboard-name {
   position: relative;

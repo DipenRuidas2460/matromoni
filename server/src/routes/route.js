@@ -30,9 +30,13 @@ const {
   fetchSearchBySearchId,
 } = require("../controllers/searchController");
 
+const { getImage } = require("../helper/fileHelper");
+
+
 // -------------------- User Profile Route ----------------------------------------------------------------------------------
 
 router.post("/customer/register", addUser);
+router.get("/assets/image/:fileName", getImage);
 router.post("/customer/login", login);
 router.get("/customer/logout", logOut);
 router.post("/customer/forgotpass", forgetPass);

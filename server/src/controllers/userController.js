@@ -1,4 +1,5 @@
 const asyncHandler = require("express-async-handler");
+const path = require("path")
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const {
@@ -32,6 +33,8 @@ const addUser = asyncHandler(async (req, res) => {
       countryPhoneCode,
       fpToken,
     } = req.body;
+
+    let files = req.files;
 
     const currentDate = moment().tz("Asia/Kolkata").format("YYYY-MM-DD, HH:mm");
 
@@ -186,7 +189,7 @@ const login = asyncHandler(async (req, res) => {
       userId: userDetails.id,
       firstName: userDetails.firstName,
       lastName: userDetails.lastName,
-      lookingFor:userDetails.lookingFor,
+      lookingFor: userDetails.lookingFor,
       dob: userDetails.dob,
       gender: userDetails.gender,
       email: userDetails.email,
@@ -316,12 +319,25 @@ const fpUpdatePass = asyncHandler(async (req, res) => {
 const updateUser = asyncHandler(async (req, res) => {
   try {
     let reqBody = req.body;
+    const updatedImage = req.files.photo;
+    const imagePath = path.join(
+      __dirname,
+      "../uploads/image/",
+      `${req.person.id}_profile.jpg`
+    );
+    await updatedImage.mv(imagePath);
 
     if (reqBody.password) {
       reqBody.password = await encryptPassword(reqBody.password);
     }
 
-    reqBody.dob = `${reqBody.day}-${reqBody.month}-${reqBody.year}`;
+    if (reqBody.dob) {
+      reqBody.dob = `${reqBody.day}-${reqBody.month}-${reqBody.year}`;
+    }
+
+    if (updatedImage) {
+      reqBody.photo = `${req.person.id}_profile.jpg`;
+    }
 
     const response = await User.update(reqBody, {
       where: { id: req.person.id },
@@ -361,9 +377,8 @@ const getUserById = asyncHandler(async (req, res) => {
     return res.status(200).json({
       status: "success",
       data: response,
-      message: response
-        ? "Successfully fetch data"
-        : "User Not Present!",
+      profileImage:`/assets/image/${req.person.id}_profile.jpg`,
+      message: response ? "Successfully fetch data" : "User Not Present!",
     });
   } catch (error) {
     console.log(error.message);
