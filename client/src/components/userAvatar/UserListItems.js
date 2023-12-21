@@ -2,6 +2,7 @@ import { Avatar, Box, Text } from "@chakra-ui/react";
 import React from "react";
 
 function UserListItems({ u, handleFunction }) {
+  const host = `http://localhost:3010`;
   return (
     <Box
       onClick={handleFunction}
@@ -24,11 +25,13 @@ function UserListItems({ u, handleFunction }) {
         mr={2}
         size="sm"
         cursor="pointer"
-        name={u.fullName}
-        src={u.photo}
+        name={`${u.firstName} ${u.lastName}`}
+        src={u.photo != null
+          ? `${host}/assets/image/${u.id}_profile.jpg`
+          : ""}
       />
       <Box>
-        <Text>{u.fullName}</Text>
+        <Text>{`${u.firstName} ${u.lastName}`}</Text>
         <Text fontSize="xs">
           <b>Email : </b>
           {u.email}

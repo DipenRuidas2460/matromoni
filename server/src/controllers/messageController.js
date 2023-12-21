@@ -37,12 +37,12 @@ const sendMessage = asyncHandler(async (req, res) => {
             {
               model: User,
               as: "chatsender",
-              attributes: ["id", "fullName", "email", "photo"],
+              attributes: ["id", "firstName", "lastName", "email", "photo"],
             },
             {
               model: User,
               as: "receive",
-              attributes: ["id", "fullName", "email", "photo"],
+              attributes: ["id", "firstName", "lastName", "email", "photo"],
             },
           ],
         },
@@ -82,12 +82,12 @@ const allMessages = asyncHandler(async (req, res) => {
             {
               model: User,
               as: "chatsender",
-              attributes: ["id", "fullName", "email", "photo"],
+              attributes: ["id", "firstName", "lastName", "email", "photo"],
             },
             {
               model: User,
               as: "receive",
-              attributes: ["id", "fullName", "email", "photo"],
+              attributes: ["id", "firstName", "lastName", "email", "photo"],
             },
           ],
         },

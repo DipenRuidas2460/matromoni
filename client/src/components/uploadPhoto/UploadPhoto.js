@@ -118,7 +118,7 @@ function UploadPhoto({ token }) {
                 src="/diaspora.png"
                 alt="diaspora-logo"
               />
-              <Link className="link-dashboard" to="/dashboard">
+              <Link className="link-dashboard" to="/Dashboard">
                 I'm ok with no response
               </Link>
             </div>
@@ -182,7 +182,7 @@ function UploadPhoto({ token }) {
                       </Box>
                       <Input
                         type="file"
-                        accept="image/jpeg, image/jpg, image/png, image/webp, image/svg+xml, image/gif, image/avif, image/tiff"
+                        accept="image/jpeg, image/jpg, image/png, image/webp"
                         position="relative"
                         width="50%"
                         border="none"

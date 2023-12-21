@@ -36,12 +36,12 @@ const accessChat = asyncHandler(async (req, res) => {
         {
           model: User,
           as: "chatsender",
-          attributes: ["id", "fullName", "email", "photo"],
+          attributes: ["id", "firstName", "lastName", "email", "photo"],
         },
         {
           model: User,
           as: "receive",
-          attributes: ["id", "fullName", "email", "photo"],
+          attributes: ["id", "firstName", "lastName", "email", "photo"],
         },
         {
           model: Message,
@@ -80,12 +80,12 @@ const accessChat = asyncHandler(async (req, res) => {
           {
             model: User,
             as: "chatsender",
-            attributes: ["id", "fullName", "email", "photo"],
+            attributes: ["id", "firstName", "lastName", "email", "photo"],
           },
           {
             model: User,
             as: "receive",
-            attributes: ["id", "fullName", "email", "photo"],
+            attributes: ["id", "firstName", "lastName", "email", "photo"],
           },
           {
             model: Message,
@@ -127,7 +127,7 @@ const fetchChats = async (req, res) => {
         {
           model: User,
           as: "receive",
-          attributes: ["id", "fullName", "email", "photo"],
+          attributes: ["id", "firstName", "lastName", "email", "photo"],
         },
 
         {

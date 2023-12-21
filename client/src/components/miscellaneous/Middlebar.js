@@ -42,7 +42,7 @@ const Middlebar = () => {
   const [formData2, setFormData2] = useState({
     firstName: "",
     lastName: "",
-    lookingFor:"",
+    lookingFor: "",
     day: "",
     month: "",
     year: "",

@@ -11812,6 +11812,14 @@ body {
 }
 
 @media (max-width: 300px) {
+  .profile-photo-icon{
+    width: 65%;
+  }
+
+  .chat-name-icon{
+    width: 80%;
+  }
+
   .upload-parent-box{
     left: 10%;
     bottom: 25%;
@@ -12390,6 +12398,14 @@ body {
 }
 
 @media (min-width: 300px) and (max-width: 500px) {
+  .profile-photo-icon{
+    width: 65%;
+  }
+
+  .chat-name-icon{
+    width: 80%;
+  }
+
   .upload-parent-box{
     left: 10%;
     bottom: 25%;
@@ -12966,6 +12982,14 @@ body {
 }
 
 @media (min-width: 500px) and (max-width: 800px) {
+  .profile-photo-icon{
+    width: 45%;
+  }
+
+  .chat-name-icon{
+    width: 50%;
+  }
+
   .upload-parent-box{
     left: 22%;
     bottom: 25%;
@@ -13540,6 +13564,14 @@ body {
 }
 
 @media (min-width: 800px) and (max-width: 1150px) {
+  .profile-photo-icon{
+    width: 35%;
+  }
+
+  .chat-name-icon{
+    width: 37%;
+  }
+
   .upload-parent-box{
     left: 28%;
     bottom: 25%;
@@ -14102,6 +14134,14 @@ body {
 }
 
 @media (min-width: 1150px) and (max-width: 1420px) {
+  .profile-photo-icon{
+    width: 33%;
+  }
+
+  .chat-name-icon{
+    width: 28%;
+  }
+
   .upload-parent-box{
     left: 30%;
     bottom: 25%;
@@ -14661,6 +14701,14 @@ body {
 }
 
 @media (min-width: 1421px) {
+  .chat-name-icon{
+    width: 25%;
+  }
+
+  .profile-photo-icon{
+    width: 33%;
+  }
+
   .upload-parent-box{
     left: 30%;
     bottom: 25%;
@@ -15209,6 +15257,20 @@ body {
   .form-aged-inp > p {
     padding: 5px;
   }
+}
+
+.chat-name-icon{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.red-text{
+  color: #B51A1A;
 }
 
 .upload-profile-photo-page{

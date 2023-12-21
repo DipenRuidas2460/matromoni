@@ -7,15 +7,16 @@ import { getSender } from "../chatLogic/chatLogics";
 
 function MyChats({ fetchAgain }) {
   const [loggedUser, setLoggedUser] = useState();
-  const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
+  const { selectedChat, setSelectedChat, chats, setChats } = ChatState();
   const toast = useToast();
   const host = `http://localhost:3010`;
 
   const fetchAllChats = async () => {
     try {
+      const token = localStorage.getItem("token");
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
 
@@ -47,7 +48,7 @@ function MyChats({ fetchAgain }) {
       flexDir="column"
       alignItems="center"
       p={3}
-      bg="white"
+      bg="#B51A1A"
       w={{ base: "100%", md: "31%" }}
       borderRadius="lg"
       borderWidth="1px"
@@ -61,6 +62,7 @@ function MyChats({ fetchAgain }) {
         justifyContent="space-between"
         alignItems="center"
         fontFamily="Work sans"
+        color="white"
       >
         My Chats
       </Box>
@@ -69,7 +71,7 @@ function MyChats({ fetchAgain }) {
         display="flex"
         flexDir="column"
         p={3}
-        bg="#F8F8F8"
+        bg="#730000"
         w="100%"
         h="100%"
         borderRadius="lg"

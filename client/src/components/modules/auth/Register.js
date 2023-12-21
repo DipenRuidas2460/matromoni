@@ -6,7 +6,8 @@ import { useToast } from "@chakra-ui/react";
 
 function Register() {
   const [formData, setFormData] = useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phoneNumber: "",
     // photo: "",
@@ -100,13 +101,26 @@ function Register() {
                 </div>
                 <div className="card-body">
                   <label className={"w-100"}>
-                    <p>Full Name*</p>
+                    <p>First Name*</p>
                     <input
                       className={"form-control"}
                       type={"text"}
-                      id={"fullName"}
-                      name={"fullName"}
-                      value={formData.fullName}
+                      id={"firstName"}
+                      name={"firstName"}
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      required
+                    />
+                  </label>
+
+                  <label className={"w-100"}>
+                    <p>Last Name*</p>
+                    <input
+                      className={"form-control"}
+                      type={"text"}
+                      id={"lastName"}
+                      name={"lastName"}
+                      value={formData.lastName}
                       onChange={handleChange}
                       required
                     />

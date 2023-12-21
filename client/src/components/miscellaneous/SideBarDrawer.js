@@ -20,9 +20,8 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { ChatState } from "../../context/ChatProvider";
-import { useNavigate } from "react-router-dom";
 import ProfileMenu from "./ProfileMenu";
 import axios from "axios";
 import ChatLoading from "../modules/ChatLoading";
@@ -35,20 +34,10 @@ function SideBarDrawer() {
   const [loadingChat, setLoadingChat] = useState(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    user,
-    setSelectedChat,
-    chats,
-    setChats,
-  } = ChatState();
-  const navigate = useNavigate();
+  const { user, setSelectedChat, chats, setChats } = ChatState();
+
   const toast = useToast();
   const host = `http://localhost:3010`;
-
-  const handleLogOut = () => {
-    localStorage.removeItem("token");
-    navigate("/");
-  };
 
   const handleSearch = async () => {
     if (!search) {
@@ -64,9 +53,10 @@ function SideBarDrawer() {
 
     try {
       setLoading(true);
+      const token = localStorage.getItem("token");
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
 
@@ -93,11 +83,11 @@ function SideBarDrawer() {
   const accessChat = async (personId) => {
     try {
       setLoadingChat(true);
-
+      const token = localStorage.getItem("token");
       const config = {
         headers: {
           "Content-type": "application/json",
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
 
@@ -132,40 +122,49 @@ function SideBarDrawer() {
   return (
     <>
       <div className="sidebar-chat">
-        <Tooltip label="Search Users to Chat" hasArrow placement="bottom-end">
-          <Button variant="ghost" onClick={onOpen}>
+        <Tooltip label="Search Users to Chat" hasArrow placement="bottom-end" >
+          <Button colorScheme='teal' variant='outline' onClick={onOpen}>
             <i className="fas fa-search"></i>
             <Text display={{ base: "none", md: "flex" }} px="4">
               Search User
             </Text>
           </Button>
         </Tooltip>
-
-        <div>
-          <Menu>
-            <MenuButton p={1}>
-            </MenuButton>
+        <div className="chat-name-icon">
+          <Menu >
+            <MenuItem w="57%" fontWeight="600">{`${user.firstName} ${user.lastName}`}</MenuItem>
           </Menu>
+          <div className="profile-photo-icon">
+            <Menu>
+              <MenuButton p={1}></MenuButton>
+            </Menu>
 
-          <Menu>
-            <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />}>
-              <Avatar
-                size="sm"
-                cursor="pointer"
-                name={user?.fullName}
-                src={user?.photo}
-              />
-            </MenuButton>
-            <MenuList>
-              <ProfileMenu user={user}>
-                <MenuItem>My Profile</MenuItem>
-              </ProfileMenu>
-              <MenuDivider />
-              <MenuItem>Manage Profile</MenuItem>
-              <MenuDivider />
-              <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
-            </MenuList>
-          </Menu>
+            <Menu>
+              <MenuButton
+                as={Button}
+                bg="white"
+                rightIcon={<ChevronDownIcon />}
+              >
+                <Avatar
+                  size="sm"
+                  cursor="pointer"
+                  name={`${user.firstName} ${user.lastName}`}
+                  src={
+                    user.photo != null
+                      ? `${host}/assets/image/${user.id}_profile.jpg`
+                      : ""
+                  }
+                />
+              </MenuButton>
+              <MenuList>
+                <ProfileMenu user={user}>
+                  <MenuItem>My Profile</MenuItem>
+                </ProfileMenu>
+                <MenuDivider />
+                <MenuDivider />
+              </MenuList>
+            </Menu>
+          </div>
         </div>
       </div>
 

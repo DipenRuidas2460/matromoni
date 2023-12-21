@@ -17,11 +17,11 @@ function Login() {
       .post(`${host}/customer/login`, input)
       .then((result) => {
         if (result.data.status === "success") {
+          localStorage.setItem("token", result.data.token);
           localStorage.setItem(
             "userInfo",
             JSON.stringify(result.data.userdata)
           );
-          localStorage.setItem("token", result.data.token);
           toast({
             title: "User Logged-In Successfully!",
             status: "success",

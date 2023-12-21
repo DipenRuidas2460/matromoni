@@ -31,9 +31,24 @@ function Dashboard({ token }) {
   const [userFullName, setUserFullName] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [userProfilePhoto, setUserProfilePhoto] = useState(null);
+  const [selectedField, setSelectedField] = useState(null);
   const host = `http://localhost:3010`;
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const fields = [
+    "Dashboard",
+    "Profile",
+    "Search Preferences",
+    "Settings",
+    "More",
+  ];
+
+  const headingFields = ["My Diaspora", "Matches", "Requests", "Messages"];
+
+  const handleFieldClick = (fieldName) => {
+    setSelectedField(fieldName);
+  };
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
@@ -43,14 +58,13 @@ function Dashboard({ token }) {
   const handleFileChange = (event, elementId) => {
     const selectedImage = document.getElementById(elementId);
     const fileInput = event.target;
+
     if (fileInput.files && fileInput.files[0]) {
       setSelectedFile(fileInput.files[0]);
       const reader = new FileReader();
-
       reader.onload = function (e) {
         selectedImage.src = e.target.result;
       };
-
       reader.readAsDataURL(fileInput.files[0]);
     }
   };
@@ -81,7 +95,7 @@ function Dashboard({ token }) {
         }
       })
       .catch((err) => {
-        console.log("err:-", err);
+        console.log("err:-", err.message);
         toast({
           title: err.message,
           status: "warning",
@@ -93,7 +107,6 @@ function Dashboard({ token }) {
 
     onClose();
   };
-
 
   useEffect(() => {
     const config = {
@@ -135,10 +148,25 @@ function Dashboard({ token }) {
               alt="diaspora-logo"
             />
             <ul className="dashboard-nav-1">
-              <li>My Diaspora</li>
-              <li>Matches</li>
-              <li>Requests</li>
-              <li>Messages</li>
+              {headingFields.map((field, i) => (
+                <li key={i}>
+                  <Link
+                    to={`/${
+                      field === "My Diaspora"
+                        ? "Dashboard"
+                        : field === "Messages"
+                        ? "new-chats"
+                        : field
+                    }`}
+                    className={`li-list ${
+                      selectedField === field ? "red-text" : ""
+                    }`}
+                    onClick={() => handleFieldClick(field)}
+                  >
+                    {field}
+                  </Link>
+                </li>
+              ))}
             </ul>
             <div className="dashboard-nav-2">
               <button type="button" className="dashboard-button">
@@ -174,13 +202,23 @@ function Dashboard({ token }) {
           </div>
           <div className="dashboard-header-con">
             <ul className="dashboard-header-con-ul">
-              <li>
-                <Link to="/dashboard">Dashboard</Link>
-              </li>
-              <li>Profile</li>
-              <li>Search Preferences</li>
-              <li>Settings</li>
-              <li>More</li>
+              {fields.map((field, i) => (
+                <li key={i}>
+                  <Link
+                    to={`/${
+                      field === "Search Preferences"
+                        ? "Search-Preferences"
+                        : field
+                    }`}
+                    className={`li-list ${
+                      selectedField === field ? "underline" : ""
+                    }`}
+                    onClick={() => handleFieldClick(field)}
+                  >
+                    {field}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div className="black-space-div"></div>

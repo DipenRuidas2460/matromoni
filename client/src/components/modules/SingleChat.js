@@ -18,6 +18,7 @@ import { io } from "socket.io-client";
 import Lottie from "react-lottie-player";
 import animationData from "../../animation/typing.json";
 import { useRef } from "react";
+import { FaVideo } from "react-icons/fa";
 
 function SingleChat() {
   const [messages, setMessages] = useState([]);
@@ -34,13 +35,14 @@ function SingleChat() {
 
   const fetchMessages = async () => {
     try {
+      const token = localStorage.getItem("token");
       if (!selectedChat) {
         return;
       }
 
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
 
@@ -71,10 +73,11 @@ function SingleChat() {
     if (e.key === "Enter" && newMessage) {
       socket.current.emit("stop typing", selectedChat.id);
       try {
+        const token = localStorage.getItem("token");
         const config = {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${token}`,
           },
         };
 
@@ -176,6 +179,7 @@ function SingleChat() {
                 selectedChat?.chatsender,
                 selectedChat?.receive,
               ])}
+              <FaVideo/>
               <ProfileMenu
                 user={getSenderFull(user, [
                   selectedChat.chatsender,

@@ -17,6 +17,12 @@ import PrivacyPolicy from "./components/privacy-policy and T&C/PrivacyPolicy";
 import TermsCondition from "./components/privacy-policy and T&C/TermsCondition";
 import RefundPolicy from "./components/miscellaneous/RefundPolicy";
 import UploadPhoto from "./components/uploadPhoto/UploadPhoto";
+import Profile from "./components/dashboard/Profile";
+import SearchPreferences from "./components/dashboard/SearchPreferences";
+import Settings from "./components/dashboard/Settings";
+import More from "./components/dashboard/More";
+import Matches from "./components/dashboard/Matches";
+import Requests from "./components/dashboard/Requests";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -54,10 +60,52 @@ function App() {
                 element={<ChatPage token={token} userInfo={userInfo} />}
               />
 
-              <Route exact path="/upload-photo" element={<UploadPhoto token={token}/>} />
-              <Route exact path="/dashboard" element={<Dashboard token={token}/>} />
-              <Route exact path="/lobby" element={<LobbyScreen token={token} />} />
-              <Route path="/room/:roomId" element={<RoomPage token={token} />} />
+              <Route
+                exact
+                path="/upload-photo"
+                element={<UploadPhoto token={token} />}
+              />
+              <Route
+                exact
+                path="/Dashboard"
+                element={<Dashboard token={token} />}
+              />
+              <Route
+                exact
+                path="/lobby"
+                element={<LobbyScreen token={token} />}
+              />
+              <Route
+                exact
+                path="/room/:roomId"
+                element={<RoomPage token={token} />}
+              />
+              <Route
+                exact
+                path="/Profile"
+                element={<Profile token={token} />}
+              />
+              <Route
+                exact
+                path="/Search-Preferences"
+                element={<SearchPreferences token={token} />}
+              />
+              <Route
+                exact
+                path="/Settings"
+                element={<Settings token={token} />}
+              />
+              <Route exact path="/More" element={<More token={token} />} />
+              <Route
+                exact
+                path="/Matches"
+                element={<Matches token={token} />}
+              />
+              <Route
+                exact
+                path="/Requests"
+                element={<Requests token={token} />}
+              />
             </>
           )}
 

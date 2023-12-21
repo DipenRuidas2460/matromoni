@@ -103,7 +103,7 @@ io.on("connection", (socket) => {
       .emit("message recieved", newMessageRecieved);
   });
 
-  socket.off("setup", (userData) => {
+  socket.off("setup", () => {
     console.log("User Disconnected!");
     socket.leave(userData.id);
   });

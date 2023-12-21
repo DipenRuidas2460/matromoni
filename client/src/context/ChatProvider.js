@@ -1,3 +1,5 @@
+import { useToast } from "@chakra-ui/react";
+import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,12 +11,33 @@ function ChatProvider({ children }) {
   const [notification, setNotification] = useState([]);
   const [chats, setChats] = useState([]);
   const navigate = useNavigate();
+  const toast = useToast();
+  const host = `http://localhost:3010`;
 
   useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    setUser(userInfo);
+    const token = localStorage.getItem("token");
+    if (token) {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
 
-    if (!userInfo) {
+      axios
+        .get(`${host}/customer/getUserById`, config)
+        .then(({ data }) => {
+          if (data.status === "success") {
+            setUser(data.data);
+          }
+        })
+        .catch((err) => {
+          toast({
+            title: err.message,
+            status: "warning",
+            duration: 3000,
+            isClosable: true,
+            position: "top-right",
+          });
+        });
+    } else {
       navigate("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
