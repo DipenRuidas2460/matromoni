@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ChatState } from "../../context/ChatProvider";
 import {
   Box,
@@ -19,6 +19,8 @@ import Lottie from "react-lottie-player";
 import animationData from "../../animation/typing.json";
 import { useRef } from "react";
 import { FaVideo } from "react-icons/fa";
+import { useSocket } from "../../context/SocketProvider";
+import { useNavigate } from "react-router-dom";
 
 function SingleChat() {
   const [messages, setMessages] = useState([]);
@@ -32,6 +34,28 @@ function SingleChat() {
   const host = `http://localhost:3010`;
   const socket = useRef(null);
   const toast = useToast();
+  const videoSocket = useSocket();
+  const navigate = useNavigate();
+
+  const handleVideoCall = useCallback(
+    () => {
+      videoSocket.emit("room:join", {
+        email: selectedChat.chatsender.email,
+        receiverFullName:`${selectedChat.chatsender.firstName} ${selectedChat.chatsender.lastName}`,
+        senderFullName:`${selectedChat.receive.firstName} ${selectedChat.receive.lastName}`,
+        room: selectedChat.id,
+      });
+    },
+    // eslint-disable-next-line
+    [ videoSocket, selectedChat]
+  );
+
+  const handleJoinRoom = useCallback(
+    (data) => {
+      navigate(`/room/${data.room}`);
+    },
+    [navigate]
+  );
 
   const fetchMessages = async () => {
     try {
@@ -128,6 +152,13 @@ function SingleChat() {
     });
   });
 
+  useEffect(() => {
+    videoSocket.on("room:join", handleJoinRoom);
+    return () => {
+      videoSocket.off("room:join", handleJoinRoom);
+    };
+  }, [videoSocket, handleJoinRoom]);
+
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
 
@@ -159,8 +190,8 @@ function SingleChat() {
     <>
       {selectedChat ? (
         <>
-          <Text
-            fontSize={{ base: "28px", md: "30px" }}
+          <Box
+            fontSize={{ base: "23px", md: "30px" }}
             pb={3}
             px={2}
             w="100%"
@@ -179,15 +210,23 @@ function SingleChat() {
                 selectedChat?.chatsender,
                 selectedChat?.receive,
               ])}
-              <FaVideo/>
-              <ProfileMenu
-                user={getSenderFull(user, [
-                  selectedChat.chatsender,
-                  selectedChat.receive,
-                ])}
-              />
+
+              <Box
+                width="34%"
+                display="flex"
+                justifyContent={{ base: "space-between" }}
+                alignItems="center"
+              >
+                <FaVideo color="#19B300" cursor="pointer" onClick={() => handleVideoCall()} />
+                <ProfileMenu
+                  user={getSenderFull(user, [
+                    selectedChat.chatsender,
+                    selectedChat.receive,
+                  ])}
+                />
+              </Box>
             </>
-          </Text>
+          </Box>
           <Box
             display="flex"
             flexDir="column"

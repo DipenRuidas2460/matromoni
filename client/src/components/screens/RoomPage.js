@@ -7,12 +7,21 @@ function RoomPage() {
   const socket = useSocket();
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState(null);
+  const [receiverName, setReceiverName] = useState(null);
+  const [senderName, setSenderName] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
 
-  const handleUserjoined = useCallback(({ email, id }) => {
-    console.log(`Email ${email} joined room`);
-    setRemoteSocketId(id);
-  }, []);
+  const handleUserjoined = useCallback(
+    ({ email, receiverFullName, senderFullName, id }) => {
+      console.log(
+        `Email ${email} joined room receiver:-${receiverFullName} sender:- ${senderFullName}`
+      );
+      setRemoteSocketId(id);
+      setReceiverName(receiverFullName);
+      setSenderName(senderFullName);
+    },
+    []
+  );
 
   const sendStreams = useCallback(() => {
     for (const track of myStream.getTracks()) {
@@ -88,6 +97,8 @@ function RoomPage() {
       const remoteStm = ev.streams;
       setRemoteStream(remoteStm[0]);
     });
+    // console.log("receiver:-", senderName, "sender:-", receiverName);
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -114,10 +125,16 @@ function RoomPage() {
   ]);
 
   return (
-    <div>
-      <h1>RoomPage</h1>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
       <h4 className="mt-3 mb-3">
-        {remoteSocketId ? "Connected" : "No one in room"}
+        {remoteSocketId ? "Connected" : "No one is Connected on Video Call!"}
       </h4>
       {myStream && (
         <button
@@ -125,7 +142,7 @@ function RoomPage() {
           className="btn btn-primary mr-3"
           onClick={sendStreams}
         >
-          Send Stream
+          Accept
         </button>
       )}
       {remoteSocketId && (
@@ -134,33 +151,74 @@ function RoomPage() {
           className="btn btn-primary m-3"
           onClick={handleCallUser}
         >
-          CALL
+          Call
         </button>
       )}
       {myStream && (
-        <>
-          <h1>My Stream</h1>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <ReactPlayer
             playing
             muted
-            height="300px"
-            width="300px"
+            height="600px"
+            width="900px"
             url={myStream}
           />
-        </>
+          <h4
+            style={{
+              position: "absolute",
+              bottom: "10%",
+              display: "flex",
+              flexDirection: "column",
+              color: "green",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {senderName}
+          </h4>
+        </div>
       )}
 
       {remoteStream && (
-        <>
-          <h1>Remote Stream</h1>
+        <div
+          style={{
+            position: "absolute",
+            bottom: "15%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            alignItems: "center",
+            border:"2px solid white"
+          }}
+        >
           <ReactPlayer
             playing
             muted
-            height="300px"
-            width="300px"
+            height="150px"
+            width="250px"
             url={remoteStream}
           />
-        </>
+          <h6
+            style={{
+              position: "absolute",
+              top: "15%",
+              display: "flex",
+              flexDirection: "column",
+              color: "blue",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {receiverName}
+          </h6>
+        </div>
       )}
     </div>
   );

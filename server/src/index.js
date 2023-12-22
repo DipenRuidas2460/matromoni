@@ -1,5 +1,5 @@
 const express = require("express");
-const upload = require('express-fileupload');
+const upload = require("express-fileupload");
 const app = express();
 const cors = require("cors");
 require("./config/dbConfig");
@@ -47,10 +47,15 @@ io.on("connection", (socket) => {
   // -------------------------------- for video Call ----------------------------------------
 
   socket.on("room:join", (data) => {
-    const { email, room } = data;
+    const { email, receiverFullName, senderFullName, room } = data;
     emailToSocketIdMap.set(email, socket.id);
     socketIdToEmailMap.set(socket.id, email);
-    io.to(room).emit("user:joined", { email: email, id: socket.id });
+    io.to(room).emit("user:joined", {
+      email: email,
+      receiverFullName: receiverFullName,
+      senderFullName: senderFullName,
+      id: socket.id,
+    });
     socket.join(room);
     io.to(socket.id).emit("room:join", data);
   });

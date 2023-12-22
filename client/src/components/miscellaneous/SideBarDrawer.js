@@ -126,7 +126,7 @@ function SideBarDrawer() {
           <Button colorScheme='teal' variant='outline' onClick={onOpen}>
             <i className="fas fa-search"></i>
             <Text display={{ base: "none", md: "flex" }} px="4">
-              Search User
+              Search Partners
             </Text>
           </Button>
         </Tooltip>
