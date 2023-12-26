@@ -15,6 +15,7 @@ function ChatBox({fetchAgain, setFetchAgain}) {
       w={{ base: "100%", md: "68%" }}
       borderRadius="lg"
       borderWidth="1px"
+      boxShadow="0px 2px 2px rgba(0, 0, 0, 0.25)"
     >
       <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain}/>
     </Box>

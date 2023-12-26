@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../miscellaneous/Footer";
 import CountryAndPrivacy from "../miscellaneous/CountryAndPrivacy";
-import { Link, useNavigate } from "react-router-dom";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
 import {
-  Avatar,
   Button,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   useToast,
   Box,
   Heading,
@@ -25,35 +19,16 @@ import {
   Image,
 } from "@chakra-ui/react";
 import axios from "axios";
+import HeadingDashboard from "./HeadingDashboard";
 
 function Dashboard({ token }) {
   const navigate = useNavigate();
   const [userFullName, setUserFullName] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [userProfilePhoto, setUserProfilePhoto] = useState(null);
-  const [selectedField, setSelectedField] = useState(null);
   const host = `http://localhost:3010`;
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const fields = [
-    "Dashboard",
-    "Profile",
-    "Search Preferences",
-    "Settings",
-    "More",
-  ];
-
-  const headingFields = ["My Diaspora", "Matches", "Requests", "Messages"];
-
-  const handleFieldClick = (fieldName) => {
-    setSelectedField(fieldName);
-  };
-
-  const handleLogOut = () => {
-    localStorage.removeItem("token");
-    navigate("/");
-  };
 
   const handleFileChange = (event, elementId) => {
     const selectedImage = document.getElementById(elementId);
@@ -140,87 +115,7 @@ function Dashboard({ token }) {
     <div>
       {token ? (
         <div>
-          <div className="header-con"></div>
-          <div className="navbar-con">
-            <img
-              className="navbar-logo-img"
-              src="/diaspora.png"
-              alt="diaspora-logo"
-            />
-            <ul className="dashboard-nav-1">
-              {headingFields.map((field, i) => (
-                <li key={i}>
-                  <Link
-                    to={`/${
-                      field === "My Diaspora"
-                        ? "Dashboard"
-                        : field === "Messages"
-                        ? "new-chats"
-                        : field
-                    }`}
-                    className={`li-list ${
-                      selectedField === field ? "red-text" : ""
-                    }`}
-                    onClick={() => handleFieldClick(field)}
-                  >
-                    {field}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <div className="dashboard-nav-2">
-              <button type="button" className="dashboard-button">
-                UPGRADE PLAN
-              </button>
-              <p>Help</p>
-              <div className="avatar-menu">
-                <Menu>
-                  <MenuButton></MenuButton>
-                </Menu>
-
-                <Menu>
-                  <MenuButton
-                    as={Button}
-                    bg="white"
-                    rightIcon={<ChevronDownIcon />}
-                  >
-                    <Avatar
-                      size="sm"
-                      cursor="pointer"
-                      src={userProfilePhoto}
-                      alt=""
-                    />
-                  </MenuButton>
-                  <MenuList h="10px" w="10px">
-                    <MenuItem onClick={handleLogOut} fontSize="14px">
-                      Log Out
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
-              </div>
-            </div>
-          </div>
-          <div className="dashboard-header-con">
-            <ul className="dashboard-header-con-ul">
-              {fields.map((field, i) => (
-                <li key={i}>
-                  <Link
-                    to={`/${
-                      field === "Search Preferences"
-                        ? "Search-Preferences"
-                        : field
-                    }`}
-                    className={`li-list ${
-                      selectedField === field ? "underline" : ""
-                    }`}
-                    onClick={() => handleFieldClick(field)}
-                  >
-                    {field}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <HeadingDashboard token={token} />
           <div className="black-space-div"></div>
           <div className="white-space-div">
             <div className="dashboard-middle">

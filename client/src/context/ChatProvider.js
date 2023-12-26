@@ -13,9 +13,9 @@ function ChatProvider({ children }) {
   const navigate = useNavigate();
   const toast = useToast();
   const host = `http://localhost:3010`;
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token) {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
@@ -29,13 +29,18 @@ function ChatProvider({ children }) {
           }
         })
         .catch((err) => {
-          toast({
-            title: err.message,
-            status: "warning",
-            duration: 3000,
-            isClosable: true,
-            position: "top-right",
-          });
+          if (err.message === "Request failed with status code 401") {
+            localStorage.removeItem("token");
+            navigate("/");
+          } else {
+            toast({
+              title: err.message,
+              status: "warning",
+              duration: 3000,
+              isClosable: true,
+              position: "top-right",
+            });
+          }
         });
     } else {
       navigate("/");

@@ -47,26 +47,12 @@ function MyChats({ fetchAgain }) {
       display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
       flexDir="column"
       alignItems="center"
-      p={3}
+      paddingTop={3}
       bg="#B51A1A"
-      w={{ base: "100%", md: "31%" }}
+      width="100%"
+      height="83vh"
       borderRadius="lg"
-      borderWidth="1px"
     >
-      <Box
-        pb={3}
-        px={3}
-        fontSize={{ base: "28px", md: "30px" }}
-        display="flex"
-        w="100%"
-        justifyContent="space-between"
-        alignItems="center"
-        fontFamily="Work sans"
-        color="white"
-      >
-        My Chats
-      </Box>
-
       <Box
         display="flex"
         flexDir="column"

@@ -2,8 +2,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useSocket } from "../../context/SocketProvider";
 import ReactPlayer from "react-player";
 import peer from "../../service/peer";
+import HeadingDashboard from "../dashboard/HeadingDashboard";
+import CountryAndPrivacy from "../miscellaneous/CountryAndPrivacy";
+import Footer from "../miscellaneous/Footer";
 
-function RoomPage() {
+function RoomPage({ token }) {
   const socket = useSocket();
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState(null);
@@ -125,101 +128,118 @@ function RoomPage() {
   ]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      <h4 className="mt-3 mb-3">
-        {remoteSocketId ? "Connected" : "No one is Connected on Video Call!"}
-      </h4>
-      {myStream && (
-        <button
-          type="submit"
-          className="btn btn-primary mr-3"
-          onClick={sendStreams}
-        >
-          Accept
-        </button>
-      )}
-      {remoteSocketId && (
-        <button
-          type="submit"
-          className="btn btn-primary m-3"
-          onClick={handleCallUser}
-        >
-          Call
-        </button>
-      )}
-      {myStream && (
+    <div>
+      <HeadingDashboard token={token} />
+      <div className="black-space-div-chat"></div>
+      <div className="white-space-div-video">
         <div
           style={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <ReactPlayer
-            playing
-            muted
-            height="600px"
-            width="900px"
-            url={myStream}
-          />
-          <h4
-            style={{
-              position: "absolute",
-              bottom: "10%",
-              display: "flex",
-              flexDirection: "column",
-              color: "green",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            {senderName}
-          </h4>
-        </div>
-      )}
-
-      {remoteStream && (
-        <div
-          style={{
-            position: "absolute",
-            bottom: "15%",
+            height:"85vh",
+            width:"70%",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
             alignItems: "center",
-            border:"2px solid white"
+            position:"absolute",
+            borderRadius:"10px",
+            bottom:"28%",
+            boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)",
+            backgroundColor:"#fff",
           }}
         >
-          <ReactPlayer
-            playing
-            muted
-            height="150px"
-            width="250px"
-            url={remoteStream}
-          />
-          <h6
-            style={{
-              position: "absolute",
-              top: "15%",
-              display: "flex",
-              flexDirection: "column",
-              color: "blue",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            {receiverName}
-          </h6>
+          <h4 className="mt-3 mb-3">
+            {remoteSocketId
+              ? "Connected"
+              : "No one is Connected on Video Call!"}
+          </h4>
+          {myStream && (
+            <button
+              type="submit"
+              className="btn btn-primary mr-3"
+              onClick={sendStreams}
+            >
+              Accept
+            </button>
+          )}
+          {remoteSocketId && (
+            <button
+              type="submit"
+              className="btn btn-primary m-3"
+              onClick={handleCallUser}
+            >
+              Call
+            </button>
+          )}
+          {myStream && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <ReactPlayer
+                playing
+                muted
+                height="600px"
+                width="900px"
+                url={myStream}
+              />
+              <h4
+                style={{
+                  position: "absolute",
+                  bottom: "10%",
+                  display: "flex",
+                  flexDirection: "column",
+                  color: "green",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                {senderName}
+              </h4>
+            </div>
+          )}
+
+          {remoteStream && (
+            <div
+              style={{
+                position: "absolute",
+                bottom: "15%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "center",
+                border: "2px solid white",
+              }}
+            >
+              <ReactPlayer
+                playing
+                muted
+                height="150px"
+                width="250px"
+                url={remoteStream}
+              />
+              <h6
+                style={{
+                  position: "absolute",
+                  top: "15%",
+                  display: "flex",
+                  flexDirection: "column",
+                  color: "blue",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                {receiverName}
+              </h6>
+            </div>
+          )}
         </div>
-      )}
+      </div>
+      <CountryAndPrivacy />
+      <Footer />
     </div>
   );
 }

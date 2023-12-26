@@ -11762,8 +11762,9 @@ body {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  border-radius: 10px;
   padding: 5px 10px 5px 10px;
-  border-width: 5px;
+  border-width: 3px;
   background-color: #fff;
 }
 
@@ -11812,8 +11813,10 @@ body {
 }
 
 @media (max-width: 300px) {
-  .profile-photo-icon{
-    width: 65%;
+  .available-text{
+    width: 37%;
+    margin-left:12px;
+    font-size: 8px;
   }
 
   .chat-name-icon{
@@ -12398,8 +12401,10 @@ body {
 }
 
 @media (min-width: 300px) and (max-width: 500px) {
-  .profile-photo-icon{
-    width: 65%;
+  .available-text{
+    width: 27%;
+    margin-left:12px;
+    font-size: 8px;
   }
 
   .chat-name-icon{
@@ -12982,8 +12987,10 @@ body {
 }
 
 @media (min-width: 500px) and (max-width: 800px) {
-  .profile-photo-icon{
-    width: 45%;
+  .available-text{
+    width: 14%;
+    margin-left:15px;
+    font-size: 9px;
   }
 
   .chat-name-icon{
@@ -13564,8 +13571,11 @@ body {
 }
 
 @media (min-width: 800px) and (max-width: 1150px) {
-  .profile-photo-icon{
-    width: 35%;
+
+  .available-text{
+    width: 9%;
+    margin-left:15px;
+    font-size: 10px;
   }
 
   .chat-name-icon{
@@ -14134,8 +14144,10 @@ body {
 }
 
 @media (min-width: 1150px) and (max-width: 1420px) {
-  .profile-photo-icon{
-    width: 33%;
+  .available-text{
+    width: 7%;
+    margin-left:15px;
+    font-size: 11px;
   }
 
   .chat-name-icon{
@@ -14701,12 +14713,14 @@ body {
 }
 
 @media (min-width: 1421px) {
-  .chat-name-icon{
-    width: 25%;
+  .available-text{
+    width: 6%;
+    margin-left:15px;
+    font-size: 13px;
   }
 
-  .profile-photo-icon{
-    width: 33%;
+  .chat-name-icon{
+    width: 25%;
   }
 
   .upload-parent-box{
@@ -15259,6 +15273,15 @@ body {
   }
 }
 
+.available-text{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  background-color: #009F10;
+  color: #fff;
+}
+
 .chat-name-icon{
   display: flex;
   justify-content: space-between;
@@ -15363,9 +15386,27 @@ body {
   background-color: #A65973;
 }
 
+.black-space-div-chat {
+  height: 180px;
+  background-color: #333;
+}
+
 .white-space-div {
   position: relative;
   height: 420px;
+}
+
+.white-space-div-chat{
+  position: relative;
+  height: 96vh;
+}
+
+.white-space-div-video{
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  position: relative;
+  height: 96vh;
 }
 
 .dashboard-middle {

@@ -13,9 +13,10 @@ function HomePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("userInfo"));
-    if (!user) {
-      navigate("/404");
+    const token = localStorage.getItem("token");
+    // const user = JSON.parse(localStorage.getItem("userInfo"));
+    if (!token) {
+      navigate("/");
     }
   }, [navigate]);
 
