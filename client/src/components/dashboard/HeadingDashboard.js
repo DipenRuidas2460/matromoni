@@ -34,6 +34,7 @@ function HeadingDashboard({token}) {
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userInfo");
     navigate("/");
   };
 
@@ -52,7 +53,6 @@ function HeadingDashboard({token}) {
         }
       })
       .catch((err) => {
-        navigate("/404");
         toast({
           title: err.message,
           status: "warning",

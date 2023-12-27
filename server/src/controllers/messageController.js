@@ -61,6 +61,10 @@ const sendMessage = asyncHandler(async (req, res) => {
     if (loggedUserId !== messageSenderId) {
       populatedMessage.msg.personId = messageSenderId;
       populatedMessage.msg.chatSenderId = loggedUserId;
+      [populatedMessage.msg.chatsender, populatedMessage.msg.receive] = [
+        populatedMessage.msg.receive,
+        populatedMessage.msg.chatsender,
+      ];
       await populatedMessage.save();
     }
     return res.status(200).json(populatedMessage);
@@ -106,6 +110,10 @@ const allMessages = asyncHandler(async (req, res) => {
       if (messages[i].msg.chatSenderId !== messageSenderId) {
         messages[i].msg.personId = messages[i].msg.chatSenderId;
         messages[i].msg.chatSenderId = messageSenderId;
+        [messages[i].msg.chatsender, messages[i].msg.receive] = [
+          messages[i].msg.receive,
+          messages[i].msg.chatsender,
+        ];
         await messages[i].save();
       }
     }

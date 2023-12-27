@@ -94,21 +94,20 @@ io.on("connection", (socket) => {
   socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
   socket.on("new message", (newMessageRecieved) => {
+    if (newMessageRecieved.msg.personId === newMessageRecieved.senderId) return;
     if (
       !newMessageRecieved.msg.chatSenderId &&
-      !newMessageRecieved.msg.userId
+      !newMessageRecieved.msg.personId
     ) {
       return console.log("Message Sender or chat sender not defined!");
     }
-
-    if (newMessageRecieved.msg.userId === newMessageRecieved.senderId) return;
 
     socket
       .in(newMessageRecieved.chatId)
       .emit("message recieved", newMessageRecieved);
   });
 
-  socket.off("setup", () => {
+  socket.off("setup", (userData) => {
     console.log("User Disconnected!");
     socket.leave(userData.id);
   });

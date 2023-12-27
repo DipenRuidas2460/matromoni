@@ -17,10 +17,11 @@ const ScrollableChat = ({ messages }) => {
     <ScrollableFeed>
       {messages &&
         messages.map((m, i) => (
-          <div style={{ display: "flex" }} key={m.id}>
+          <div style={{ display: "flex" }} key={m.id + i + 1}>
             {(isSameSender(messages, m, i, user.id) ||
               isLastMessage(messages, i, user.id)) && (
               <Tooltip
+                key={m.id + 1}
                 label={`${m.sender.firstName} ${m.sender.lastName}`}
                 placement="bottom-start"
                 hasArrow
@@ -41,6 +42,7 @@ const ScrollableChat = ({ messages }) => {
             )}
 
             <span
+              key={m.id - 1}
               style={{
                 marginLeft: isSameSenderMargin(messages, m, i, user.id),
                 marginTop: isSameUser(messages, m, i, user.id) ? 5 : 17,
@@ -53,9 +55,9 @@ const ScrollableChat = ({ messages }) => {
               }}
             >
               {
-                <>
+                <div key={i}>
                   {
-                    <sup>
+                    <sup key={i - 1}>
                       {m.createdAt.slice(8, 10) +
                         "." +
                         m.createdAt.slice(5, 7) +
@@ -64,8 +66,9 @@ const ScrollableChat = ({ messages }) => {
                     </sup>
                   }
                   {<br />}
-                  {m.content} {<sub>{m.createdAt.slice(11, 16)}</sub>}
-                </>
+                  {m.content}{" "}
+                  {<sub key={i + 1}>{m.createdAt.slice(11, 16)}</sub>}
+                </div>
               }
             </span>
           </div>

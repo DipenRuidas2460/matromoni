@@ -100,7 +100,6 @@ function RoomPage({ token }) {
       const remoteStm = ev.streams;
       setRemoteStream(remoteStm[0]);
     });
-    // console.log("receiver:-", senderName, "sender:-", receiverName);
     // eslint-disable-next-line
   }, []);
 
@@ -173,32 +172,35 @@ function RoomPage({ token }) {
           {myStream && (
             <div
               style={{
+                width:"100%",
                 display: "flex",
                 justifyContent: "center",
                 flexDirection: "column",
                 alignItems: "center",
+                position:"relative",
+                bottom:"3%"
               }}
             >
               <ReactPlayer
                 playing
+                height="50vh"
+                width="100%"
                 muted
-                height="600px"
-                width="900px"
                 url={myStream}
               />
-              <h4
+              <h6
                 style={{
                   position: "absolute",
-                  bottom: "10%",
+                  bottom: "6%",
                   display: "flex",
                   flexDirection: "column",
                   color: "green",
-                  justifyContent: "space-between",
+                  justifyContent: "start",
                   alignItems: "center",
                 }}
               >
                 {senderName}
-              </h4>
+              </h6>
             </div>
           )}
 
@@ -211,25 +213,23 @@ function RoomPage({ token }) {
                 flexDirection: "column",
                 justifyContent: "space-between",
                 alignItems: "center",
-                border: "2px solid white",
               }}
             >
               <ReactPlayer
                 playing
                 muted
-                height="150px"
-                width="250px"
+                height="90px"
+                width="150px"
                 url={remoteStream}
               />
               <h6
                 style={{
                   position: "absolute",
-                  top: "15%",
                   display: "flex",
                   flexDirection: "column",
                   color: "blue",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  justifyContent: "flex-start",
+                  bottom:"5%"
                 }}
               >
                 {receiverName}
