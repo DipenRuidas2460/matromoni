@@ -47,13 +47,11 @@ io.on("connection", (socket) => {
   // -------------------------------- for video Call ----------------------------------------
 
   socket.on("room:join", (data) => {
-    const { email, receiverFullName, senderFullName, room } = data;
+    const { email, room } = data;
     emailToSocketIdMap.set(email, socket.id);
     socketIdToEmailMap.set(socket.id, email);
     io.to(room).emit("user:joined", {
       email: email,
-      receiverFullName: receiverFullName,
-      senderFullName: senderFullName,
       id: socket.id,
     });
     socket.join(room);

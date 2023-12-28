@@ -77,7 +77,7 @@ function App() {
               />
               <Route
                 exact
-                path="/room/:roomId"
+                path="/video-call"
                 element={<RoomPage token={token} />}
               />
               <Route

@@ -5,29 +5,24 @@ import peer from "../../service/peer";
 import HeadingDashboard from "../dashboard/HeadingDashboard";
 import CountryAndPrivacy from "../miscellaneous/CountryAndPrivacy";
 import Footer from "../miscellaneous/Footer";
+import { useNavigate } from "react-router-dom";
+import { IoCall } from "react-icons/io5";
+import { FaVideo } from "react-icons/fa";
+import { MdCallEnd } from "react-icons/md";
 
 function RoomPage({ token }) {
+  const navigate = useNavigate();
   const socket = useSocket();
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState(null);
-  const [receiverName, setReceiverName] = useState(null);
-  const [senderName, setSenderName] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
 
-  const handleUserjoined = useCallback(
-    ({ email, receiverFullName, senderFullName, id }) => {
-      console.log(
-        `Email ${email} joined room receiver:-${receiverFullName} sender:- ${senderFullName}`
-      );
-      setRemoteSocketId(id);
-      setReceiverName(receiverFullName);
-      setSenderName(senderFullName);
-    },
-    []
-  );
+  const handleUserjoined = useCallback(({ email, id }) => {
+    setRemoteSocketId(id);
+  }, []);
 
   const sendStreams = useCallback(() => {
-    for (const track of myStream.getTracks()) {
+    for (const track of myStream?.getTracks()) {
       const isTrackAlreadyAdded = peer.peer
         .getSenders()
         .some((sender) => sender.track === track);
@@ -127,120 +122,117 @@ function RoomPage({ token }) {
   ]);
 
   return (
-    <div>
-      <HeadingDashboard token={token} />
-      <div className="black-space-div-chat"></div>
-      <div className="white-space-div-video">
-        <div
-          style={{
-            height:"85vh",
-            width:"70%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            alignItems: "center",
-            position:"absolute",
-            borderRadius:"10px",
-            bottom:"28%",
-            boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)",
-            backgroundColor:"#fff",
-          }}
-        >
-          <h4 className="mt-3 mb-3">
-            {remoteSocketId
-              ? "Connected"
-              : "No one is Connected on Video Call!"}
-          </h4>
-          {myStream && (
-            <button
-              type="submit"
-              className="btn btn-primary mr-3"
-              onClick={sendStreams}
-            >
-              Accept
-            </button>
-          )}
-          {remoteSocketId && (
-            <button
-              type="submit"
-              className="btn btn-primary m-3"
-              onClick={handleCallUser}
-            >
-              Call
-            </button>
-          )}
-          {myStream && (
+    <>
+      {token ? (
+        <div>
+          <HeadingDashboard token={token} />
+          <div className="black-space-div-chat"></div>
+          <div className="white-space-div-video">
             <div
               style={{
-                width:"100%",
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                alignItems: "center",
-                position:"relative",
-                bottom:"3%"
-              }}
-            >
-              <ReactPlayer
-                playing
-                height="50vh"
-                width="100%"
-                muted
-                url={myStream}
-              />
-              <h6
-                style={{
-                  position: "absolute",
-                  bottom: "6%",
-                  display: "flex",
-                  flexDirection: "column",
-                  color: "green",
-                  justifyContent: "start",
-                  alignItems: "center",
-                }}
-              >
-                {senderName}
-              </h6>
-            </div>
-          )}
-
-          {remoteStream && (
-            <div
-              style={{
-                position: "absolute",
-                bottom: "15%",
+                height: "95vh",
+                width: "70%",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
                 alignItems: "center",
+                position: "absolute",
+                borderRadius: "10px",
+                bottom: "18%",
+                boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                backgroundColor: "#fff",
               }}
             >
-              <ReactPlayer
-                playing
-                muted
-                height="90px"
-                width="150px"
-                url={remoteStream}
-              />
-              <h6
+              <div
                 style={{
-                  position: "absolute",
                   display: "flex",
                   flexDirection: "column",
-                  color: "blue",
-                  justifyContent: "flex-start",
-                  bottom:"5%"
+                  alignItems: "center",
+                  justifyContent: "space-between",
                 }}
               >
-                {receiverName}
-              </h6>
+                <h4>{remoteSocketId ? "Connected" : "Calling...."}</h4>
+
+                {myStream && (
+                  <IoCall
+                    fontSize="2.5em"
+                    color="#19B300"
+                    cursor="pointer"
+                    style={{ zIndex: 1 }}
+                    onClick={() => sendStreams()}
+                  />
+                )}
+
+                {remoteSocketId && (
+                  <FaVideo
+                    fontSize="2.5em"
+                    color="#19B300"
+                    cursor="pointer"
+                    style={{ zIndex: 1 }}
+                    onClick={() => handleCallUser()}
+                  />
+                )}
+              </div>
+
+              {myStream && (
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    position: "absolute",
+                    zIndex: 1,
+                    bottom: "20%",
+                  }}
+                >
+                  <ReactPlayer
+                    playing
+                    height="20vh"
+                    width="40%"
+                    muted
+                    url={myStream}
+                  />
+                </div>
+              )}
+
+              {remoteStream && (
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "1%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <ReactPlayer
+                    playing
+                    muted
+                    height="70vh"
+                    width="100%"
+                    url={remoteStream}
+                  />
+                  <MdCallEnd
+                    fontSize="1.8em"
+                    color="red"
+                    cursor="pointer"
+                    style={{ zIndex: 1, position: "absolute", bottom: "10%" }}
+                    onClick={() => navigate("/new-chats")}
+                  />
+                </div>
+              )}
             </div>
-          )}
+          </div>
+          <CountryAndPrivacy />
+          <Footer />
         </div>
-      </div>
-      <CountryAndPrivacy />
-      <Footer />
-    </div>
+      ) : (
+        navigate("/404")
+      )}
+    </>
   );
 }
 

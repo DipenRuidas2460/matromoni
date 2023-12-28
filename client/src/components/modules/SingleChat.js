@@ -21,9 +21,11 @@ import animationData from "../../animation/typing.json";
 import { useRef } from "react";
 import { FaVideo } from "react-icons/fa";
 import { useSocket } from "../../context/SocketProvider";
-import { useNavigate } from "react-router-dom";
 import { IoSend } from "react-icons/io5";
-import peer from "../../service/peer";
+import { useNavigate } from "react-router-dom";
+// import peer from "../../service/peer";
+// import { IoCall } from "react-icons/io5";
+
 
 function SingleChat() {
   const [messages, setMessages] = useState([]);
@@ -32,11 +34,8 @@ function SingleChat() {
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
-  const [remoteSocketId, setRemoteSocketId] = useState(null);
-  const [myStream, setMyStream] = useState(null);
-  const [receiverName, setReceiverName] = useState(null);
-  const [senderName, setSenderName] = useState(null);
-  const [remoteStream, setRemoteStream] = useState(null);
+  // const [remoteSocketId, setRemoteSocketId] = useState(null);
+  // const [myStream, setMyStream] = useState(null);
   const { user, selectedChat, setSelectedChat } = ChatState();
   const host = `http://localhost:3010`;
   const socket = useRef(null);
@@ -44,98 +43,82 @@ function SingleChat() {
   const videoSocket = useSocket();
   const navigate = useNavigate();
 
-  const handleUserjoined = useCallback(
-    ({ email, receiverFullName, senderFullName, id }) => {
-      console.log(
-        `Email ${email} joined room receiver:-${receiverFullName} sender:- ${senderFullName}`
-      );
-      setRemoteSocketId(id);
-      setReceiverName(receiverFullName);
-      setSenderName(senderFullName);
-    },
-    []
-  );
+  // const handleUserjoined = useCallback(({ email, id }) => {
+  //   setRemoteSocketId(id);
+  // }, []);
 
-  const sendStreams = useCallback(() => {
-    for (const track of myStream.getTracks()) {
-      const isTrackAlreadyAdded = peer.peer
-        .getSenders()
-        .some((sender) => sender.track === track);
-      if (!isTrackAlreadyAdded) {
-        peer.peer.addTrack(track, myStream);
-      }
-    }
-  }, [myStream]);
+  // const sendStreams = useCallback(() => {
+  //   for (const track of myStream.getTracks()) {
+  //     const isTrackAlreadyAdded = peer.peer
+  //       .getSenders()
+  //       .some((sender) => sender.track === track);
+  //     if (!isTrackAlreadyAdded) {
+  //       peer.peer.addTrack(track, myStream);
+  //     }
+  //   }
+  //   // localStorage.setItem("myStream", myStream);
+  //   navigate("/video-call");
+  // }, [myStream, navigate]);
 
-  const handleIncomingCall = useCallback(
-    async ({ from, offer }) => {
-      setRemoteSocketId(from);
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
-        video: true,
-      });
-      setMyStream(stream);
-      const ans = await peer.getAnswer(offer);
-      videoSocket.emit("call:accepted", { to: from, ans });
-    },
-    [videoSocket]
-  );
+  // const handleIncomingCall = useCallback(
+  //   async ({ from, offer }) => {
+  //     setRemoteSocketId(from);
+  //     const stream = await navigator.mediaDevices.getUserMedia({
+  //       audio: true,
+  //       video: true,
+  //     });
+  //     setMyStream(stream);
+  //     const ans = await peer.getAnswer(offer);
+  //     videoSocket.emit("call:accepted", { to: from, ans });
+  //   },
+  //   [videoSocket]
+  // );
 
-  const handleCallAccepted = useCallback(
-    async ({ from, ans }) => {
-      peer.setLocalDescription(ans);
-      sendStreams();
-    },
-    [sendStreams]
-  );
+  // const handleCallAccepted = useCallback(
+  //   async ({ from, ans }) => {
+  //     peer.setLocalDescription(ans);
+  //     sendStreams();
+  //   },
+  //   [sendStreams]
+  // );
 
-  const handleCallUser = useCallback(async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: true,
+  // const handleCallUser = useCallback(async () => {
+  //   const stream = await navigator.mediaDevices.getUserMedia({
+  //     audio: true,
+  //     video: true,
+  //   });
+
+  //   const offer = await peer.getOffer();
+  //   videoSocket.emit("user:call", { to: remoteSocketId, offer });
+  //   setMyStream(stream);
+  //   // localStorage.setItem("remoteSocketId", remoteSocketId);
+  //   navigate("/video-call");
+  // }, [remoteSocketId, videoSocket, navigate]);
+
+  // const handleNegoNeeded = useCallback(async () => {
+  //   const offer = await peer.getOffer();
+  //   videoSocket.emit("peer:nego:needed", { to: remoteSocketId, offer });
+  // }, [remoteSocketId, videoSocket]);
+
+  // const handleNegoNeededIncoming = useCallback(
+  //   async ({ from, offer }) => {
+  //     const ans = await peer.getAnswer(offer);
+  //     videoSocket.emit("peer:nego:done", { to: from, ans });
+  //   },
+  //   [videoSocket]
+  // );
+
+  // const handleNegoNeededFinal = useCallback(async ({ from, ans }) => {
+  //   await peer.setLocalDescription(ans);
+  // }, []);
+
+  const handleVideoCall = useCallback(() => {
+    videoSocket.emit("room:join", {
+      email: selectedChat.chatsender.email,
+      room: selectedChat.id,
     });
-
-    const offer = await peer.getOffer();
-    videoSocket.emit("user:call", { to: remoteSocketId, offer });
-    setMyStream(stream);
-  }, [remoteSocketId, videoSocket]);
-
-  const handleNegoNeeded = useCallback(async () => {
-    const offer = await peer.getOffer();
-    videoSocket.emit("peer:nego:needed", { to: remoteSocketId, offer });
-  }, [remoteSocketId, videoSocket]);
-
-  const handleNegoNeededIncoming = useCallback(
-    async ({ from, offer }) => {
-      const ans = await peer.getAnswer(offer);
-      videoSocket.emit("peer:nego:done", { to: from, ans });
-    },
-    [videoSocket]
-  );
-
-  const handleNegoNeededFinal = useCallback(async ({ from, ans }) => {
-    await peer.setLocalDescription(ans);
-  }, []);
-
-  const handleVideoCall = useCallback(
-    () => {
-      videoSocket.emit("room:join", {
-        email: selectedChat.chatsender.email,
-        receiverFullName: `${selectedChat.chatsender.firstName} ${selectedChat.chatsender.lastName}`,
-        senderFullName: `${selectedChat.receive.firstName} ${selectedChat.receive.lastName}`,
-        room: selectedChat.id,
-      });
-    },
-    // eslint-disable-next-line
-    [videoSocket, selectedChat]
-  );
-
-  const handleJoinRoom = useCallback(
-    (data) => {
-      navigate(`/room/${data.room}`);
-    },
-    [navigate]
-  );
+    navigate("/video-call");
+  }, [videoSocket, selectedChat, navigate]);
 
   const fetchMessages = async () => {
     try {
@@ -241,44 +224,33 @@ function SingleChat() {
     }, timerLength);
   };
 
-  useEffect(() => {
-    peer.peer.addEventListener("negotiationneeded", handleNegoNeeded);
+  // useEffect(() => {
+  //   peer.peer.addEventListener("negotiationneeded", handleNegoNeeded);
 
-    return () => {
-      peer.peer.removeEventListener("negotiationneeded", handleNegoNeeded);
-    };
-  }, [handleNegoNeeded]);
+  //   return () => {
+  //     peer.peer.removeEventListener("negotiationneeded", handleNegoNeeded);
+  //   };
+  // }, [handleNegoNeeded]);
 
-  useEffect(() => {
-    peer.peer.addEventListener("track", async (ev) => {
-      const remoteStm = ev.streams;
-      setRemoteStream(remoteStm[0]);
-    });
-    // eslint-disable-next-line
-  }, []);
+  // useEffect(() => {
+  //   peer.peer.addEventListener("track", async (ev) => {
+  //     const remoteStm = ev.streams;
+  //     setRemoteStream(remoteStm[0]);
+  //   });
+  //   // eslint-disable-next-line
+  // }, []);
 
-  useEffect(() => {
-    videoSocket.on("user:joined", handleUserjoined);
-    videoSocket.on("incoming:call", handleIncomingCall);
-    videoSocket.on("call:accepted", handleCallAccepted);
-    videoSocket.on("peer:nego:needed", handleNegoNeededIncoming);
-    videoSocket.on("peer:nego:final", handleNegoNeededFinal);
+  // useEffect(() => {
+  //   videoSocket.on("user:joined", handleUserjoined);
+  //   videoSocket.on("incoming:call", handleIncomingCall);
+  //   // videoSocket.on("call:accepted", handleCallAccepted);
 
-    return () => {
-      videoSocket.off("user:joined", handleUserjoined);
-      videoSocket.off("incoming:call", handleIncomingCall);
-      videoSocket.off("call:accepted", handleCallAccepted);
-      videoSocket.off("peer:nego:needed", handleNegoNeededIncoming);
-      videoSocket.off("peer:nego:final", handleNegoNeededFinal);
-    };
-  }, [
-    videoSocket,
-    handleUserjoined,
-    handleIncomingCall,
-    handleCallAccepted,
-    handleNegoNeededIncoming,
-    handleNegoNeededFinal,
-  ]);
+  //   return () => {
+  //     videoSocket.off("user:joined", handleUserjoined);
+  //     videoSocket.off("incoming:call", handleIncomingCall);
+  //     // videoSocket.off("call:accepted", handleCallAccepted);
+  //   };
+  // }, [videoSocket, handleUserjoined, handleIncomingCall]);
 
   useEffect(() => {
     socket.current = io(host);
@@ -302,13 +274,6 @@ function SingleChat() {
       setMessages([...messages, newMessageReceived]);
     });
   });
-
-  useEffect(() => {
-    videoSocket.on("room:join", handleJoinRoom);
-    return () => {
-      videoSocket.off("room:join", handleJoinRoom);
-    };
-  }, [videoSocket, handleJoinRoom]);
 
   return (
     <>
@@ -335,6 +300,14 @@ function SingleChat() {
                 selectedChat?.receive,
               ])}
 
+              {/* {myStream && (
+                <IoCall
+                  color="#19B300"
+                  cursor="pointer"
+                  onClick={() => sendStreams()}
+                />
+              )} */}
+
               <Box
                 width="34%"
                 display="flex"
@@ -346,6 +319,7 @@ function SingleChat() {
                   cursor="pointer"
                   onClick={() => handleVideoCall()}
                 />
+
                 <ProfileMenu
                   user={getSenderFull(user, [
                     selectedChat.chatsender,
