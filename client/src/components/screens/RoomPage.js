@@ -7,7 +7,12 @@ import CountryAndPrivacy from "../miscellaneous/CountryAndPrivacy";
 import Footer from "../miscellaneous/Footer";
 import { useNavigate } from "react-router-dom";
 import { IoCall } from "react-icons/io5";
-import { FaVideo } from "react-icons/fa";
+import {
+  FaVideo,
+  FaMicrophone,
+  FaMicrophoneSlash,
+  FaVideoSlash,
+} from "react-icons/fa";
 import { MdCallEnd } from "react-icons/md";
 
 function RoomPage({ token }) {
@@ -16,6 +21,22 @@ function RoomPage({ token }) {
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [isVideoMuted, setIsVideoMuted] = useState(false);
+
+  const handleToggleAudio = useCallback(() => {
+    setIsAudioMuted((prev) => !prev);
+    myStream.getAudioTracks().forEach((track) => {
+      track.enabled = !isAudioMuted;
+    });
+  }, [myStream, isAudioMuted]);
+
+  const handleToggleVideo = useCallback(() => {
+    setIsVideoMuted((prev) => !prev);
+    myStream.getVideoTracks().forEach((track) => {
+      track.enabled = !isVideoMuted;
+    });
+  }, [myStream, isVideoMuted]);
 
   const handleUserjoined = useCallback(({ email, id }) => {
     setRemoteSocketId(id);
@@ -64,6 +85,18 @@ function RoomPage({ token }) {
     socket.emit("user:call", { to: remoteSocketId, offer });
     setMyStream(stream);
   }, [remoteSocketId, socket]);
+
+  const handleEndCall = useCallback(() => {
+    myStream.getTracks().forEach((track) => track.stop());
+    for (const sender of peer.peer.getSenders()) {
+      peer.peer.removeTrack(sender);
+    }
+    socket.emit("call:end", { to: remoteSocketId });
+    setRemoteSocketId(null);
+    setMyStream(null);
+    navigate("/new-chats");
+    window.location.reload()
+  }, [myStream, remoteSocketId, socket, navigate]);
 
   const handleNegoNeeded = useCallback(async () => {
     const offer = await peer.getOffer();
@@ -151,7 +184,20 @@ function RoomPage({ token }) {
                   justifyContent: "space-between",
                 }}
               >
-                <h4>{remoteSocketId ? "Connected" : "Calling...."}</h4>
+                {remoteSocketId ? (
+                  <h4>Connected</h4>
+                ) : (
+                  <div>
+                    <h4>Calling</h4>
+                    <MdCallEnd
+                      fontSize="1.8em"
+                      color="red"
+                      cursor="pointer"
+                      style={{ zIndex: 1, position: "absolute", bottom: "10%" }}
+                      onClick={() => navigate("/new-chats")}
+                    />
+                  </div>
+                )}
 
                 {myStream && (
                   <IoCall
@@ -216,12 +262,65 @@ function RoomPage({ token }) {
                     url={remoteStream}
                   />
                   <MdCallEnd
-                    fontSize="1.8em"
+                    fontSize="2.5em"
                     color="red"
                     cursor="pointer"
                     style={{ zIndex: 1, position: "absolute", bottom: "10%" }}
-                    onClick={() => navigate("/new-chats")}
+                    onClick={() => handleEndCall()}
                   />
+                  <div>
+                    <IoCall
+                      fontSize="2.5em"
+                      color="#19B300"
+                      cursor="pointer"
+                      style={{ zIndex: 1 }}
+                      onClick={handleToggleAudio}
+                    />
+                    {isAudioMuted ? (
+                      <FaMicrophoneSlash
+                        fontSize="2.5em"
+                        color="#FF0000"
+                        cursor="pointer"
+                        style={{ zIndex: 1 }}
+                        onClick={handleToggleAudio}
+                      />
+                    ) : (
+                      <FaMicrophone
+                        fontSize="2.5em"
+                        color="#19B300"
+                        cursor="pointer"
+                        style={{ zIndex: 1 }}
+                        onClick={handleToggleAudio}
+                      />
+                    )}
+                  </div>
+
+                  <div>
+                    <FaVideo
+                      fontSize="2.5em"
+                      color="#19B300"
+                      cursor="pointer"
+                      style={{ zIndex: 1 }}
+                      onClick={handleToggleVideo}
+                    />
+                    {isVideoMuted ? (
+                      <FaVideoSlash
+                        fontSize="2.5em"
+                        color="#FF0000"
+                        cursor="pointer"
+                        style={{ zIndex: 1 }}
+                        onClick={handleToggleVideo}
+                      />
+                    ) : (
+                      <FaVideo
+                        fontSize="2.5em"
+                        color="#19B300"
+                        cursor="pointer"
+                        style={{ zIndex: 1 }}
+                        onClick={handleToggleVideo}
+                      />
+                    )}
+                  </div>
                 </div>
               )}
             </div>

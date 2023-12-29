@@ -57,16 +57,21 @@ const sendMessage = asyncHandler(async (req, res) => {
     });
 
     const messageSenderId = populatedMessage.msg.chatSenderId;
+    const messageChatSenderId = populatedMessage.msg.chatsender.id
 
     if (loggedUserId !== messageSenderId) {
       populatedMessage.msg.personId = messageSenderId;
       populatedMessage.msg.chatSenderId = loggedUserId;
+    }
+
+    if (loggedUserId !== messageChatSenderId) {
       [populatedMessage.msg.chatsender, populatedMessage.msg.receive] = [
         populatedMessage.msg.receive,
         populatedMessage.msg.chatsender,
       ];
-      await populatedMessage.save();
     }
+
+    await populatedMessage.save();
     return res.status(200).json(populatedMessage);
   } catch (error) {
     console.error(error);
@@ -107,15 +112,24 @@ const allMessages = asyncHandler(async (req, res) => {
 
     for (let i = 0; i < messages.length; i++) {
       const messageSenderId = messages[i].senderId;
-      if (messages[i].msg.chatSenderId !== messageSenderId) {
-        messages[i].msg.personId = messages[i].msg.chatSenderId;
-        messages[i].msg.chatSenderId = messageSenderId;
+      const chatMessSenderId = messages[i].msg.chatsender.id
+      const chatSenderPersonId =  messages[i].msg.chatSenderId
+
+      if (messageSenderId !== chatSenderPersonId) {
+        [messages[i].msg.chatSenderId, messages[i].msg.personId] = [
+          messages[i].msg.personId,
+          messages[i].msg.chatSenderId,
+        ];
+      }
+
+      if (messageSenderId !== chatMessSenderId) {
         [messages[i].msg.chatsender, messages[i].msg.receive] = [
           messages[i].msg.receive,
           messages[i].msg.chatsender,
         ];
-        await messages[i].save();
       }
+
+      await messages[i].save();
     }
 
     return res.json(messages);

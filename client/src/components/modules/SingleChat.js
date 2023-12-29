@@ -26,7 +26,6 @@ import { useNavigate } from "react-router-dom";
 // import peer from "../../service/peer";
 // import { IoCall } from "react-icons/io5";
 
-
 function SingleChat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -56,7 +55,6 @@ function SingleChat() {
   //       peer.peer.addTrack(track, myStream);
   //     }
   //   }
-  //   // localStorage.setItem("myStream", myStream);
   //   navigate("/video-call");
   // }, [myStream, navigate]);
 
@@ -70,7 +68,10 @@ function SingleChat() {
   //     setMyStream(stream);
   //     const ans = await peer.getAnswer(offer);
   //     videoSocket.emit("call:accepted", { to: from, ans });
+  //     localStorage.setItem("myStream", myStream);
   //   },
+
+  //   // eslint-disable-next-line
   //   [videoSocket]
   // );
 
@@ -91,26 +92,10 @@ function SingleChat() {
   //   const offer = await peer.getOffer();
   //   videoSocket.emit("user:call", { to: remoteSocketId, offer });
   //   setMyStream(stream);
-  //   // localStorage.setItem("remoteSocketId", remoteSocketId);
+  //   localStorage.setItem("remoteSocketId", remoteSocketId);
   //   navigate("/video-call");
+  //   // eslint-disable-next-line
   // }, [remoteSocketId, videoSocket, navigate]);
-
-  // const handleNegoNeeded = useCallback(async () => {
-  //   const offer = await peer.getOffer();
-  //   videoSocket.emit("peer:nego:needed", { to: remoteSocketId, offer });
-  // }, [remoteSocketId, videoSocket]);
-
-  // const handleNegoNeededIncoming = useCallback(
-  //   async ({ from, offer }) => {
-  //     const ans = await peer.getAnswer(offer);
-  //     videoSocket.emit("peer:nego:done", { to: from, ans });
-  //   },
-  //   [videoSocket]
-  // );
-
-  // const handleNegoNeededFinal = useCallback(async ({ from, ans }) => {
-  //   await peer.setLocalDescription(ans);
-  // }, []);
 
   const handleVideoCall = useCallback(() => {
     videoSocket.emit("room:join", {
@@ -224,6 +209,31 @@ function SingleChat() {
     }, timerLength);
   };
 
+  // const handleNegoNeeded = useCallback(async () => {
+  //   const offer = await peer.getOffer();
+  //   videoSocket.emit("peer:nego:needed", { to: remoteSocketId, offer });
+  // }, [remoteSocketId, videoSocket]);
+
+  // const handleNegoNeededIncoming = useCallback(
+  //   async ({ from, offer }) => {
+  //     const ans = await peer.getAnswer(offer);
+  //     videoSocket.emit("peer:nego:done", { to: from, ans });
+  //   },
+  //   [videoSocket]
+  // );
+
+  // const handleNegoNeededFinal = useCallback(async ({ from, ans }) => {
+  //   await peer.setLocalDescription(ans);
+  // }, []);
+
+  // const videoCallRoom = useCallback(() => {
+  //   videoSocket.emit("room:join", {
+  //     email: selectedChat.chatsender.email,
+  //     room: selectedChat.id,
+  //   });
+  //   navigate("/video-call");
+  // }, [videoSocket, selectedChat, navigate]);
+
   // useEffect(() => {
   //   peer.peer.addEventListener("negotiationneeded", handleNegoNeeded);
 
@@ -243,14 +253,14 @@ function SingleChat() {
   // useEffect(() => {
   //   videoSocket.on("user:joined", handleUserjoined);
   //   videoSocket.on("incoming:call", handleIncomingCall);
-  //   // videoSocket.on("call:accepted", handleCallAccepted);
+  //   videoSocket.on("call:accepted", handleCallAccepted);
 
   //   return () => {
   //     videoSocket.off("user:joined", handleUserjoined);
   //     videoSocket.off("incoming:call", handleIncomingCall);
-  //     // videoSocket.off("call:accepted", handleCallAccepted);
+  //     videoSocket.off("call:accepted", handleCallAccepted);
   //   };
-  // }, [videoSocket, handleUserjoined, handleIncomingCall]);
+  // }, [videoSocket, handleUserjoined, handleIncomingCall, handleCallAccepted]);
 
   useEffect(() => {
     socket.current = io(host);
@@ -279,6 +289,7 @@ function SingleChat() {
     <>
       {selectedChat ? (
         <>
+          {/* {handleVideoCall()} */}
           <Box
             fontSize={{ base: "23px", md: "30px" }}
             pb={3}
@@ -314,11 +325,12 @@ function SingleChat() {
                 justifyContent={{ base: "space-between" }}
                 alignItems="center"
               >
-                <FaVideo
-                  color="#19B300"
-                  cursor="pointer"
-                  onClick={() => handleVideoCall()}
-                />
+             
+                  <FaVideo
+                    color="#19B300"
+                    cursor="pointer"
+                    onClick={() => handleVideoCall()}
+                  />
 
                 <ProfileMenu
                   user={getSenderFull(user, [

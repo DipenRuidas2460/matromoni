@@ -8,7 +8,7 @@ const accessChat = asyncHandler(async (req, res) => {
   try {
     const { personId } = req.body;
 
-    if (!personId ) {
+    if (!personId) {
       return res.status(400).send({
         status: false,
         message: "personId not sent with request body!",
@@ -51,21 +51,23 @@ const accessChat = asyncHandler(async (req, res) => {
     });
 
     if (isChat.length > 0) {
-      let loggedUserId = req.person.id;
-      if (loggedUserId !== isChat[0].chatSenderId) {
-        isChat[0].chatSenderId = loggedUserId;
-        isChat[0].personId = personId;
+      const chatSenId = isChat[0].chatSenderId;
+      const chatSenObjId = isChat[0].chatsender.id;
 
+      if (req.person.id !== chatSenId) {
+        isChat[0].chatSenderId = req.person.id;
+        isChat[0].personId = personId;
+      }
+
+      if (req.person.id !== chatSenObjId) {
         [isChat[0].chatsender, isChat[0].receive] = [
           isChat[0].receive,
           isChat[0].chatsender,
         ];
-
-        await isChat[0].save();
       }
-      
-      return res.status(200).json({ isChat: isChat[0] });
+      await isChat[0].save();
 
+      return res.status(200).json({ isChat: isChat[0] });
     } else {
       const chatData = {
         chatSenderId: req.person.id,
@@ -93,6 +95,24 @@ const accessChat = asyncHandler(async (req, res) => {
           },
         ],
       });
+
+      const chatSenId = fullChat.chatSenderId;
+      const chatSenObjId = fullChat.chatsender.id;
+
+      if (req.person.id !== chatSenId) {
+        [fullChat.chatSenderId, fullChat.personId] = [
+          fullChat.personId,
+          fullChat.chatSenderId,
+        ];
+      }
+
+      if (req.person.id !== chatSenObjId) {
+        [fullChat.chatsender, fullChat.receive] = [
+          fullChat.receive,
+          fullChat.chatsender,
+        ];
+      }
+      await fullChat.save();
 
       return res
         .status(200)
@@ -139,18 +159,30 @@ const fetchChats = async (req, res) => {
     });
 
     if (results.length > 0) {
-      let loggedUserId = req.person.id;
-      if (loggedUserId !== results[0]?.chatSenderId) {
-        [results[0].chatSenderId, results[0].personId] = [
-          results[0].personId,
-          results[0].chatSenderId,
-        ];
-        [results[0].chatsender, results[0].receive] = [
-          results[0].receive,
-          results[0].chatsender,
-        ];
+      const loggedUserId = req.person.id;
+
+      for (let i = 0; i < results.length; i++) {
+        const chatSenId = results[i].chatSenderId;
+        const chatSenObjId = results[i].chatsender.id;
+
+        if (loggedUserId !== chatSenId) {
+          [results[i].chatSenderId, results[i].personId] = [
+            results[i].personId,
+            results[i].chatSenderId,
+          ];
+        }
+
+        if (loggedUserId !== chatSenObjId) {
+          [results[i].chatsender, results[i].receive] = [
+            results[i].receive,
+            results[i].chatsender,
+          ];
+        }
+
+        await results[i].save();
       }
-      await results[0].save();
+      return res.status(200).send({ status: true, result: results });
+    } else {
       return res.status(200).send({ status: true, result: results });
     }
   } catch (error) {

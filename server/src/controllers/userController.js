@@ -186,7 +186,7 @@ const login = asyncHandler(async (req, res) => {
       { expiresIn }
     );
     const data = {
-      userId: userDetails.id,
+      id: userDetails.id,
       firstName: userDetails.firstName,
       lastName: userDetails.lastName,
       lookingFor: userDetails.lookingFor,

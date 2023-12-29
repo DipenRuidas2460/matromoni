@@ -74,6 +74,10 @@ io.on("connection", (socket) => {
     io.to(to).emit("peer:nego:final", { from: socket.id, ans });
   });
 
+  socket.on("call:end", ({ to }) => {
+    io.to(to).emit("call:end");
+  });
+
   // -------------------------------- for One-to-one-chat ------------------------------------
 
   socket.on("setup", (userData) => {
@@ -105,7 +109,7 @@ io.on("connection", (socket) => {
       .emit("message recieved", newMessageRecieved);
   });
 
-  socket.off("setup", (userData) => {
+  socket.removeListener("setup", (userData) => {
     console.log("User Disconnected!");
     socket.leave(userData.id);
   });
