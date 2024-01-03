@@ -25,7 +25,7 @@ function UploadPhoto({ token }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [userProfilePhoto, setUserProfilePhoto] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  const host = `http://localhost:3010`;
+  const host = `http://192.168.1.19:3010`;
   const toast = useToast();
 
   const handleFileChange = (event, elementId) => {

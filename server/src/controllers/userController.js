@@ -257,7 +257,7 @@ const forgetPass = asyncHandler(async (req, res) => {
   </head>
   <body>
     <h3>Click this link for changing Password</h3>
-    <p>http://localhost:3000/resetpass/${token}</p>
+    <p>http://192.168.1.19:3000/resetpass/${token}</p>
   </body>
 </html>
 `,

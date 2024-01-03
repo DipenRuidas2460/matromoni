@@ -26,7 +26,7 @@ function PasswordReset() {
         password: emailForgotPass.current.value,
         token: localStorage.getItem("token"),
       };
-      const host = `http://localhost:3010`;
+      const host = `http://192.168.1.19:3010`;
       axios
         .post(`${host}/customer/resetpass`, mailInfo)
         .then((result) => {

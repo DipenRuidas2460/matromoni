@@ -26,7 +26,7 @@ function Dashboard({ token }) {
   const [userFullName, setUserFullName] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [userProfilePhoto, setUserProfilePhoto] = useState(null);
-  const host = `http://localhost:3010`;
+  const host = `http://192.168.1.19:3010`;
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 

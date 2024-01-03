@@ -11,7 +11,7 @@ import { Avatar, Tooltip } from "@chakra-ui/react";
 
 const ScrollableChat = ({ messages }) => {
   const { user } = ChatState();
-  const host = `http://localhost:3010`;
+  const host = `http://192.168.1.19:3010`;
 
   return (
     <ScrollableFeed>

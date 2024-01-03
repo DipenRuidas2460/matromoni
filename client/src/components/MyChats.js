@@ -9,7 +9,7 @@ function MyChats({ fetchAgain }) {
   const [loggedUser, setLoggedUser] = useState();
   const { selectedChat, setSelectedChat, chats, setChats } = ChatState();
   const toast = useToast();
-  const host = `http://localhost:3010`;
+  const host = `http://192.168.1.19:3010`;
 
   const fetchAllChats = async () => {
     try {

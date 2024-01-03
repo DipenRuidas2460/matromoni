@@ -66,7 +66,7 @@ const Middlebar = () => {
   } = useForm();
   const toast = useToast();
 
-  const host = `http://localhost:3010`;
+  const host = `http://192.168.1.19:3010`;
 
   const boxes1 = [
     { id: 1, name: "Myself" },

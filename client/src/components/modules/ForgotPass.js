@@ -10,7 +10,7 @@ function ForgotPass() {
 
   const handleForgotPass = () => {
     const mailInfo = { email: emailForgotPass.current.value };
-    const host = `http://localhost:3010`;
+    const host = `http://192.168.1.19:3010`;
     axios
       .post(`${host}/customer/forgotpass`, mailInfo)
       .then((result) => {

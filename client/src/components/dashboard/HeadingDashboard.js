@@ -16,7 +16,7 @@ function HeadingDashboard({token}) {
   const [userProfilePhoto, setUserProfilePhoto] = useState(null);
   const [selectedField, setSelectedField] = useState(null);
   const navigate = useNavigate();
-  const host = `http://localhost:3010`;
+  const host = `http://192.168.1.19:3010`;
   const toast = useToast();
   const fields = [
     "Dashboard",

@@ -38,7 +38,7 @@ function ChatPage({ token, userInfo }) {
   const { user, setSelectedChat, chats, setChats, selectedChat } = ChatState();
 
   const toast = useToast();
-  const host = `http://localhost:3010`;
+  const host = `http://192.168.1.19:3010`;
 
   const handleSearch = async () => {
     if (!search) {

@@ -36,7 +36,7 @@ function SingleChat() {
   // const [remoteSocketId, setRemoteSocketId] = useState(null);
   // const [myStream, setMyStream] = useState(null);
   const { user, selectedChat, setSelectedChat } = ChatState();
-  const host = `http://localhost:3010`;
+  const host = `http://192.168.1.19:3010`;
   const socket = useRef(null);
   const toast = useToast();
   const videoSocket = useSocket();

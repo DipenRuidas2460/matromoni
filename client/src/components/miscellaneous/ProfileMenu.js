@@ -17,7 +17,7 @@ import React from "react";
 
 function ProfileMenu({ user, children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const host = `http://localhost:3010`;
+  const host = `http://192.168.1.19:3010`;
   return (
     <>
       {children ? (
