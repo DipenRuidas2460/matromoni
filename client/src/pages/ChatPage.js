@@ -25,6 +25,7 @@ import Footer from "../components/miscellaneous/Footer";
 import axios from "axios";
 import UserListItems from "../components/userAvatar/UserListItems";
 import ChatLoading from "../components/modules/ChatLoading";
+import config from "../config/config";
 
 function ChatPage({ token, userInfo }) {
   const [search, setSearch] = useState("");
@@ -38,7 +39,7 @@ function ChatPage({ token, userInfo }) {
   const { user, setSelectedChat, chats, setChats, selectedChat } = ChatState();
 
   const toast = useToast();
-  const host = `http://192.168.1.19:3010`;
+  const host = config.BCKHOST;
 
   const handleSearch = async () => {
     if (!search) {

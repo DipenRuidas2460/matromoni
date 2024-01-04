@@ -23,6 +23,7 @@ import { FaVideo } from "react-icons/fa";
 import { useSocket } from "../../context/SocketProvider";
 import { IoSend } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import config from "../../config/config";
 // import peer from "../../service/peer";
 // import { IoCall } from "react-icons/io5";
 
@@ -36,7 +37,7 @@ function SingleChat() {
   // const [remoteSocketId, setRemoteSocketId] = useState(null);
   // const [myStream, setMyStream] = useState(null);
   const { user, selectedChat, setSelectedChat } = ChatState();
-  const host = `http://192.168.1.19:3010`;
+  const host = config.BCKHOST;
   const socket = useRef(null);
   const toast = useToast();
   const videoSocket = useSocket();
@@ -315,7 +316,7 @@ function SingleChat() {
                 <IoCall
                   color="#19B300"
                   cursor="pointer"
-                  onClick={() => sendStreams()}
+                  onClick={() => handleVideoCall()}
                 />
               )} */}
 
@@ -325,12 +326,11 @@ function SingleChat() {
                 justifyContent={{ base: "space-between" }}
                 alignItems="center"
               >
-             
-                  <FaVideo
-                    color="#19B300"
-                    cursor="pointer"
-                    onClick={() => handleVideoCall()}
-                  />
+                <FaVideo
+                  color="#19B300"
+                  cursor="pointer"
+                  onClick={() => handleVideoCall()}
+                />
 
                 <ProfileMenu
                   user={getSenderFull(user, [

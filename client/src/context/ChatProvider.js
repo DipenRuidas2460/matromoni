@@ -2,6 +2,7 @@ import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import config from "../config/config";
 
 const ChatContext = createContext();
 
@@ -12,7 +13,7 @@ function ChatProvider({ children }) {
   const [chats, setChats] = useState([]);
   const navigate = useNavigate();
   const toast = useToast();
-  const host = `http://192.168.1.19:3010`;
+  const host = config.BCKHOST;
   const token = localStorage.getItem("token");
 
   useEffect(() => {

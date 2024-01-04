@@ -20,13 +20,14 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import HeadingDashboard from "./HeadingDashboard";
+import config from "../../config/config";
 
 function Dashboard({ token }) {
   const navigate = useNavigate();
   const [userFullName, setUserFullName] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [userProfilePhoto, setUserProfilePhoto] = useState(null);
-  const host = `http://192.168.1.19:3010`;
+  const host = config.BCKHOST;
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 

@@ -8,10 +8,11 @@ import {
   isSameUser,
 } from "../../chatLogic/chatLogics";
 import { Avatar, Tooltip } from "@chakra-ui/react";
+import config from "../../config/config";
 
 const ScrollableChat = ({ messages }) => {
   const { user } = ChatState();
-  const host = `http://192.168.1.19:3010`;
+  const host = config.BCKHOST;
 
   return (
     <ScrollableFeed>

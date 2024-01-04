@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import usePasswordToggle from "../../hook/usePasswordToggle";
 import { useToast } from "@chakra-ui/react";
+import config from "../../config/config";
 
 function PasswordReset() {
   const [passwordInputType, ToggleIcon] = usePasswordToggle();
@@ -26,7 +27,7 @@ function PasswordReset() {
         password: emailForgotPass.current.value,
         token: localStorage.getItem("token"),
       };
-      const host = `http://192.168.1.19:3010`;
+      const host = config.BCKHOST;
       axios
         .post(`${host}/customer/resetpass`, mailInfo)
         .then((result) => {

@@ -10,7 +10,7 @@ class Peerservice {
             ],
           },
         ],
-        // sdpSemantics: "plan-b",
+        sdpSemantics: "plan-b",
       });
     }
   }
@@ -33,14 +33,14 @@ class Peerservice {
   }
 
   async setLocalDescription(ans) {
-    // if (
-    //   this.peer &&
-    //   this.peer.signalingState === "have-remote-offer" &&
-    //   this.peer.connectionState === "stable"
-    // ) {
-    //   await this.peer.setRemoteDescription(new RTCSessionDescription(ans));
-    // }
-    await this.peer.setRemoteDescription(new RTCSessionDescription(ans));
+    if (
+      this.peer.signalingState !== "have-remote-offer" &&
+      this.peer.connectionState !== "stable"
+    ) {
+      await this.peer.setRemoteDescription(new RTCSessionDescription(ans));
+    } else {
+      await this.peer.setRemoteDescription(new RTCSessionDescription(ans));
+    }
   }
 }
 

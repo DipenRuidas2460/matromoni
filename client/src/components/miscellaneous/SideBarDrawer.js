@@ -11,10 +11,11 @@ import {
 import React from "react";
 import { ChatState } from "../../context/ChatProvider";
 import ProfileMenu from "./ProfileMenu";
+import config from "../../config/config";
 
 function SideBarDrawer() {
   const { user } = ChatState();
-  const host = `http://192.168.1.19:3010`;
+  const host = config.BCKHOST;
 
   return (
     <>

@@ -14,10 +14,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
+import config from "../../config/config";
 
 function ProfileMenu({ user, children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const host = `http://192.168.1.19:3010`;
+  const host = config.BCKHOST;
   return (
     <>
       {children ? (
@@ -39,7 +40,7 @@ function ProfileMenu({ user, children }) {
             display="flex"
             justifyContent="center"
           >
-            {`${user.firstName} ${user.lastName}`}
+            {`${user?.firstName} ${user?.lastName}`}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody
@@ -52,11 +53,11 @@ function ProfileMenu({ user, children }) {
               borderRadius="full"
               boxSize="150px"
               src={
-                user.photo != null
+                user?.photo != null
                   ? `${host}/assets/image/${user.id}_profile.jpg`
                   : ""
               }
-              alt={`${user.firstName} ${user.lastName}`}
+              alt={`${user?.firstName} ${user?.lastName}`}
             />
             <Text
               fontSize={{ base: "28px", mid: "30px" }}

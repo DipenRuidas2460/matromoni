@@ -14,6 +14,8 @@ import {
   FaVideoSlash,
 } from "react-icons/fa";
 import { MdCallEnd } from "react-icons/md";
+import { Button } from "@chakra-ui/react";
+import { ChatState } from "../../context/ChatProvider";
 
 function RoomPage({ token }) {
   const navigate = useNavigate();
@@ -23,34 +25,40 @@ function RoomPage({ token }) {
   const [remoteStream, setRemoteStream] = useState(null);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [isVideoMuted, setIsVideoMuted] = useState(false);
+  const { user } = ChatState();
 
   const handleUserjoined = useCallback(({ email, id }) => {
     setRemoteSocketId(id);
   }, []);
 
   const sendStreams = useCallback(() => {
-    for (const track of myStream.getTracks()) {
-      const isTrackAlreadyAdded = peer.peer
-        .getSenders()
-        .some((sender) => sender.track === track);
-      if (!isTrackAlreadyAdded) {
-        peer.peer.addTrack(track, myStream);
-      }
+    if (myStream) {
+      myStream.stream.getTracks().forEach((track) => {
+        if (track) {
+          const isTrackAlreadyAdded = peer.peer
+            .getSenders()
+            .some((sender) => sender.track === track);
+
+          if (!isTrackAlreadyAdded) {
+            peer.peer.addTrack(track, myStream.stream);
+          }
+        }
+      });
     }
   }, [myStream]);
 
   const handleIncomingCall = useCallback(
     async ({ from, offer }) => {
       setRemoteSocketId(from);
-      const stream = await navigator?.mediaDevices?.getUserMedia({
+      const stream = await navigator.mediaDevices.getUserMedia({
         audio: true,
         video: true,
       });
-      setMyStream(stream);
+      setMyStream({ stream, name: `${user.firstName} ${user.lastName}` });
       const ans = await peer.getAnswer(offer);
       socket.emit("call:accepted", { to: from, ans });
     },
-    [socket]
+    [socket, user]
   );
 
   const handleCallAccepted = useCallback(
@@ -62,18 +70,24 @@ function RoomPage({ token }) {
   );
 
   const handleCallUser = useCallback(async () => {
-    const stream = await navigator?.mediaDevices?.getUserMedia({
-      audio: true,
-      video: true,
-    });
+    try {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video: true,
+        });
 
-    const offer = await peer.getOffer();
-    socket.emit("user:call", { to: remoteSocketId, offer });
-    setMyStream(stream);
-  }, [remoteSocketId, socket]);
+        const offer = await peer.getOffer();
+        socket.emit("user:call", { to: remoteSocketId, offer });
+        setMyStream({ stream, name: `${user.firstName} ${user.lastName}` });
+      }
+    } catch (err) {
+      console.log("err:-", err);
+    }
+  }, [remoteSocketId, socket, user]);
 
   const handleEndCall = useCallback(() => {
-    myStream?.getTracks().forEach((track) => track.stop());
+    myStream?.stream.getTracks().forEach((track) => track.stop());
     for (const sender of peer.peer.getSenders()) {
       peer.peer.removeTrack(sender);
     }
@@ -111,7 +125,7 @@ function RoomPage({ token }) {
 
   const handleToggleAudio = useCallback(() => {
     setIsAudioMuted((prevIsAudioMuted) => {
-      myStream?.getAudioTracks().forEach((track) => {
+      myStream?.stream.getAudioTracks().forEach((track) => {
         track.enabled = prevIsAudioMuted;
       });
       return !prevIsAudioMuted;
@@ -120,7 +134,7 @@ function RoomPage({ token }) {
 
   const handleToggleVideo = useCallback(() => {
     setIsVideoMuted((prevIsVideoMuted) => {
-      myStream?.getVideoTracks().forEach((track) => {
+      myStream?.stream.getVideoTracks().forEach((track) => {
         track.enabled = prevIsVideoMuted;
       });
       return !prevIsVideoMuted;
@@ -204,13 +218,13 @@ function RoomPage({ token }) {
                 ) : (
                   <div>
                     <h4>Calling</h4>
-                    <MdCallEnd
-                      fontSize="1.8em"
-                      color="red"
-                      cursor="pointer"
-                      style={{ position: "absolute", bottom: "10%" }}
+                    <Button
+                      position="absolute"
+                      bottom="10%"
                       onClick={() => handleEndCall()}
-                    />
+                    >
+                      <MdCallEnd fontSize="1.5em" color="red" />
+                    </Button>
                   </div>
                 )}
                 <div
@@ -223,13 +237,10 @@ function RoomPage({ token }) {
                     marginTop: "10px",
                   }}
                 >
-                  {myStream && (
-                    <IoCall
-                      fontSize="1.8em"
-                      color="#19B300"
-                      cursor="pointer"
-                      onClick={() => sendStreams()}
-                    />
+                  {myStream?.stream && (
+                    <Button marginRight="10px" onClick={() => sendStreams()}>
+                      <IoCall fontSize="1.5em" color="#19B300" />
+                    </Button>
                   )}
 
                   {remoteSocketId && (
@@ -238,27 +249,25 @@ function RoomPage({ token }) {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
-                        width: "63%",
+                        width: "83%",
                       }}
                     >
-                      <FaVideo
-                        fontSize="1.8em"
-                        color="#19B300"
-                        cursor="pointer"
+                      <Button
+                        marginRight="5px"
+                        isDisabled={myStream?.stream ? true : false}
                         onClick={() => handleCallUser()}
-                      />
-                      <MdCallEnd
-                        fontSize="1.8em"
-                        color="red"
-                        cursor="pointer"
-                        onClick={() => handleEndCall()}
-                      />
+                      >
+                        <FaVideo fontSize="1.5em" color="#19B300" />
+                      </Button>
+                      <Button onClick={() => handleEndCall()}>
+                        <MdCallEnd fontSize="1.5em" color="red" />
+                      </Button>
                     </div>
                   )}
                 </div>
               </div>
 
-              {myStream && (
+              {myStream?.stream && (
                 <div
                   style={{
                     width: "100%",
@@ -277,7 +286,7 @@ function RoomPage({ token }) {
                     height="20vh"
                     width="40%"
                     muted
-                    url={myStream}
+                    url={myStream?.stream}
                   />
                 </div>
               )}
@@ -306,7 +315,7 @@ function RoomPage({ token }) {
                       alignItems: "center",
                       justifyContent: "space-between",
                       zIndex: 1,
-                      width: "15%",
+                      width: "30%",
                       position: "absolute",
                       bottom: "1%",
                     }}
@@ -316,22 +325,17 @@ function RoomPage({ token }) {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
+                        marginRight: "10px",
                       }}
                     >
                       {isAudioMuted ? (
-                        <FaMicrophoneSlash
-                          fontSize="1.5em"
-                          color="#FF0000"
-                          cursor="pointer"
-                          onClick={handleToggleAudio}
-                        />
+                        <Button onClick={handleToggleAudio}>
+                          <FaMicrophoneSlash fontSize="1em" color="#FF0000" />
+                        </Button>
                       ) : (
-                        <FaMicrophone
-                          fontSize="1.5em"
-                          color="blue"
-                          cursor="pointer"
-                          onClick={handleToggleAudio}
-                        />
+                        <Button onClick={handleToggleAudio}>
+                          <FaMicrophone fontSize="1em" color="blue" />
+                        </Button>
                       )}
                     </div>
 
@@ -343,19 +347,13 @@ function RoomPage({ token }) {
                       }}
                     >
                       {isVideoMuted ? (
-                        <FaVideoSlash
-                          fontSize="1.5em"
-                          color="#FF0000"
-                          cursor="pointer"
-                          onClick={handleToggleVideo}
-                        />
+                        <Button onClick={handleToggleVideo}>
+                          <FaVideoSlash fontSize="1em" color="#FF0000" />
+                        </Button>
                       ) : (
-                        <FaVideo
-                          fontSize="1.5em"
-                          color="blue"
-                          cursor="pointer"
-                          onClick={handleToggleVideo}
-                        />
+                        <Button onClick={handleToggleVideo}>
+                          <FaVideo fontSize="1em" color="blue" />
+                        </Button>
                       )}
                     </div>
                   </div>

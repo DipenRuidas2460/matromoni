@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
+import config from "../../config/config";
 
 function ForgotPass() {
   const emailForgotPass = useRef();
@@ -10,7 +11,7 @@ function ForgotPass() {
 
   const handleForgotPass = () => {
     const mailInfo = { email: emailForgotPass.current.value };
-    const host = `http://192.168.1.19:3010`;
+    const host = config.BCKHOST;
     axios
       .post(`${host}/customer/forgotpass`, mailInfo)
       .then((result) => {

@@ -27,6 +27,7 @@ import { Link } from "react-router-dom";
 import usePasswordToggle from "../../hook/usePasswordToggle";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import config from "../../config/config";
 
 const Middlebar = () => {
   const [isSelected1, setIsSelected1] = useState(null);
@@ -66,7 +67,7 @@ const Middlebar = () => {
   } = useForm();
   const toast = useToast();
 
-  const host = `http://192.168.1.19:3010`;
+  const host = config.BCKHOST;
 
   const boxes1 = [
     { id: 1, name: "Myself" },

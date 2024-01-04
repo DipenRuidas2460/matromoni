@@ -1,8 +1,9 @@
 import { Avatar, Box, Text } from "@chakra-ui/react";
 import React from "react";
+import config from "../../config/config";
 
 function UserListItems({ u, handleFunction }) {
-  const host = `http://192.168.1.19:3010`;
+  const host = config.BCKHOST;
   return (
     <Box
       onClick={handleFunction}

@@ -19,13 +19,14 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
+import config from "../../config/config";
 
 function UploadPhoto({ token }) {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [userProfilePhoto, setUserProfilePhoto] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  const host = `http://192.168.1.19:3010`;
+  const host = config.BCKHOST;
   const toast = useToast();
 
   const handleFileChange = (event, elementId) => {

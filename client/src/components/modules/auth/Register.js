@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import usePasswordToggle from "../../../hook/usePasswordToggle";
 import { useToast } from "@chakra-ui/react";
+import config from "../../../config/config";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -20,7 +21,7 @@ function Register() {
 
   const navigate = useNavigate();
   const toast = useToast();
-  const host = `http://localhost:3010`;
+  const host = config.BCKHOST;
 
   const handleChange = (e) => {
     const { name, value } = e.target;

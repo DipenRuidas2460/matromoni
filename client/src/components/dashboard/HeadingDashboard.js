@@ -11,13 +11,17 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
+import config from "../../config/config";
+import ProfileMenu from "../miscellaneous/ProfileMenu";
+import { ChatState } from "../../context/ChatProvider";
 
-function HeadingDashboard({token}) {
+function HeadingDashboard({ token }) {
   const [userProfilePhoto, setUserProfilePhoto] = useState(null);
   const [selectedField, setSelectedField] = useState(null);
   const navigate = useNavigate();
-  const host = `http://192.168.1.19:3010`;
+  const host = config.BCKHOST;
   const toast = useToast();
+  const { user } = ChatState();
   const fields = [
     "Dashboard",
     "Profile",
@@ -98,7 +102,7 @@ function HeadingDashboard({token}) {
           <button type="button" className="dashboard-button">
             UPGRADE PLAN
           </button>
-          <p style={{cursor:"pointer"}}>Help</p>
+          <p style={{ cursor: "pointer" }}>Help</p>
           <div className="avatar-menu">
             <Menu>
               <MenuButton></MenuButton>
@@ -118,6 +122,9 @@ function HeadingDashboard({token}) {
                 />
               </MenuButton>
               <MenuList h="10px" w="10px">
+                <ProfileMenu user={user}>
+                  <MenuItem>My Profile</MenuItem>
+                </ProfileMenu>
                 <MenuItem onClick={handleLogOut} fontSize="14px">
                   Log Out
                 </MenuItem>

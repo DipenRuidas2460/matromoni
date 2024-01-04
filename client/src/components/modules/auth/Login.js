@@ -3,13 +3,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import usePasswordToggle from "../../../hook/usePasswordToggle";
 import { useToast } from "@chakra-ui/react";
+import config from "../../../config/config";
 
 function Login() {
   const [input, setInput] = useState({ email: "", password: "" });
   const [passwordInputType, ToggleIcon] = usePasswordToggle();
   const navigate = useNavigate();
   const toast = useToast();
-  const host = `http://192.168.1.19:3010`;
+  const host = config.BCKHOST;
 
   const handleSubmit = (e) => {
     e.preventDefault();

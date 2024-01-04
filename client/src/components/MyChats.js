@@ -4,12 +4,13 @@ import { ChatState } from "../context/ChatProvider";
 import axios from "axios";
 import ChatLoading from "./modules/ChatLoading";
 import { getSender } from "../chatLogic/chatLogics";
+import config from "../config/config";
 
 function MyChats({ fetchAgain }) {
   const [loggedUser, setLoggedUser] = useState();
   const { selectedChat, setSelectedChat, chats, setChats } = ChatState();
   const toast = useToast();
-  const host = `http://192.168.1.19:3010`;
+  const host = config.BCKHOST;
 
   const fetchAllChats = async () => {
     try {
