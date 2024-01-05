@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import usePasswordToggle from "../../../hook/usePasswordToggle";
 import { useToast } from "@chakra-ui/react";
 import config from "../../../config/config";
+// import { useSocket } from "../../../context/SocketProvider";
+// import { ChatState } from "../../../context/ChatProvider";
+
 
 function Login() {
   const [input, setInput] = useState({ email: "", password: "" });
@@ -11,6 +14,8 @@ function Login() {
   const navigate = useNavigate();
   const toast = useToast();
   const host = config.BCKHOST;
+  // const { user } = ChatState();
+  // const videoSocket = useSocket();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,6 +38,12 @@ function Login() {
           // navigate("/new-chats");
           // navigate("/lobby");
           // navigate("/dashboard");
+
+          // videoSocket.emit("room:join", {
+          //   email: user.email,
+          //   room: selectedChat.id,
+          // });
+
           navigate("/upload-photo");
           window.location.reload()
         } else {

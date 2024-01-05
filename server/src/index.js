@@ -58,6 +58,10 @@ io.on("connection", (socket) => {
     io.to(socket.id).emit("room:join", data);
   });
 
+  // socket.on("video-call", ({ email, to}) => {
+  //   io.to(to).emit("video-call-receive", { from: socket.id });
+  // });
+
   socket.on("user:call", ({ to, offer }) => {
     io.to(to).emit("incoming:call", { from: socket.id, offer });
   });
@@ -74,6 +78,16 @@ io.on("connection", (socket) => {
     io.to(to).emit("peer:nego:final", { from: socket.id, ans });
   });
 
+
+
+  socket.on("join-video-call", ({ to }) => {
+    io.to(to).emit("join-video-call");
+  });
+
+  socket.on("cancel-video-call", ({ to }) => {
+    io.to(to).emit("cancel-video-call");
+  });
+
   socket.on("call:end", ({ to }) => {
     io.to(to).emit("call:end");
   });
@@ -85,13 +99,20 @@ io.on("connection", (socket) => {
     socket.emit("connected");
   });
 
-  socket.on("join chat", (room) => {
+  socket.on("join chat", ({sender, receiver, room}) => {
     socket.join(room);
     socket.emit("room joined", room);
   });
 
-  socket.on("typing", (room) => {
-    socket.in(room).emit("typing");
+
+  socket.on("video-call-request", ({ sender, receiver }) => {
+    console.log(sender)
+    // io.to(to).emit("video-call-request", { from: socket.id, email: email });
+    socket.emit('video-call-request', {sender: sender, receiver: receiver})
+  });
+
+  socket.on("typing", ({room, receiver}) => {
+    socket.in(room).emit("typing", {room: room, receiver: receiver});
   });
   socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 

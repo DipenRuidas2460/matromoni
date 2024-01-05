@@ -21,6 +21,9 @@ const Message = sequelize.define(
       allowNull: false,
       trim: true,
     },
+    // contentType:{
+    //   type: DataTypes.INTEGER,
+    // },
     chatId: {
       type: DataTypes.INTEGER,
     },

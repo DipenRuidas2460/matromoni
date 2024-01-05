@@ -9,7 +9,6 @@ import PasswordReset from "./components/modules/PasswordReset";
 import ChatPage from "./pages/ChatPage";
 import SuccessfulPasswordChangeMsg from "./components/modules/SuccessfulPasswordChangeMsg";
 import HomePage from "./pages/HomePage";
-import LobbyScreen from "./components/screens/LobbyScreen";
 import RoomPage from "./components/screens/RoomPage";
 import Login from "./components/modules/auth/Login";
 import Dashboard from "./components/dashboard/Dashboard";
@@ -69,11 +68,6 @@ function App() {
                 exact
                 path="/Dashboard"
                 element={<Dashboard token={token} />}
-              />
-              <Route
-                exact
-                path="/lobby"
-                element={<LobbyScreen token={token} />}
               />
               <Route
                 exact

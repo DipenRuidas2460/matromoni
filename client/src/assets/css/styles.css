@@ -11812,6 +11812,25 @@ body {
   word-wrap: break-word
 }
 
+.notification{
+  height: 30vh;
+  display: flex;
+  color:#fff;
+  background-color: rgba(24, 206, 15, 0.8);
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  z-index: 1;
+  border-radius: 10px;
+}
+
+.notification-button{
+  width:100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
 @media (max-width: 300px) {
   .available-text{
     width: 37%;

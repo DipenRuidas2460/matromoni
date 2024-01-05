@@ -24,8 +24,6 @@ import { useSocket } from "../../context/SocketProvider";
 import { IoSend } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import config from "../../config/config";
-// import peer from "../../service/peer";
-// import { IoCall } from "react-icons/io5";
 
 function SingleChat() {
   const [messages, setMessages] = useState([]);
@@ -34,8 +32,8 @@ function SingleChat() {
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
-  // const [remoteSocketId, setRemoteSocketId] = useState(null);
-  // const [myStream, setMyStream] = useState(null);
+  const [showVideoCallNotification, setShowVideoCallNotification] =
+    useState(false);
   const { user, selectedChat, setSelectedChat } = ChatState();
   const host = config.BCKHOST;
   const socket = useRef(null);
@@ -43,68 +41,30 @@ function SingleChat() {
   const videoSocket = useSocket();
   const navigate = useNavigate();
 
-  // const handleUserjoined = useCallback(({ email, id }) => {
-  //   setRemoteSocketId(id);
-  // }, []);
-
-  // const sendStreams = useCallback(() => {
-  //   for (const track of myStream.getTracks()) {
-  //     const isTrackAlreadyAdded = peer.peer
-  //       .getSenders()
-  //       .some((sender) => sender.track === track);
-  //     if (!isTrackAlreadyAdded) {
-  //       peer.peer.addTrack(track, myStream);
-  //     }
-  //   }
-  //   navigate("/video-call");
-  // }, [myStream, navigate]);
-
-  // const handleIncomingCall = useCallback(
-  //   async ({ from, offer }) => {
-  //     setRemoteSocketId(from);
-  //     const stream = await navigator.mediaDevices.getUserMedia({
-  //       audio: true,
-  //       video: true,
-  //     });
-  //     setMyStream(stream);
-  //     const ans = await peer.getAnswer(offer);
-  //     videoSocket.emit("call:accepted", { to: from, ans });
-  //     localStorage.setItem("myStream", myStream);
-  //   },
-
-  //   // eslint-disable-next-line
-  //   [videoSocket]
-  // );
-
-  // const handleCallAccepted = useCallback(
-  //   async ({ from, ans }) => {
-  //     peer.setLocalDescription(ans);
-  //     sendStreams();
-  //   },
-  //   [sendStreams]
-  // );
-
-  // const handleCallUser = useCallback(async () => {
-  //   const stream = await navigator.mediaDevices.getUserMedia({
-  //     audio: true,
-  //     video: true,
-  //   });
-
-  //   const offer = await peer.getOffer();
-  //   videoSocket.emit("user:call", { to: remoteSocketId, offer });
-  //   setMyStream(stream);
-  //   localStorage.setItem("remoteSocketId", remoteSocketId);
-  //   navigate("/video-call");
-  //   // eslint-disable-next-line
-  // }, [remoteSocketId, videoSocket, navigate]);
-
   const handleVideoCall = useCallback(() => {
     videoSocket.emit("room:join", {
       email: selectedChat.chatsender.email,
       room: selectedChat.id,
     });
+
+    videoSocket.emit("video-call-request", {
+      sender: selectedChat?.chatsender.id,
+      receiver: selectedChat?.receive.id,
+    });
+    // setShowVideoCallNotification(true);
+    // navigate("/video-call");
+  }, [videoSocket, selectedChat]);
+
+  const handleJoinVideoCall = () => {
+    videoSocket.emit("join-video-call", { to: selectedChat?.receive.email });
+    setShowVideoCallNotification(false);
     navigate("/video-call");
-  }, [videoSocket, selectedChat, navigate]);
+  };
+
+  const handleCancelVideoCall = useCallback(() => {
+    videoSocket.emit("cancel-video-call", { to: selectedChat?.receive.email });
+    setShowVideoCallNotification(false);
+  }, [videoSocket, selectedChat]);
 
   const fetchMessages = async () => {
     try {
@@ -128,7 +88,11 @@ function SingleChat() {
 
       setMessages(data);
       setloading(false);
-      socket.current.emit("join chat", selectedChat.id);
+      socket.current.emit("join chat", {
+        sender: selectedChat?.chatsender.id,
+        receiver: selectedChat?.receive.id,
+        room: selectedChat?.id
+      });
     } catch (err) {
       console.log(err);
       toast({
@@ -192,7 +156,7 @@ function SingleChat() {
 
     if (!typing) {
       setTyping(true);
-      socket.current.emit("typing", selectedChat.id);
+      socket.current.emit("typing", {room: selectedChat.id, receiver: selectedChat?.receive.id});
     }
 
     // Debouncing:--
@@ -210,65 +174,26 @@ function SingleChat() {
     }, timerLength);
   };
 
-  // const handleNegoNeeded = useCallback(async () => {
-  //   const offer = await peer.getOffer();
-  //   videoSocket.emit("peer:nego:needed", { to: remoteSocketId, offer });
-  // }, [remoteSocketId, videoSocket]);
-
-  // const handleNegoNeededIncoming = useCallback(
-  //   async ({ from, offer }) => {
-  //     const ans = await peer.getAnswer(offer);
-  //     videoSocket.emit("peer:nego:done", { to: from, ans });
-  //   },
-  //   [videoSocket]
-  // );
-
-  // const handleNegoNeededFinal = useCallback(async ({ from, ans }) => {
-  //   await peer.setLocalDescription(ans);
-  // }, []);
-
-  // const videoCallRoom = useCallback(() => {
-  //   videoSocket.emit("room:join", {
-  //     email: selectedChat.chatsender.email,
-  //     room: selectedChat.id,
-  //   });
-  //   navigate("/video-call");
-  // }, [videoSocket, selectedChat, navigate]);
-
-  // useEffect(() => {
-  //   peer.peer.addEventListener("negotiationneeded", handleNegoNeeded);
-
-  //   return () => {
-  //     peer.peer.removeEventListener("negotiationneeded", handleNegoNeeded);
-  //   };
-  // }, [handleNegoNeeded]);
-
-  // useEffect(() => {
-  //   peer.peer.addEventListener("track", async (ev) => {
-  //     const remoteStm = ev.streams;
-  //     setRemoteStream(remoteStm[0]);
-  //   });
-  //   // eslint-disable-next-line
-  // }, []);
-
-  // useEffect(() => {
-  //   videoSocket.on("user:joined", handleUserjoined);
-  //   videoSocket.on("incoming:call", handleIncomingCall);
-  //   videoSocket.on("call:accepted", handleCallAccepted);
-
-  //   return () => {
-  //     videoSocket.off("user:joined", handleUserjoined);
-  //     videoSocket.off("incoming:call", handleIncomingCall);
-  //     videoSocket.off("call:accepted", handleCallAccepted);
-  //   };
-  // }, [videoSocket, handleUserjoined, handleIncomingCall, handleCallAccepted]);
+  useEffect(() => {
+    videoSocket.on("video-call-request", ({ sender, receiver }) => {
+      console.log("New Call Request", sender);
+      setShowVideoCallNotification(true);
+    });
+  }, [videoSocket]);
 
   useEffect(() => {
     socket.current = io(host);
     socket.current.emit("setup", user);
     socket.current.on("connected", () => setSocketConnected(true));
-    socket.current.on("typing", () => setIsTyping(true));
+    socket.current.on("typing", ({room, receiver}) => {
+      console.log(selectedChat)
+      if(room === selectedChat?.id && receiver === selectedChat?.sender.id){
+        setIsTyping(true)
+      }
+    });
     socket.current.on("stop typing", () => setIsTyping(false));
+    // socket.current.on("video-call-request", () => console.log('aaaaaaa'));
+
     return () => {
       socket.current.off("setup", user);
     };
@@ -290,7 +215,6 @@ function SingleChat() {
     <>
       {selectedChat ? (
         <>
-          {/* {handleVideoCall()} */}
           <Box
             fontSize={{ base: "23px", md: "30px" }}
             pb={3}
@@ -306,19 +230,12 @@ function SingleChat() {
               icon={<ArrowBackIcon />}
               onClick={() => setSelectedChat("")}
             />
+
             <>
               {getSender(user, [
                 selectedChat?.chatsender,
                 selectedChat?.receive,
               ])}
-
-              {/* {myStream && (
-                <IoCall
-                  color="#19B300"
-                  cursor="pointer"
-                  onClick={() => handleVideoCall()}
-                />
-              )} */}
 
               <Box
                 width="34%"
@@ -341,6 +258,7 @@ function SingleChat() {
               </Box>
             </>
           </Box>
+
           <Box
             display="flex"
             flexDir="column"
@@ -363,6 +281,30 @@ function SingleChat() {
             ) : (
               <div className="messages">
                 <ScrollableChat messages={messages} />
+              </div>
+            )}
+
+            {showVideoCallNotification && (
+              <div className="notification">
+                <p
+                  style={{ marginBottom: "10px", marginTop: "10px" }}
+                >{`Video Call Coming From ${selectedChat?.chatsender.firstName} ${selectedChat?.chatsender.lastName}!`}</p>
+                <div className="notification-button">
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleJoinVideoCall}
+                  >
+                    Join
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={handleCancelVideoCall}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             )}
 

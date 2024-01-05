@@ -16,6 +16,7 @@ import {
 import { MdCallEnd } from "react-icons/md";
 import { Button } from "@chakra-ui/react";
 import { ChatState } from "../../context/ChatProvider";
+import { getSender } from "../../chatLogic/chatLogics";
 
 function RoomPage({ token }) {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ function RoomPage({ token }) {
   const [remoteStream, setRemoteStream] = useState(null);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [isVideoMuted, setIsVideoMuted] = useState(false);
-  const { user } = ChatState();
+  const { user, selectedChat } = ChatState();
 
   const handleUserjoined = useCallback(({ email, id }) => {
     setRemoteSocketId(id);
@@ -40,7 +41,13 @@ function RoomPage({ token }) {
             .some((sender) => sender.track === track);
 
           if (!isTrackAlreadyAdded) {
-            peer.peer.addTrack(track, myStream.stream);
+            const trackWithMetadata = {
+              track: track,
+              metadata: {
+                name: myStream.name,
+              },
+            };
+            peer.peer.addTrack(trackWithMetadata.track, myStream.stream);
           }
         }
       });
@@ -144,7 +151,13 @@ function RoomPage({ token }) {
   useEffect(() => {
     peer.peer.addEventListener("track", async (ev) => {
       const remoteStm = ev.streams;
-      setRemoteStream(remoteStm[0]);
+      setRemoteStream({
+        stream: remoteStm[0],
+        name: getSender(user, [
+          selectedChat?.chatsender,
+          selectedChat?.receive,
+        ]),
+      });
     });
     // eslint-disable-next-line
   }, []);
@@ -291,7 +304,7 @@ function RoomPage({ token }) {
                 </div>
               )}
 
-              {remoteStream && (
+              {remoteStream?.stream && (
                 <div
                   style={{
                     position: "absolute",
@@ -302,12 +315,24 @@ function RoomPage({ token }) {
                     alignItems: "center",
                   }}
                 >
+                  <h5
+                    style={{
+                      color: "yellow",
+                      position: "absolute",
+                      zIndex: 1,
+                      bottom: "15%",
+                      transform:"translate(70%, 0%)"
+                    }}
+                  >
+                    {remoteStream?.name}
+                  </h5>
+
                   <ReactPlayer
                     playing
                     muted
                     height="70vh"
                     width="100%"
-                    url={remoteStream}
+                    url={remoteStream?.stream}
                   />
                   <div
                     style={{
