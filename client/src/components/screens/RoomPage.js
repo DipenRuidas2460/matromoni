@@ -168,6 +168,7 @@ function RoomPage({ token }) {
     socket.on("call:accepted", handleCallAccepted);
     socket.on("peer:nego:needed", handleNegoNeededIncoming);
     socket.on("peer:nego:final", handleNegoNeededFinal);
+    socket.on("call:end", handleEndCall);
 
     return () => {
       socket.off("user:joined", handleUserjoined);
@@ -175,6 +176,7 @@ function RoomPage({ token }) {
       socket.off("call:accepted", handleCallAccepted);
       socket.off("peer:nego:needed", handleNegoNeededIncoming);
       socket.off("peer:nego:final", handleNegoNeededFinal);
+      socket.off("call:end", handleEndCall);
     };
   }, [
     socket,
@@ -183,6 +185,7 @@ function RoomPage({ token }) {
     handleCallAccepted,
     handleNegoNeededIncoming,
     handleNegoNeededFinal,
+    handleEndCall
   ]);
 
   return (

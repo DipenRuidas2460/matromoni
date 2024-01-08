@@ -58,9 +58,11 @@ io.on("connection", (socket) => {
     io.to(socket.id).emit("room:join", data);
   });
 
-  // socket.on("video-call", ({ email, to}) => {
-  //   io.to(to).emit("video-call-receive", { from: socket.id });
-  // });
+  socket.on("video-request", ({ room, receiver }) => {
+    socket
+      .in(room)
+      .emit("video-call-request", { room: room, receiver: receiver });
+  });
 
   socket.on("user:call", ({ to, offer }) => {
     io.to(to).emit("incoming:call", { from: socket.id, offer });
@@ -78,14 +80,12 @@ io.on("connection", (socket) => {
     io.to(to).emit("peer:nego:final", { from: socket.id, ans });
   });
 
-
-
-  socket.on("join-video-call", ({ to }) => {
-    io.to(to).emit("join-video-call");
+  socket.on("join-video-call", ({ room, sender, receiver }) => {
+    io.to(receiver).emit("join-video-call", { room, sender, receiver });
   });
 
-  socket.on("cancel-video-call", ({ to }) => {
-    io.to(to).emit("cancel-video-call");
+  socket.on("cancel-video-call", ({ room, sender, receiver }) => {
+    io.to(receiver).emit("cancel-video-call", { room, sender, receiver });
   });
 
   socket.on("call:end", ({ to }) => {
@@ -99,35 +99,26 @@ io.on("connection", (socket) => {
     socket.emit("connected");
   });
 
-  socket.on("join chat", ({sender, receiver, room}) => {
+  socket.on("join chat", ({ sender, receiver, room }) => {
     socket.join(room);
     socket.emit("room joined", room);
   });
 
-
-  socket.on("video-call-request", ({ sender, receiver }) => {
-    console.log(sender)
-    // io.to(to).emit("video-call-request", { from: socket.id, email: email });
-    socket.emit('video-call-request', {sender: sender, receiver: receiver})
+  socket.on("typing", ({ room, receiver }) => {
+    socket.in(room).emit("typing", { room: room, receiver: receiver });
   });
 
-  socket.on("typing", ({room, receiver}) => {
-    socket.in(room).emit("typing", {room: room, receiver: receiver});
+  socket.on("stop typing", ({ room, receiver }) => {
+    socket.in(room).emit("stop typing", { room: room, receiver: receiver });
   });
-  socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
-  socket.on("new message", (newMessageRecieved) => {
-    if (newMessageRecieved.msg.personId === newMessageRecieved.senderId) return;
-    if (
-      !newMessageRecieved.msg.chatSenderId &&
-      !newMessageRecieved.msg.personId
-    ) {
+  socket.on("new message", (data) => {
+    if (data.msg.personId === data.senderId) return;
+    if (!data.msg.chatSenderId && !data.msg.personId) {
       return console.log("Message Sender or chat sender not defined!");
     }
 
-    socket
-      .in(newMessageRecieved.chatId)
-      .emit("message recieved", newMessageRecieved);
+    socket.in(data.chatId).emit("message recieved", data);
   });
 
   socket.removeListener("setup", (userData) => {

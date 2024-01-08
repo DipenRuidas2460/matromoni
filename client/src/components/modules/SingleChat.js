@@ -41,30 +41,42 @@ function SingleChat() {
   const videoSocket = useSocket();
   const navigate = useNavigate();
 
+  const handleJoinVideoCall = useCallback(() => {
+    videoSocket.emit("room:join", {
+      email: selectedChat.chatsender.email,
+      room: selectedChat.id,
+    });
+    videoSocket.emit("join-video-call", {
+      room: selectedChat?.id,
+      sender: selectedChat?.chatsender.id,
+      receiver: selectedChat?.receive.id,
+    });
+    setShowVideoCallNotification(false);
+    navigate("/video-call");
+  }, [videoSocket, selectedChat, navigate])
+
+  const handleCancelVideoCall = useCallback(() => {
+    videoSocket.emit("cancel-video-call", {
+      room: selectedChat?.id,
+      sender: selectedChat?.chatsender.id,
+      receiver: selectedChat?.receive.id,
+    });
+    setShowVideoCallNotification(false);
+  }, [videoSocket, selectedChat]);
+
   const handleVideoCall = useCallback(() => {
     videoSocket.emit("room:join", {
       email: selectedChat.chatsender.email,
       room: selectedChat.id,
     });
 
-    videoSocket.emit("video-call-request", {
-      sender: selectedChat?.chatsender.id,
-      receiver: selectedChat?.receive.id,
+    videoSocket.emit("video-request", {
+      room: selectedChat.id,
+      receiver: selectedChat.receive.id,
     });
-    // setShowVideoCallNotification(true);
-    // navigate("/video-call");
-  }, [videoSocket, selectedChat]);
 
-  const handleJoinVideoCall = () => {
-    videoSocket.emit("join-video-call", { to: selectedChat?.receive.email });
-    setShowVideoCallNotification(false);
     navigate("/video-call");
-  };
-
-  const handleCancelVideoCall = useCallback(() => {
-    videoSocket.emit("cancel-video-call", { to: selectedChat?.receive.email });
-    setShowVideoCallNotification(false);
-  }, [videoSocket, selectedChat]);
+  }, [videoSocket, selectedChat, navigate]);
 
   const fetchMessages = async () => {
     try {
@@ -91,7 +103,7 @@ function SingleChat() {
       socket.current.emit("join chat", {
         sender: selectedChat?.chatsender.id,
         receiver: selectedChat?.receive.id,
-        room: selectedChat?.id
+        room: selectedChat?.id,
       });
     } catch (err) {
       console.log(err);
@@ -109,7 +121,10 @@ function SingleChat() {
   const sendMessages = async (e) => {
     if (e.key === "Enter" || e.type === "click") {
       if (newMessage) {
-        socket.current.emit("stop typing", selectedChat.id);
+        socket.current.emit("stop typing", {
+          room: selectedChat.id,
+          receiver: selectedChat.receive.id,
+        });
         try {
           const token = localStorage.getItem("token");
           const config = {
@@ -156,49 +171,68 @@ function SingleChat() {
 
     if (!typing) {
       setTyping(true);
-      socket.current.emit("typing", {room: selectedChat.id, receiver: selectedChat?.receive.id});
+      socket.current.emit("typing", {
+        room: selectedChat.id,
+        receiver: selectedChat.receive.id,
+      });
     }
 
     // Debouncing:--
 
     const lastTypingTime = new Date().getTime();
-    const timerLength = 3000;
+    const timerLength = 2500;
 
     setTimeout(() => {
       const timeNow = new Date().getTime();
       const timeDiff = timeNow - lastTypingTime;
       if (timeDiff >= timerLength && typing) {
-        socket.current.emit("stop typing", selectedChat.id);
+        socket.current.emit("stop typing", {
+          room: selectedChat.id,
+          receiver: selectedChat.receive.id,
+        });
         setTyping(false);
       }
     }, timerLength);
   };
 
   useEffect(() => {
-    videoSocket.on("video-call-request", ({ sender, receiver }) => {
-      console.log("New Call Request", sender);
-      setShowVideoCallNotification(true);
-    });
-  }, [videoSocket]);
-
-  useEffect(() => {
     socket.current = io(host);
     socket.current.emit("setup", user);
     socket.current.on("connected", () => setSocketConnected(true));
-    socket.current.on("typing", ({room, receiver}) => {
-      console.log(selectedChat)
-      if(room === selectedChat?.id && receiver === selectedChat?.sender.id){
-        setIsTyping(true)
+    socket.current.on("typing", ({ room, receiver }) => {
+      if (
+        selectedChat !== undefined &&
+        room === selectedChat.id &&
+        receiver === selectedChat.chatsender.id
+      ) {
+        setIsTyping(true);
       }
     });
-    socket.current.on("stop typing", () => setIsTyping(false));
-    // socket.current.on("video-call-request", () => console.log('aaaaaaa'));
+    socket.current.on("stop typing", ({ room, receiver }) => {
+      if (
+        selectedChat !== undefined &&
+        room === selectedChat.id &&
+        receiver === selectedChat.chatsender.id
+      ) {
+        setIsTyping(false);
+      }
+    });
+
+    socket.current.on("video-call-request", ({ room, receiver }) => {
+      if (
+        selectedChat !== undefined &&
+        room === selectedChat.id &&
+        receiver === selectedChat.chatsender.id
+      ) {
+        setShowVideoCallNotification(true);
+      }
+    });
 
     return () => {
       socket.current.off("setup", user);
     };
     // eslint-disable-next-line
-  }, [socket]);
+  }, [socket, selectedChat]);
 
   useEffect(() => {
     fetchMessages();
@@ -206,14 +240,16 @@ function SingleChat() {
   }, [selectedChat]);
 
   useEffect(() => {
-    socket.current.on("message recieved", (newMessageReceived) => {
-      setMessages([...messages, newMessageReceived]);
+    socket.current.on("message recieved", (data) => {
+      if (selectedChat !== undefined && data.chatId === selectedChat.id) {
+        setMessages([...messages, data]);
+      }
     });
-  });
+  }, [messages, selectedChat, socket]);
 
   return (
     <>
-      {selectedChat ? (
+      {selectedChat !== undefined && Object.keys(selectedChat).length > 0 ? (
         <>
           <Box
             fontSize={{ base: "23px", md: "30px" }}
@@ -243,11 +279,15 @@ function SingleChat() {
                 justifyContent={{ base: "space-between" }}
                 alignItems="center"
               >
-                <FaVideo
+                <Button
                   color="#19B300"
                   cursor="pointer"
+                  marginRight="5px"
+                  isDisabled={showVideoCallNotification ? true : false}
                   onClick={() => handleVideoCall()}
-                />
+                >
+                  <FaVideo />
+                </Button>
 
                 <ProfileMenu
                   user={getSenderFull(user, [
@@ -284,7 +324,7 @@ function SingleChat() {
               </div>
             )}
 
-            {showVideoCallNotification && (
+            {showVideoCallNotification ? (
               <div className="notification">
                 <p
                   style={{ marginBottom: "10px", marginTop: "10px" }}
@@ -306,6 +346,8 @@ function SingleChat() {
                   </button>
                 </div>
               </div>
+            ) : (
+              <></>
             )}
 
             <FormControl onKeyDown={sendMessages} isRequired mt={3}>
