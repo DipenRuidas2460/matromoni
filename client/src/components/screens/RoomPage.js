@@ -101,9 +101,14 @@ function RoomPage({ token }) {
     socket.emit("call:end", { to: remoteSocketId });
     setRemoteSocketId(null);
     setMyStream(null);
+    setRemoteStream(null);
     navigate("/new-chats");
     window.location.reload();
   }, [myStream, remoteSocketId, socket, navigate]);
+
+  // const handleBackArrow = useCallback(() => {
+  //   window.addEventListener("beforeunload", handleEndCall());
+  // }, [handleEndCall]);
 
   const handleNegoNeeded = useCallback(async () => {
     const offer = await peer.getOffer();
@@ -122,14 +127,6 @@ function RoomPage({ token }) {
     await peer.setLocalDescription(ans);
   }, []);
 
-  useEffect(() => {
-    peer.peer.addEventListener("negotiationneeded", handleNegoNeeded);
-
-    return () => {
-      peer.peer.removeEventListener("negotiationneeded", handleNegoNeeded);
-    };
-  }, [handleNegoNeeded]);
-
   const handleToggleAudio = useCallback(() => {
     setIsAudioMuted((prevIsAudioMuted) => {
       myStream?.stream.getAudioTracks().forEach((track) => {
@@ -147,6 +144,18 @@ function RoomPage({ token }) {
       return !prevIsVideoMuted;
     });
   }, [myStream]);
+
+  // useEffect(() => {
+  //   window.addEventListener("beforeunload", handleEndCall());
+  // }, [handleEndCall]);
+
+  useEffect(() => {
+    peer.peer.addEventListener("negotiationneeded", handleNegoNeeded);
+
+    return () => {
+      peer.peer.removeEventListener("negotiationneeded", handleNegoNeeded);
+    };
+  }, [handleNegoNeeded]);
 
   useEffect(() => {
     peer.peer.addEventListener("track", async (ev) => {
@@ -185,7 +194,7 @@ function RoomPage({ token }) {
     handleCallAccepted,
     handleNegoNeededIncoming,
     handleNegoNeededFinal,
-    handleEndCall
+    handleEndCall,
   ]);
 
   return (
@@ -320,11 +329,11 @@ function RoomPage({ token }) {
                 >
                   <h5
                     style={{
-                      color: "yellow",
+                      color: "green",
                       position: "absolute",
                       zIndex: 1,
                       bottom: "15%",
-                      transform:"translate(70%, 0%)"
+                      transform: "translate(70%, 0%)",
                     }}
                   >
                     {remoteStream?.name}

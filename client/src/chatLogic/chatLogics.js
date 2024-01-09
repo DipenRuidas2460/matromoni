@@ -1,7 +1,7 @@
 export const getSender = (loggedUser, users) => {
   return users[0]?.id === loggedUser?.id
-    ? `${users[1].firstName} ${users[1].lastName}`
-    : `${users[0].firstName} ${users[0].lastName}`;
+    ? `${users[1]?.firstName} ${users[1]?.lastName}`
+    : `${users[0]?.firstName} ${users[0]?.lastName}`;
 };
 
 export const getSenderFull = (loggedUser, users) => {

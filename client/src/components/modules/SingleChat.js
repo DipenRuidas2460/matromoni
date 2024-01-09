@@ -53,7 +53,7 @@ function SingleChat() {
     });
     setShowVideoCallNotification(false);
     navigate("/video-call");
-  }, [videoSocket, selectedChat, navigate])
+  }, [videoSocket, selectedChat, navigate]);
 
   const handleCancelVideoCall = useCallback(() => {
     videoSocket.emit("cancel-video-call", {
@@ -74,7 +74,7 @@ function SingleChat() {
       room: selectedChat.id,
       receiver: selectedChat.receive.id,
     });
-
+    // setShowVideoCallNotification(true);
     navigate("/video-call");
   }, [videoSocket, selectedChat, navigate]);
 
@@ -228,11 +228,33 @@ function SingleChat() {
       }
     });
 
+    socket.current.on("cancel-video-call", ({ room, sender, receiver }) => {
+      if (
+        selectedChat !== undefined &&
+        room === selectedChat.id &&
+        receiver === selectedChat.chatsender.id
+      ) {
+        setShowVideoCallNotification(true);
+        navigate("/new-chats");
+        window.location.reload();
+      }
+    });
+
     return () => {
       socket.current.off("setup", user);
+      socket.current.off("cancel-video-call", ({ room, sender, receiver }) => {
+        if (
+          selectedChat !== undefined &&
+          room === selectedChat.id &&
+          receiver === selectedChat.chatsender.id
+        ) {
+          setShowVideoCallNotification(true);
+          navigate("/new-chats");
+          window.location.reload();
+        }
+      });
     };
-    // eslint-disable-next-line
-  }, [socket, selectedChat]);
+  }, [socket, selectedChat, host, user, navigate]);
 
   useEffect(() => {
     fetchMessages();
@@ -328,18 +350,18 @@ function SingleChat() {
               <div className="notification">
                 <p
                   style={{ marginBottom: "10px", marginTop: "10px" }}
-                >{`Video Call Coming From ${selectedChat?.chatsender.firstName} ${selectedChat?.chatsender.lastName}!`}</p>
+                >{`Video Call Coming...!`}</p>
                 <div className="notification-button">
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-primary mb-3"
                     onClick={handleJoinVideoCall}
                   >
                     Join
                   </button>
                   <button
                     type="button"
-                    className="btn btn-danger"
+                    className="btn btn-danger mb-3"
                     onClick={handleCancelVideoCall}
                   >
                     Cancel

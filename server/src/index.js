@@ -64,6 +64,11 @@ io.on("connection", (socket) => {
       .emit("video-call-request", { room: room, receiver: receiver });
   });
 
+  socket.on("video-declined", ({ room, receiver }) => {
+    socket.leave(room);
+    socket.emit("video-call-declined", { room: room, receiver: receiver });
+  });
+
   socket.on("user:call", ({ to, offer }) => {
     io.to(to).emit("incoming:call", { from: socket.id, offer });
   });
@@ -85,7 +90,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("cancel-video-call", ({ room, sender, receiver }) => {
-    io.to(receiver).emit("cancel-video-call", { room, sender, receiver });
+    // socket.leave(room);
+    // socket.join(room);
+    io.in(room).emit("cancel-video-call", { room, sender, receiver });
   });
 
   socket.on("call:end", ({ to }) => {
