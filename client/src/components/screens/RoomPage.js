@@ -106,10 +106,6 @@ function RoomPage({ token }) {
     window.location.reload();
   }, [myStream, remoteSocketId, socket, navigate]);
 
-  // const handleBackArrow = useCallback(() => {
-  //   window.addEventListener("beforeunload", handleEndCall());
-  // }, [handleEndCall]);
-
   const handleNegoNeeded = useCallback(async () => {
     const offer = await peer.getOffer();
     socket.emit("peer:nego:needed", { to: remoteSocketId, offer });
@@ -145,9 +141,26 @@ function RoomPage({ token }) {
     });
   }, [myStream]);
 
-  // useEffect(() => {
-  //   window.addEventListener("beforeunload", handleEndCall());
-  // }, [handleEndCall]);
+  const handleBackArrowEndCall = useCallback(() => {
+    myStream?.stream.getTracks().forEach((track) => track.stop());
+    for (const sender of peer.peer.getSenders()) {
+      peer.peer.removeTrack(sender);
+    }
+    socket.emit("disconnect-video", {
+      room: selectedChat?.id,
+      sender: selectedChat?.chatsender.id,
+      receiver: selectedChat?.receive.id,
+    });
+    setRemoteSocketId(null);
+    setMyStream(null);
+    setRemoteStream(null);
+    navigate("/new-chats");
+    window.location.reload();
+  }, [socket, myStream, selectedChat, navigate]);
+
+  useEffect(() => {
+    window.addEventListener("popstate", handleBackArrowEndCall);
+  }, [handleBackArrowEndCall]);
 
   useEffect(() => {
     peer.peer.addEventListener("negotiationneeded", handleNegoNeeded);
@@ -178,6 +191,7 @@ function RoomPage({ token }) {
     socket.on("peer:nego:needed", handleNegoNeededIncoming);
     socket.on("peer:nego:final", handleNegoNeededFinal);
     socket.on("call:end", handleEndCall);
+    socket.on("user-disconnected-video", handleBackArrowEndCall)
 
     return () => {
       socket.off("user:joined", handleUserjoined);
@@ -186,6 +200,7 @@ function RoomPage({ token }) {
       socket.off("peer:nego:needed", handleNegoNeededIncoming);
       socket.off("peer:nego:final", handleNegoNeededFinal);
       socket.off("call:end", handleEndCall);
+      socket.off("user-disconnected-video", handleBackArrowEndCall)
     };
   }, [
     socket,
@@ -195,6 +210,7 @@ function RoomPage({ token }) {
     handleNegoNeededIncoming,
     handleNegoNeededFinal,
     handleEndCall,
+    handleBackArrowEndCall
   ]);
 
   return (
