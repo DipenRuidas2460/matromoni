@@ -53,15 +53,18 @@ io.on("connection", (socket) => {
     io.to(room).emit("user:joined", {
       email: email,
       id: socket.id,
+      room: room,
     });
     socket.join(room);
     io.to(socket.id).emit("room:join", data);
   });
 
-  socket.on("video-request", ({ room, receiver }) => {
-    socket
-      .in(room)
-      .emit("video-call-request", { room: room, receiver: receiver });
+  socket.on("video-request", ({ room, sender, receiver }) => {
+    socket.in(room).emit("video-call-request", {
+      room: room,
+      sender: sender,
+      receiver: receiver,
+    });
   });
 
   socket.on("user:call", ({ to, offer }) => {
@@ -109,7 +112,7 @@ io.on("connection", (socket) => {
 
   socket.on("join chat", ({ sender, receiver, room }) => {
     socket.join(room);
-    socket.emit("room joined", room);
+    socket.emit("room joined", { room: room });
   });
 
   socket.on("typing", ({ room, receiver }) => {
@@ -126,7 +129,9 @@ io.on("connection", (socket) => {
       return console.log("Message Sender or chat sender not defined!");
     }
 
-    socket.in(data.chatId).emit("message recieved", data);
+    socket
+      .in(data.chatId)
+      .emit("message recieved", data);
   });
 
   socket.removeListener("setup", (userData) => {

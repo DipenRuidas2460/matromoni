@@ -61,19 +61,23 @@ function SingleChat() {
       sender: selectedChat?.chatsender.id,
       receiver: selectedChat?.receive.id,
     });
+
     setShowVideoCallNotification(false);
+    window.location.reload();
   }, [videoSocket, selectedChat]);
 
   const handleVideoCall = useCallback(() => {
+    videoSocket.emit("video-request", {
+      room: selectedChat.id,
+      sender: selectedChat.chatsender.id,
+      receiver: selectedChat.receive.id,
+    });
+
     videoSocket.emit("room:join", {
       email: selectedChat.chatsender.email,
       room: selectedChat.id,
     });
 
-    videoSocket.emit("video-request", {
-      room: selectedChat.id,
-      receiver: selectedChat.receive.id,
-    });
     navigate("/video-call");
   }, [videoSocket, selectedChat, navigate]);
 
@@ -197,8 +201,8 @@ function SingleChat() {
   const handleBackArrowEndCall = useCallback(() => {
     socket.current.emit("disconnect-noti", {
       room: selectedChat?.id,
-      sender: selectedChat?.chatsender.id,
-      receiver: selectedChat?.receive.id,
+      sender: selectedChat?.chatsender?.id,
+      receiver: selectedChat?.receive?.id,
     });
   }, [socket, selectedChat]);
 
@@ -229,11 +233,12 @@ function SingleChat() {
       }
     });
 
-    socket.current.on("video-call-request", ({ room, receiver }) => {
+    socket.current.on("video-call-request", ({ room, sender, receiver }) => {
       if (
-        selectedChat !== undefined &&
+        selectedChat &&
         room === selectedChat.id &&
-        receiver === selectedChat.chatsender.id
+        (receiver === selectedChat.chatsender.id ||
+          receiver === selectedChat.receive.id)
       ) {
         setShowVideoCallNotification(true);
       }
@@ -241,11 +246,12 @@ function SingleChat() {
 
     socket.current.on("cancel-video-call", ({ room, sender, receiver }) => {
       if (
-        selectedChat !== undefined &&
+        selectedChat &&
         room === selectedChat.id &&
-        receiver === selectedChat.chatsender.id
+        (receiver === selectedChat.chatsender.id ||
+          receiver === selectedChat.receive.id)
       ) {
-        setShowVideoCallNotification(true);
+        setShowVideoCallNotification(false);
         navigate("/new-chats");
         window.location.reload();
       }
@@ -255,7 +261,8 @@ function SingleChat() {
       if (
         selectedChat !== undefined &&
         room === selectedChat.id &&
-        receiver === selectedChat.chatsender.id
+        (receiver === selectedChat.chatsender.id ||
+          receiver === selectedChat.receive.id)
       ) {
         setShowVideoCallNotification(false);
         navigate("/new-chats");
@@ -267,11 +274,12 @@ function SingleChat() {
       socket.current.off("setup", user);
       socket.current.off("cancel-video-call", ({ room, sender, receiver }) => {
         if (
-          selectedChat !== undefined &&
+          selectedChat &&
           room === selectedChat.id &&
-          receiver === selectedChat.chatsender.id
+          (receiver === selectedChat.chatsender.id ||
+            receiver === selectedChat.receive.id)
         ) {
-          setShowVideoCallNotification(true);
+          setShowVideoCallNotification(false);
           navigate("/new-chats");
           window.location.reload();
         }
@@ -281,7 +289,8 @@ function SingleChat() {
         if (
           selectedChat !== undefined &&
           room === selectedChat.id &&
-          receiver === selectedChat.chatsender.id
+          (receiver === selectedChat.chatsender.id ||
+            receiver === selectedChat.receive.id)
         ) {
           setShowVideoCallNotification(false);
           navigate("/new-chats");
@@ -298,11 +307,14 @@ function SingleChat() {
 
   useEffect(() => {
     socket.current.on("message recieved", (data) => {
-      if (selectedChat !== undefined && data.chatId === selectedChat.id) {
+      if (
+        selectedChat !== undefined &&
+        data.chatId === selectedChat.id
+      ) {
         setMessages([...messages, data]);
       }
     });
-  }, [messages, selectedChat, socket]);
+  }, [socket, messages, selectedChat]);
 
   return (
     <>

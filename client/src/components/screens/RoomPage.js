@@ -28,7 +28,7 @@ function RoomPage({ token }) {
   const [isVideoMuted, setIsVideoMuted] = useState(false);
   const { user, selectedChat } = ChatState();
 
-  const handleUserjoined = useCallback(({ email, id }) => {
+  const handleUserjoined = useCallback(({ email, id, room }) => {
     setRemoteSocketId(id);
   }, []);
 
