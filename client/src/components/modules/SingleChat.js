@@ -126,7 +126,8 @@ function SingleChat() {
       if (newMessage) {
         socket.current.emit("stop typing", {
           room: selectedChat.id,
-          receiver: selectedChat.receive.id,
+          sender: selectedChat.chatSenderId,
+          receiver: selectedChat.personId,
         });
         try {
           const token = localStorage.getItem("token");
@@ -148,7 +149,12 @@ function SingleChat() {
             config
           );
 
-          socket.current.emit("new message", data);
+          socket.current.emit("new message", {
+            data: data,
+            room: selectedChat.id,
+            sender: data.senderId,
+            receiver: data.msg.personId,
+          });
           setMessages([...messages, data]);
         } catch (err) {
           console.log(err);
@@ -176,7 +182,8 @@ function SingleChat() {
       setTyping(true);
       socket.current.emit("typing", {
         room: selectedChat.id,
-        receiver: selectedChat.receive.id,
+        sender: selectedChat.chatSenderId,
+        receiver: selectedChat.personId,
       });
     }
 
@@ -191,7 +198,8 @@ function SingleChat() {
       if (timeDiff >= timerLength && typing) {
         socket.current.emit("stop typing", {
           room: selectedChat.id,
-          receiver: selectedChat.receive.id,
+          sender: selectedChat.chatSenderId,
+          receiver: selectedChat.personId,
         });
         setTyping(false);
       }
@@ -214,20 +222,22 @@ function SingleChat() {
     socket.current = io(host);
     socket.current.emit("setup", user);
     socket.current.on("connected", () => setSocketConnected(true));
-    socket.current.on("typing", ({ room, receiver }) => {
+    socket.current.on("typing", ({ room, sender, receiver }) => {
       if (
         selectedChat !== undefined &&
         room === selectedChat.id &&
-        receiver === selectedChat.chatsender.id
+        receiver === selectedChat.chatSenderId &&
+        sender === selectedChat.personId
       ) {
         setIsTyping(true);
       }
     });
-    socket.current.on("stop typing", ({ room, receiver }) => {
+    socket.current.on("stop typing", ({ room, sender, receiver }) => {
       if (
         selectedChat !== undefined &&
         room === selectedChat.id &&
-        receiver === selectedChat.chatsender.id
+        receiver === selectedChat.chatSenderId &&
+        sender === selectedChat.personId
       ) {
         setIsTyping(false);
       }
@@ -235,10 +245,10 @@ function SingleChat() {
 
     socket.current.on("video-call-request", ({ room, sender, receiver }) => {
       if (
-        selectedChat &&
+        selectedChat !== undefined &&
         room === selectedChat.id &&
-        (receiver === selectedChat.chatsender.id ||
-          receiver === selectedChat.receive.id)
+        receiver === selectedChat.chatSenderId &&
+        sender === selectedChat.personId
       ) {
         setShowVideoCallNotification(true);
       }
@@ -246,10 +256,10 @@ function SingleChat() {
 
     socket.current.on("cancel-video-call", ({ room, sender, receiver }) => {
       if (
-        selectedChat &&
+        selectedChat !== undefined &&
         room === selectedChat.id &&
-        (receiver === selectedChat.chatsender.id ||
-          receiver === selectedChat.receive.id)
+        receiver === selectedChat.chatSenderId &&
+        sender === selectedChat.personId
       ) {
         setShowVideoCallNotification(false);
         navigate("/new-chats");
@@ -261,8 +271,8 @@ function SingleChat() {
       if (
         selectedChat !== undefined &&
         room === selectedChat.id &&
-        (receiver === selectedChat.chatsender.id ||
-          receiver === selectedChat.receive.id)
+        receiver === selectedChat.chatSenderId &&
+        sender === selectedChat.personId
       ) {
         setShowVideoCallNotification(false);
         navigate("/new-chats");
@@ -274,10 +284,10 @@ function SingleChat() {
       socket.current.off("setup", user);
       socket.current.off("cancel-video-call", ({ room, sender, receiver }) => {
         if (
-          selectedChat &&
+          selectedChat !== undefined &&
           room === selectedChat.id &&
-          (receiver === selectedChat.chatsender.id ||
-            receiver === selectedChat.receive.id)
+          receiver === selectedChat.chatSenderId &&
+          sender === selectedChat.personId
         ) {
           setShowVideoCallNotification(false);
           navigate("/new-chats");
@@ -289,8 +299,8 @@ function SingleChat() {
         if (
           selectedChat !== undefined &&
           room === selectedChat.id &&
-          (receiver === selectedChat.chatsender.id ||
-            receiver === selectedChat.receive.id)
+          receiver === selectedChat.chatSenderId &&
+          sender === selectedChat.personId
         ) {
           setShowVideoCallNotification(false);
           navigate("/new-chats");
@@ -306,15 +316,20 @@ function SingleChat() {
   }, [selectedChat]);
 
   useEffect(() => {
-    socket.current.on("message recieved", (data) => {
-      if (
-        selectedChat !== undefined &&
-        data.chatId === selectedChat.id
-      ) {
-        setMessages([...messages, data]);
+    socket.current.on(
+      "message recieved",
+      ({ data, room, sender, receiver }) => {
+        if (
+          selectedChat !== undefined &&
+          room === selectedChat.id &&
+          receiver === selectedChat.chatSenderId &&
+          sender === selectedChat.personId
+        ) {
+          setMessages([...messages, data]);
+        }
       }
-    });
-  }, [socket, messages, selectedChat]);
+    );
+  }, [messages, socket, selectedChat]);
 
   return (
     <>

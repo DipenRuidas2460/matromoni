@@ -42,7 +42,7 @@ const emailToSocketIdMap = new Map();
 const socketIdToEmailMap = new Map();
 
 io.on("connection", (socket) => {
-  console.log("Socket connected!");
+  // console.log("Socket connected!");
 
   // -------------------------------- for video Call ----------------------------------------
 
@@ -112,26 +112,57 @@ io.on("connection", (socket) => {
 
   socket.on("join chat", ({ sender, receiver, room }) => {
     socket.join(room);
-    socket.emit("room joined", { room: room });
+    socket.in(room).emit("room joined", { room: room });
   });
 
-  socket.on("typing", ({ room, receiver }) => {
-    socket.in(room).emit("typing", { room: room, receiver: receiver });
+  socket.on("typing", ({ room, sender, receiver }) => {
+    // console.log("Typing:==>>", "sender:-", sender, "receiver:-", receiver)
+    socket
+      .in(room)
+      .emit("typing", { room: room, sender: sender, receiver: receiver });
   });
 
-  socket.on("stop typing", ({ room, receiver }) => {
-    socket.in(room).emit("stop typing", { room: room, receiver: receiver });
+  socket.on("stop typing", ({ room, sender, receiver }) => {
+    // console.log("stopTyping:==>>", "sender:-", sender, "receiver:-", receiver)
+    socket
+      .in(room)
+      .emit("stop typing", { room: room, sender: sender, receiver: receiver });
   });
 
-  socket.on("new message", (data) => {
+  socket.on("new message", ({ data, room, sender, receiver }) => {
+    console.log(
+      "messages:==>",
+      "sender:-",
+      sender,
+      "receiver:-",
+      receiver,
+      "room:-",
+      room
+    );
+
+    // const users = [sender, receiver];
+
     if (data.msg.personId === data.senderId) return;
     if (!data.msg.chatSenderId && !data.msg.personId) {
       return console.log("Message Sender or chat sender not defined!");
     }
 
-    socket
-      .in(data.chatId)
-      .emit("message recieved", data);
+    // users.forEach((user) => {
+    //   if (user == data.senderId) return;
+    //   socket.in(user).emit("message recieved", {
+    //     data: data,
+    //     room: room,
+    //     sender: sender,
+    //     receiver: receiver,
+    //   });
+    // });
+
+    socket.in(room).emit("message recieved", {
+      data: data,
+      room: room,
+      sender: sender,
+      receiver: receiver,
+    });
   });
 
   socket.removeListener("setup", (userData) => {
