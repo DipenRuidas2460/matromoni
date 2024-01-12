@@ -112,7 +112,9 @@ io.on("connection", (socket) => {
 
   socket.on("join chat", ({ sender, receiver, room }) => {
     socket.join(room);
-    socket.in(room).emit("room joined", { room: room });
+    socket
+      .in(room)
+      .emit("room joined", { sender: sender, receiver: receiver, room: room });
   });
 
   socket.on("typing", ({ room, sender, receiver }) => {

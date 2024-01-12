@@ -104,8 +104,8 @@ function SingleChat() {
       setMessages(data);
       setloading(false);
       socket.current.emit("join chat", {
-        sender: selectedChat?.chatsender.id,
-        receiver: selectedChat?.receive.id,
+        sender: selectedChat?.chatSenderId,
+        receiver: selectedChat?.personId,
         room: selectedChat?.id,
       });
     } catch (err) {
@@ -222,6 +222,9 @@ function SingleChat() {
     socket.current = io(host);
     socket.current.emit("setup", user);
     socket.current.on("connected", () => setSocketConnected(true));
+    socket.current.on("room joined", ({ sender, receiver, room }) => {
+       
+    });
     socket.current.on("typing", ({ room, sender, receiver }) => {
       if (
         selectedChat !== undefined &&
