@@ -34,7 +34,7 @@ function SingleChat() {
   const [istyping, setIsTyping] = useState(false);
   const [showVideoCallNotification, setShowVideoCallNotification] =
     useState(false);
-  const { user, selectedChat, setSelectedChat } = ChatState();
+  const { user, selectedChat, setSelectedChat, currentReceiver } = ChatState();
   const host = config.BCKHOST;
   const socket = useRef(null);
   const toast = useToast();
@@ -100,7 +100,6 @@ function SingleChat() {
         `${host}/message/${selectedChat.id}`,
         config
       );
-
       setMessages(data);
       setloading(false);
       socket.current.emit("join chat", {
@@ -152,8 +151,8 @@ function SingleChat() {
           socket.current.emit("new message", {
             data: data,
             room: selectedChat.id,
-            sender: data.senderId,
-            receiver: data.msg.personId,
+            sender: selectedChat.chatsender.id,
+            receiver: selectedChat.receive.id,
           });
           setMessages([...messages, data]);
         } catch (err) {
@@ -222,25 +221,26 @@ function SingleChat() {
     socket.current = io(host);
     socket.current.emit("setup", user);
     socket.current.on("connected", () => setSocketConnected(true));
-    socket.current.on("room joined", ({ sender, receiver, room }) => {
-       
-    });
+
     socket.current.on("typing", ({ room, sender, receiver }) => {
       if (
         selectedChat !== undefined &&
         room === selectedChat.id &&
         receiver === selectedChat.chatSenderId &&
-        sender === selectedChat.personId
+        sender === selectedChat.personId &&
+        sender === currentReceiver.id
       ) {
         setIsTyping(true);
       }
     });
+
     socket.current.on("stop typing", ({ room, sender, receiver }) => {
       if (
         selectedChat !== undefined &&
         room === selectedChat.id &&
         receiver === selectedChat.chatSenderId &&
-        sender === selectedChat.personId
+        sender === selectedChat.personId &&
+        sender === currentReceiver.id
       ) {
         setIsTyping(false);
       }
@@ -285,6 +285,7 @@ function SingleChat() {
 
     return () => {
       socket.current.off("setup", user);
+
       socket.current.off("cancel-video-call", ({ room, sender, receiver }) => {
         if (
           selectedChat !== undefined &&
@@ -310,8 +311,10 @@ function SingleChat() {
           window.location.reload();
         }
       });
+
+      socket.current.off();
     };
-  }, [socket, selectedChat, host, user, navigate]);
+  }, [socket, selectedChat, host, user, navigate, currentReceiver]);
 
   useEffect(() => {
     fetchMessages();
@@ -326,13 +329,14 @@ function SingleChat() {
           selectedChat !== undefined &&
           room === selectedChat.id &&
           receiver === selectedChat.chatSenderId &&
-          sender === selectedChat.personId
+          sender === selectedChat.personId &&
+          sender === currentReceiver.id
         ) {
           setMessages([...messages, data]);
         }
       }
     );
-  }, [messages, socket, selectedChat]);
+  }, [socket, selectedChat, messages, currentReceiver]);
 
   return (
     <>

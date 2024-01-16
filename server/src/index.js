@@ -42,10 +42,7 @@ const emailToSocketIdMap = new Map();
 const socketIdToEmailMap = new Map();
 
 io.on("connection", (socket) => {
-  // console.log("Socket connected!");
-
   // -------------------------------- for video Call ----------------------------------------
-
   socket.on("room:join", (data) => {
     const { email, room } = data;
     emailToSocketIdMap.set(email, socket.id);
@@ -112,54 +109,31 @@ io.on("connection", (socket) => {
 
   socket.on("join chat", ({ sender, receiver, room }) => {
     socket.join(room);
-    socket
-      .in(room)
-      .emit("room joined", { sender: sender, receiver: receiver, room: room });
   });
 
   socket.on("typing", ({ room, sender, receiver }) => {
-    // console.log("Typing:==>>", "sender:-", sender, "receiver:-", receiver)
-    socket
-      .in(room)
-      .emit("typing", { room: room, sender: sender, receiver: receiver });
+    io.to(room).emit("typing", {
+      room: room,
+      sender: sender,
+      receiver: receiver,
+    });
   });
 
   socket.on("stop typing", ({ room, sender, receiver }) => {
-    // console.log("stopTyping:==>>", "sender:-", sender, "receiver:-", receiver)
-    socket
-      .in(room)
-      .emit("stop typing", { room: room, sender: sender, receiver: receiver });
+    io.to(room).emit("stop typing", {
+      room: room,
+      sender: sender,
+      receiver: receiver,
+    });
   });
 
   socket.on("new message", ({ data, room, sender, receiver }) => {
-    console.log(
-      "messages:==>",
-      "sender:-",
-      sender,
-      "receiver:-",
-      receiver,
-      "room:-",
-      room
-    );
-
-    // const users = [sender, receiver];
-
     if (data.msg.personId === data.senderId) return;
     if (!data.msg.chatSenderId && !data.msg.personId) {
       return console.log("Message Sender or chat sender not defined!");
     }
 
-    // users.forEach((user) => {
-    //   if (user == data.senderId) return;
-    //   socket.in(user).emit("message recieved", {
-    //     data: data,
-    //     room: room,
-    //     sender: sender,
-    //     receiver: receiver,
-    //   });
-    // });
-
-    socket.in(room).emit("message recieved", {
+    io.to(room).emit("message recieved", {
       data: data,
       room: room,
       sender: sender,
@@ -168,7 +142,6 @@ io.on("connection", (socket) => {
   });
 
   socket.removeListener("setup", (userData) => {
-    console.log("User Disconnected!");
     socket.leave(userData.id);
   });
 });

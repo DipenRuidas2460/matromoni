@@ -15,6 +15,8 @@ function ChatProvider({ children }) {
   const toast = useToast();
   const host = config.BCKHOST;
   const token = localStorage.getItem("token");
+  const [currentReceiver, setCurrentReceiver] = useState({})
+
 
   useEffect(() => {
     if (token) {
@@ -60,6 +62,8 @@ function ChatProvider({ children }) {
         setNotification,
         chats,
         setChats,
+        currentReceiver,
+        setCurrentReceiver
       }}
     >
       {children}
