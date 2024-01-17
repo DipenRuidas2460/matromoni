@@ -57,7 +57,7 @@ function ProfileMenu({ user, children }) {
                   ? `${host}/assets/image/${user.id}_profile.jpg`
                   : ""
               }
-              alt={`${user?.firstName} ${user?.lastName}`}
+              alt={``}
             />
             <Text
               fontSize={{ base: "28px", mid: "30px" }}

@@ -63,7 +63,6 @@ function SingleChat() {
     });
 
     setShowVideoCallNotification(false);
-    window.location.reload();
   }, [videoSocket, selectedChat]);
 
   const handleVideoCall = useCallback(() => {
@@ -100,13 +99,15 @@ function SingleChat() {
         `${host}/message/${selectedChat.id}`,
         config
       );
-      setMessages(data);
-      setloading(false);
+
       socket.current.emit("join chat", {
         sender: selectedChat?.chatSenderId,
         receiver: selectedChat?.personId,
         room: selectedChat?.id,
       });
+
+      setMessages(data);
+      setloading(false);
     } catch (err) {
       console.log(err);
       toast({
@@ -247,69 +248,30 @@ function SingleChat() {
     });
 
     socket.current.on("video-call-request", ({ room, sender, receiver }) => {
-      if (
-        selectedChat !== undefined &&
-        room === selectedChat.id &&
-        receiver === selectedChat.chatSenderId &&
-        sender === selectedChat.personId
-      ) {
-        setShowVideoCallNotification(true);
-      }
+      setShowVideoCallNotification(true);
     });
 
-    socket.current.on("cancel-video-call", ({ room, sender, receiver }) => {
-      if (
-        selectedChat !== undefined &&
-        room === selectedChat.id &&
-        receiver === selectedChat.chatSenderId &&
-        sender === selectedChat.personId
-      ) {
-        setShowVideoCallNotification(false);
-        navigate("/new-chats");
-        window.location.reload();
-      }
+    socket.current.on("cancel-video-call-new", ({ room, sender, receiver }) => {
+      setShowVideoCallNotification(false);
+      navigate("/new-chats");
     });
 
     socket.current.on("user-disconnected", ({ room, sender, receiver }) => {
-      if (
-        selectedChat !== undefined &&
-        room === selectedChat.id &&
-        receiver === selectedChat.chatSenderId &&
-        sender === selectedChat.personId
-      ) {
-        setShowVideoCallNotification(false);
-        navigate("/new-chats");
-        window.location.reload();
-      }
+      setShowVideoCallNotification(false);
+      navigate("/new-chats");
     });
 
     return () => {
       socket.current.off("setup", user);
 
-      socket.current.off("cancel-video-call", ({ room, sender, receiver }) => {
-        if (
-          selectedChat !== undefined &&
-          room === selectedChat.id &&
-          receiver === selectedChat.chatSenderId &&
-          sender === selectedChat.personId
-        ) {
-          setShowVideoCallNotification(false);
-          navigate("/new-chats");
-          window.location.reload();
-        }
+      socket.current.off("cancel-video-call-new", ({ room, sender, receiver }) => {
+        setShowVideoCallNotification(false);
+        navigate("/new-chats");
       });
 
       socket.current.off("user-disconnected", ({ room, sender, receiver }) => {
-        if (
-          selectedChat !== undefined &&
-          room === selectedChat.id &&
-          receiver === selectedChat.chatSenderId &&
-          sender === selectedChat.personId
-        ) {
-          setShowVideoCallNotification(false);
-          navigate("/new-chats");
-          window.location.reload();
-        }
+        setShowVideoCallNotification(false);
+        navigate("/new-chats");
       });
 
       socket.current.off();
@@ -325,15 +287,7 @@ function SingleChat() {
     socket.current.on(
       "message recieved",
       ({ data, room, sender, receiver }) => {
-        if (
-          selectedChat !== undefined &&
-          room === selectedChat.id &&
-          receiver === selectedChat.chatSenderId &&
-          sender === selectedChat.personId &&
-          sender === currentReceiver.id
-        ) {
-          setMessages([...messages, data]);
-        }
+        setMessages([...messages, data]);
       }
     );
   }, [socket, selectedChat, messages, currentReceiver]);

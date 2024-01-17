@@ -40,6 +40,7 @@ const io = require("socket.io")(server, {
 
 const emailToSocketIdMap = new Map();
 const socketIdToEmailMap = new Map();
+const videoRoomData = new Set();
 
 io.on("connection", (socket) => {
   // -------------------------------- for video Call ----------------------------------------
@@ -76,7 +77,18 @@ io.on("connection", (socket) => {
     io.to(to).emit("peer:nego:needed", { from: socket.id, offer });
   });
 
-  socket.on("peer:nego:done", ({ to, ans }) => {
+  socket.on("peer:nego:done", ({ to, ans, room, sender }) => {
+    const obj = {
+      room: room,
+      callUser: [{ userId: sender, socketId: socket.id }],
+    };
+
+    if (videoRoomData.has(obj.room)) {
+      obj.callUser.push({ userId: sender, socketId: socket.id });
+    } else {
+      videoRoomData.add(obj);
+    }
+
     io.to(to).emit("peer:nego:final", { from: socket.id, ans });
   });
 
@@ -85,7 +97,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("cancel-video-call", ({ room, sender, receiver }) => {
-    io.in(room).emit("cancel-video-call", { room, sender, receiver });
+    io.in(room).emit("cancel-video-call-new", { room, sender, receiver });
   });
 
   socket.on("disconnect-noti", ({ room, sender, receiver }) => {
@@ -99,6 +111,14 @@ io.on("connection", (socket) => {
   socket.on("call:end", ({ to }) => {
     io.to(to).emit("call:end");
   });
+
+  socket.on("disconnect", () => {
+    // console.log(socket.id)
+    const existSetData = videoRoomData.entries()
+    for (const entry of existSetData) {
+      console.log(entry);
+    }
+  })
 
   // -------------------------------- for One-to-one-chat ------------------------------------
 
