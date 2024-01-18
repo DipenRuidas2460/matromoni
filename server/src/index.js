@@ -96,16 +96,16 @@ io.on("connection", (socket) => {
     io.to(receiver).emit("join-video-call", { room, sender, receiver });
   });
 
-  socket.on("cancel-video-call", ({ room, sender, receiver }) => {
-    io.in(room).emit("cancel-video-call-new", { room, sender, receiver });
+  socket.on("cancel-video-call", ({ room }) => {
+    io.to(room).emit("cancel-video-call-new");
   });
 
   socket.on("disconnect-noti", ({ room, sender, receiver }) => {
-    io.in(room).emit("user-disconnected", { room, sender, receiver });
+    io.to(room).emit("user-disconnected");
   });
 
   socket.on("disconnect-video", ({ room, sender, receiver }) => {
-    io.in(room).emit("user-disconnected-video");
+    io.to(room).emit("user-disconnected-video");
   });
 
   socket.on("call:end", ({ to }) => {
@@ -113,12 +113,19 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    // console.log(socket.id)
-    const existSetData = videoRoomData.entries()
-    for (const entry of existSetData) {
-      console.log(entry);
+    let temp;
+    videoRoomData.forEach((value, key, set) => {
+      for (let i = 0; i < value.callUser.length; i++) {
+        if (value.callUser[i].socketId === socket.id) {
+          temp = value.room;
+        }
+      }
+    });
+
+    if (temp !== undefined) {
+      io.to(temp).emit("user-leave");
     }
-  })
+  });
 
   // -------------------------------- for One-to-one-chat ------------------------------------
 

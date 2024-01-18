@@ -58,10 +58,7 @@ function SingleChat() {
   const handleCancelVideoCall = useCallback(() => {
     videoSocket.emit("cancel-video-call", {
       room: selectedChat?.id,
-      sender: selectedChat?.chatsender.id,
-      receiver: selectedChat?.receive.id,
     });
-
     setShowVideoCallNotification(false);
   }, [videoSocket, selectedChat]);
 
@@ -251,12 +248,12 @@ function SingleChat() {
       setShowVideoCallNotification(true);
     });
 
-    socket.current.on("cancel-video-call-new", ({ room, sender, receiver }) => {
+    socket.current.on("cancel-video-call-new", () => {
       setShowVideoCallNotification(false);
       navigate("/new-chats");
     });
 
-    socket.current.on("user-disconnected", ({ room, sender, receiver }) => {
+    socket.current.on("user-disconnected", () => {
       setShowVideoCallNotification(false);
       navigate("/new-chats");
     });
@@ -264,19 +261,26 @@ function SingleChat() {
     return () => {
       socket.current.off("setup", user);
 
-      socket.current.off("cancel-video-call-new", ({ room, sender, receiver }) => {
+      socket.current.off("cancel-video-call-new", () => {
         setShowVideoCallNotification(false);
         navigate("/new-chats");
       });
 
-      socket.current.off("user-disconnected", ({ room, sender, receiver }) => {
+      socket.current.off("user-disconnected", () => {
         setShowVideoCallNotification(false);
         navigate("/new-chats");
       });
 
       socket.current.off();
     };
-  }, [socket, selectedChat, host, user, navigate, currentReceiver]);
+  }, [
+    socket,
+    selectedChat,
+    host,
+    user,
+    navigate,
+    currentReceiver,
+  ]);
 
   useEffect(() => {
     fetchMessages();

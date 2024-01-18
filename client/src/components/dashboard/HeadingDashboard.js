@@ -42,6 +42,18 @@ function HeadingDashboard({ token }) {
     navigate("/");
   };
 
+  const handleRoute = (field) => {
+    setSelectedField(field);
+    if (field === "My Diaspora") {
+      navigate("/Dashboard")
+    } else if (field === "Messages") {
+      navigate("/new-chats")
+      window.location.reload()
+    } else {
+      navigate(`/${field}`)
+    }
+  };
+
   useEffect(() => {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
@@ -79,22 +91,12 @@ function HeadingDashboard({ token }) {
         />
         <ul className="dashboard-nav-1">
           {headingFields.map((field, i) => (
-            <li key={i}>
-              <Link
-                to={`/${
-                  field === "My Diaspora"
-                    ? "Dashboard"
-                    : field === "Messages"
-                    ? "new-chats"
-                    : field
-                }`}
-                className={`li-list ${
-                  selectedField === field ? "red-text" : ""
-                }`}
-                onClick={() => handleFieldClick(field)}
-              >
-                {field}
-              </Link>
+            <li
+              key={i}
+              className={`li-list ${selectedField === field ? "red-text" : ""}`}
+              onClick={() => handleRoute(field)}
+            >
+              {field}
             </li>
           ))}
         </ul>

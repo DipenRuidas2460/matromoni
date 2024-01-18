@@ -167,15 +167,6 @@ function RoomPage({ token }) {
     window.addEventListener("popstate", handleBackArrowEndCall);
   }, [handleBackArrowEndCall]);
 
-  // useEffect(() => {
-  //   const handleVisibilityChange = () => {
-  //     if (document.hidden) {
-  //       socket.emit("user:leave");
-  //     }
-  //   };
-  //   document.addEventListener("visibilitychange", handleVisibilityChange);
-  // }, [socket]);
-
   useEffect(() => {
     peer.peer.addEventListener("negotiationneeded", handleNegoNeeded);
 
@@ -199,6 +190,14 @@ function RoomPage({ token }) {
   }, []);
 
   useEffect(() => {
+    return () => {
+      if (window.location.pathname !== '/video-call') {
+        socket.disconnect();
+      }
+    };
+  }, [socket]);
+
+  useEffect(() => {
     socket.on("user:joined", handleUserjoined);
     socket.on("incoming:call", handleIncomingCall);
     socket.on("call:accepted", handleCallAccepted);
@@ -206,6 +205,7 @@ function RoomPage({ token }) {
     socket.on("peer:nego:final", handleNegoNeededFinal);
     socket.on("call:end", handleEndCall);
     socket.on("user-disconnected-video", handleBackArrowEndCall);
+    socket.on("user-leave", handleEndCall);
 
     return () => {
       socket.off("user:joined", handleUserjoined);
@@ -215,6 +215,7 @@ function RoomPage({ token }) {
       socket.off("peer:nego:final", handleNegoNeededFinal);
       socket.off("call:end", handleEndCall);
       socket.off("user-disconnected-video", handleBackArrowEndCall);
+      socket.off("user-leave", handleEndCall);
     };
   }, [
     socket,
