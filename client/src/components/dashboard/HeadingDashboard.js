@@ -45,12 +45,12 @@ function HeadingDashboard({ token }) {
   const handleRoute = (field) => {
     setSelectedField(field);
     if (field === "My Diaspora") {
-      navigate("/Dashboard")
+      navigate("/Dashboard");
     } else if (field === "Messages") {
-      navigate("/new-chats")
-      window.location.reload()
+      navigate("/new-chats");
+      window.location.reload();
     } else {
-      navigate(`/${field}`)
+      navigate(`/${field}`);
     }
   };
 
@@ -101,7 +101,11 @@ function HeadingDashboard({ token }) {
           ))}
         </ul>
         <div className="dashboard-nav-2">
-          <button type="button" className="dashboard-button">
+          <button
+            type="button"
+            className="dashboard-button"
+            onClick={() => navigate("/subscribe-plan")}
+          >
             UPGRADE PLAN
           </button>
           <p style={{ cursor: "pointer" }}>Help</p>

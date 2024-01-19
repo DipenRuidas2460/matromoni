@@ -21,6 +21,9 @@ import Settings from "./components/dashboard/Settings";
 import More from "./components/dashboard/More";
 import Matches from "./components/dashboard/Matches";
 import Requests from "./components/dashboard/Requests";
+import PaymentSuccess from "./components/miscellaneous/PaymentSuccess";
+import PaymentCancel from "./components/miscellaneous/PaymentCancel";
+import SubscriptionPlan from "./components/miscellaneous/SubscriptionPlan";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -98,6 +101,24 @@ function App() {
                 exact
                 path="/Requests"
                 element={<Requests token={token} />}
+              />
+
+              <Route
+                exact
+                path="/success"
+                element={<PaymentSuccess token={token} />}
+              />
+
+              <Route
+                exact
+                path="/cancel"
+                element={<PaymentCancel token={token} />}
+              />
+
+              <Route
+                exact
+                path="/subscribe-plan"
+                element={<SubscriptionPlan token={token} />}
               />
             </>
           )}

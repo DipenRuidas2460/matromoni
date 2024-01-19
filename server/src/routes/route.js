@@ -32,6 +32,11 @@ const {
 
 const { getImage } = require("../helper/fileHelper");
 
+const {
+  createStripePayment,
+  paymentStatus,
+  fetchPaymentDetails,
+} = require("../controllers/paymentController");
 
 // -------------------- User Profile Route ----------------------------------------------------------------------------------
 
@@ -48,7 +53,11 @@ router.patch(
   updatePassword
 );
 router.get("/customer/getUserById", validateTokenMiddleware, getUserById);
-router.get("/customer/getAllUsers", validateTokenMiddleware, getAllUsersByQuery);
+router.get(
+  "/customer/getAllUsers",
+  validateTokenMiddleware,
+  getAllUsersByQuery
+);
 
 // --------------------- Chat Routes ----------------------------------------------------------------------------------------------
 
@@ -75,5 +84,19 @@ router.delete(
   validateTokenMiddleware,
   deleteSearch
 );
+
+// --------------------- Stripe Payment Routes -----------------------------------------------------------------------------------
+
+router.post(
+  "/create-stripe-payment",
+  validateTokenMiddleware,
+  createStripePayment
+);
+router.get(
+  "/fetch-stripe-payment",
+  validateTokenMiddleware,
+  fetchPaymentDetails
+);
+router.put("/payment-status", validateTokenMiddleware, paymentStatus);
 
 module.exports = router;
