@@ -35,14 +35,17 @@ function SubscriptionPlan({ token }) {
     axios
       .post(`${host}/create-stripe-payment`, { plan: plan }, cnfig)
       .then(({ data }) => {
-        console.log(data);
+        // console.log(data);
         if (data.status === true) {
-          if (data.paymentData.plan === 399) {
-            setPlanType("premium");
-          } else if (data.paymentData.plan === 129) {
-            setPlanType("basic");
-          }
-        //   window.location = data.session.url;
+          // if (data.paymentData.plan === 399) {
+          //   setPlanType("premium");
+          // } else if (data.paymentData.plan === 129) {
+          //   setPlanType("basic");
+          // }
+
+          setPlanType("")
+
+          window.location = data.session.url;
         } else {
           toast({
             title: "Something Went Wrong!",

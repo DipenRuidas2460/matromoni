@@ -48,7 +48,7 @@ const createStripePayment = async (req, res) => {
     };
 
     const paymentData = await Payment.create(data);
-    
+
     return res.status(200).send({
       status: true,
       msg: "Payment data created Successfully!",
@@ -67,6 +67,7 @@ const paymentStatus = async (req, res) => {
   try {
     const { sessionId, userId } = req.body;
     const session = await stripe.checkout.sessions.retrieve(sessionId);
+    console.log("session:--", session);
     if (session.payment_status === "paid") {
       const subscriptionId = session.subscription;
       const subscription = await stripe.subscriptions.retrieve(subscriptionId);
@@ -104,12 +105,18 @@ const paymentStatus = async (req, res) => {
       response.paymentStatus = "success";
       const result = await response.save();
 
-      return res.status(201).json({
+      return res.status(200).json({
+        status: true,
         data: result,
         message: "Payment Success!",
       });
     } else {
-      return res.status(201).send({ msg: "Payment failed!" });
+      const response = await Payment.findOne({ where: { userId: userId } });
+      response.paymentStatus = "failed";
+      const result = await response.save();
+      return res
+        .status(200)
+        .send({ status: false, msg: "Payment failed!", data: result });
     }
   } catch (error) {
     console.error(error);
@@ -127,13 +134,11 @@ const fetchPaymentDetails = async (req, res) => {
         .status(404)
         .send({ status: false, msg: "Payment Info not found!!" });
     }
-    return res
-      .status(200)
-      .send({
-        status: true,
-        msg: "Payment Info found successfully!!",
-        paymentData: paymentData,
-      });
+    return res.status(200).send({
+      status: true,
+      msg: "Payment Info found successfully!!",
+      paymentData: paymentData,
+    });
   } catch (error) {
     console.error(error);
     return res.status(error.status || 500).send(error.message);
