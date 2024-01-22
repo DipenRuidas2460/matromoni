@@ -24,10 +24,39 @@ import Requests from "./components/dashboard/Requests";
 import PaymentSuccess from "./components/miscellaneous/PaymentSuccess";
 import PaymentCancel from "./components/miscellaneous/PaymentCancel";
 import SubscriptionPlan from "./components/miscellaneous/SubscriptionPlan";
+import { loadStripe } from "@stripe/stripe-js";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import config from "./config/config";
+import Payment from "./components/miscellaneous/Payment";
+import Completion from "./components/miscellaneous/Completion";
 
 function App() {
   const token = localStorage.getItem("token");
   const userInfo = localStorage.getItem("userInfo");
+  const [stripePromise, setStripePromise] = useState(null);
+  const host = config.BCKHOST;
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const cnfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    axios
+      .get(`${host}/config`, cnfig)
+      .then(({ data }) => {
+        const { publishableKey } = data;
+        setStripePromise(loadStripe(publishableKey));
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="App">
@@ -119,6 +148,22 @@ function App() {
                 exact
                 path="/subscribe-plan"
                 element={<SubscriptionPlan token={token} />}
+              />
+
+              <Route
+                exact
+                path="/payment"
+                element={
+                  <Payment token={token} stripePromise={stripePromise} />
+                }
+              />
+
+              <Route
+                exact
+                path="/completion"
+                element={
+                  <Completion token={token} stripePromise={stripePromise} />
+                }
               />
             </>
           )}

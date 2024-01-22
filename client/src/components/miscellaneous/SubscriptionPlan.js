@@ -1,30 +1,17 @@
-import React, { useState } from "react";
-import basic from "../../assets/basic.svg";
-import premium from "../../assets/pro.svg";
+import React, { useEffect, useState } from "react";
 import config from "../../config/config";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 function SubscriptionPlan({ token }) {
-  const [planType, setPlanType] = useState("");
+  // const [planType, setPlanType] = useState("");
+  const [planInfo, setPlanInfo] = useState("");
   const host = config.BCKHOST;
   const toast = useToast();
-  const data = [
-    {
-      id: 1,
-      src: basic,
-      title: "Basic",
-      price: 129,
-    },
-    {
-      id: 2,
-      src: premium,
-      title: "Premium",
-      price: 399,
-    },
-  ];
+  const navigate = useNavigate()
 
-  const checkOut = (plan) => {
+  useEffect(() => {
     const cnfig = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -33,27 +20,10 @@ function SubscriptionPlan({ token }) {
     };
 
     axios
-      .post(`${host}/create-stripe-payment`, { plan: plan }, cnfig)
+      .get(`${host}/fetchAllPlan`, cnfig)
       .then(({ data }) => {
-        // console.log(data);
         if (data.status === true) {
-          // if (data.paymentData.plan === 399) {
-          //   setPlanType("premium");
-          // } else if (data.paymentData.plan === 129) {
-          //   setPlanType("basic");
-          // }
-
-          setPlanType("")
-
-          window.location = data.session.url;
-        } else {
-          toast({
-            title: "Something Went Wrong!",
-            status: "warning",
-            duration: 3000,
-            isClosable: true,
-            position: "top-right",
-          });
+          setPlanInfo(data.planData);
         }
       })
       .catch((err) => {
@@ -66,6 +36,13 @@ function SubscriptionPlan({ token }) {
           position: "top-right",
         });
       });
+
+    // eslint-disable-next-line
+  }, []);
+
+  const checkOut = (planId) => {
+    localStorage.setItem("planId", planId);
+    navigate("/payment")
   };
 
   return (
@@ -78,41 +55,43 @@ function SubscriptionPlan({ token }) {
         height: "100vh",
       }}
     >
-      {data.map((el) => (
-        <div
-          className="card"
-          style={{
-            width: "25%",
-            borderRadius: "10px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          key={el.id}
-        >
-          <img
-            src={el.src}
-            className="card-img-top"
-            alt=""
-            style={{ height: "280px", width: "320px" }}
-          />
+      {planInfo &&
+        planInfo.map((el, index) => (
           <div
-            className="card-body"
+            className="card"
             style={{
+              width: "25%",
+              borderRadius: "10px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
             }}
+            key={index}
           >
-            <h5 className="card-title">{el.title}</h5>
-            <p className="card-text p-3">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>
-            <h5 className="card-title mb-3">₹ {el.price}/month</h5>
-            {planType ? (
+            <img
+              src={el.logo}
+              className="card-img-top"
+              alt=""
+              style={{ height: "280px", width: "320px", marginTop: "5px" }}
+            />
+            <div
+              className="card-body"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <h5 className="card-title">{el.planName.toUpperCase()}</h5>
+              <p className="card-text p-3">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+              </p>
+              <h5 className="card-title mb-3">₹ {el.amount}/month</h5>
+
+              {/* {planType ? (
               <button type="button" className="btn btn-primary mt-3">
                 Subscribed
               </button>
@@ -120,14 +99,22 @@ function SubscriptionPlan({ token }) {
               <button
                 type="button"
                 className="btn btn-success mt-3"
-                onClick={() => checkOut(el.price)}
+                onClick={() => checkOut(el.id)}
               >
                 START
               </button>
-            )}
+            )} */}
+
+              <button
+                type="button"
+                className="btn btn-success mt-3"
+                onClick={() => checkOut(el.id)}
+              >
+                START
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }

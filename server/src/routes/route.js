@@ -34,9 +34,18 @@ const { getImage } = require("../helper/fileHelper");
 
 const {
   createStripePayment,
-  paymentStatus,
+  // paymentStatus,
   fetchPaymentDetails,
+  publishKeySend,
 } = require("../controllers/paymentController");
+
+const {
+  cratePlan,
+  fetchPlanById,
+  fetchAllPlan,
+  updatePlanById,
+  deletePlanById,
+} = require("../controllers/planController");
 
 // -------------------- User Profile Route ----------------------------------------------------------------------------------
 
@@ -92,11 +101,31 @@ router.post(
   validateTokenMiddleware,
   createStripePayment
 );
+
 router.get(
-  "/fetch-stripe-payment",
+  "/fetch-stripe-payment/:paymentId",
   validateTokenMiddleware,
   fetchPaymentDetails
 );
-router.put("/payment-status", validateTokenMiddleware, paymentStatus);
+
+router.get("/config", validateTokenMiddleware, publishKeySend);
+
+// router.put(
+//   "/payment-status/:paymentId",
+//   validateTokenMiddleware,
+//   paymentStatus
+// );
+
+// ********** Plan Routes ****************************
+
+router.post("/create-plan", validateTokenMiddleware, cratePlan);
+
+router.get("/fetch-plan/:planId", validateTokenMiddleware, fetchPlanById);
+
+router.get("/fetchAllPlan", validateTokenMiddleware, fetchAllPlan);
+
+router.put("/update-plan/:planId", validateTokenMiddleware, updatePlanById);
+
+router.put("/delete-plan/:planId", validateTokenMiddleware, deletePlanById);
 
 module.exports = router;
