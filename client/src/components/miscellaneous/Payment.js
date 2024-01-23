@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import axios from "axios";
@@ -6,10 +6,11 @@ import config from "../../config/config";
 
 function Payment({ token, stripePromise }) {
   const [clientSecret, setClientSecret] = useState("");
+  const [elementsOptions, setElementsOptions] = useState(null);
   const host = config.BCKHOST;
+  const planId = localStorage.getItem("planId");
 
-  useEffect(() => {
-    const planId = localStorage.getItem("planId");
+  const createPaymentData = useCallback(async () => {
     const cnfig = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -21,13 +22,20 @@ function Payment({ token, stripePromise }) {
       .post(`${host}/create-stripe-payment`, { planId: planId }, cnfig)
       .then(({ data }) => {
         if (data.status === true) {
+          console.log(data.clientSecret);
           setClientSecret(data.clientSecret);
+          setElementsOptions({ clientSecret: data.clientSecret });
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.message);
       });
-  }, [token, host]);
+  }, [host, token, planId]);
+
+  useEffect(() => {
+    createPaymentData();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div
@@ -39,8 +47,12 @@ function Payment({ token, stripePromise }) {
       }}
     >
       <h1>Payment</h1>
-      {clientSecret && stripePromise && (
-        <Elements stripe={stripePromise} options={{ clientSecret }}>
+      {elementsOptions && stripePromise && (
+        <Elements
+          stripe={stripePromise}
+          options={elementsOptions}
+          key={clientSecret}
+        >
           <CheckoutForm />
         </Elements>
       )}

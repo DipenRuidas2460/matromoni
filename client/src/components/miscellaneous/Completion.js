@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Completion({token,  stripePromise }) {
+function Completion({ token, stripePromise }) {
   const [messageBody, setMessageBody] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!stripePromise) return;
@@ -33,9 +35,21 @@ function Completion({token,  stripePromise }) {
   }, [stripePromise]);
 
   return (
-    <>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
       <h1>Thank you!</h1>
-      <a href="/Dashboard">Dashboard</a>
+      <button
+        className="btn btn-primary mt-4 mb-4"
+        onClick={() => navigate("/Dashboard")}
+      >
+        Back to Dashboard
+      </button>
       <div
         id="messages"
         role="alert"
@@ -43,7 +57,7 @@ function Completion({token,  stripePromise }) {
       >
         {messageBody}
       </div>
-    </>
+    </div>
   );
 }
 

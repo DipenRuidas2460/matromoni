@@ -38,7 +38,6 @@ function App() {
   const host = config.BCKHOST;
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     const cnfig = {
       headers: {
         Authorization: `Bearer ${token}`,

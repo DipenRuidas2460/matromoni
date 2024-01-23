@@ -19,8 +19,8 @@ code {
   justify-content: space-around;
   height: 500px;
   width: 500px;
-  border: #F6F9FC solid 2px;
-  border-radius: var(--radius);
+  border: #cdd5dc solid 1px;
+  border-radius:10px;
   padding: 20px;
   margin: 20px 0;
   box-shadow: 10px 30px 50px -20px rgb(50 50 93 / 45%), 0 30px 60px -30px rgb(0 0 0 / 30%);
