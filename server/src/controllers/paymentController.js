@@ -43,7 +43,8 @@ const createStripePayment = async (req, res) => {
     const paymentIntent = await stripe.paymentIntents.create({
       currency: "INR",
       amount: planData.amount * 100,
-      automatic_payment_methods: { enabled: true },
+      payment_method_types: ['card'],
+      // automatic_payment_methods: { enabled: true },
     });
 
     const data = {

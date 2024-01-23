@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import config from "../../config/config";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 function SubscriptionPlan({ token }) {
-  // const [planType, setPlanType] = useState("");
   const [planInfo, setPlanInfo] = useState("");
   const host = config.BCKHOST;
   const toast = useToast();
@@ -40,10 +39,10 @@ function SubscriptionPlan({ token }) {
     // eslint-disable-next-line
   }, []);
 
-  const checkOut = (planId) => {
+  const checkOut = useCallback((planId) => {
     localStorage.setItem("planId", planId);
     navigate("/payment")
-  };
+  }, [navigate])
 
   return (
     <div
@@ -90,20 +89,6 @@ function SubscriptionPlan({ token }) {
                 the bulk of the card's content.
               </p>
               <h5 className="card-title mb-3">₹ {el.amount}/month</h5>
-
-              {/* {planType ? (
-              <button type="button" className="btn btn-primary mt-3">
-                Subscribed
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="btn btn-success mt-3"
-                onClick={() => checkOut(el.id)}
-              >
-                START
-              </button>
-            )} */}
 
               <button
                 type="button"

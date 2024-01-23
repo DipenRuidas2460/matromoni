@@ -1,60 +1,88 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import axios from "axios";
 import config from "../../config/config";
+import { useToast } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 function Payment({ token, stripePromise }) {
-  const [clientSecret, setClientSecret] = useState("");
-  const [elementsOptions, setElementsOptions] = useState(null);
+  const [clientSecret, setClientSecret] = useState(null);
   const host = config.BCKHOST;
   const planId = localStorage.getItem("planId");
+  const toast = useToast();
+  const navigate = useNavigate();
+  const isMounted = useRef(true);
 
-  const createPaymentData = useCallback(async () => {
-    const cnfig = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    };
-
-    axios
-      .post(`${host}/create-stripe-payment`, { planId: planId }, cnfig)
-      .then(({ data }) => {
-        if (data.status === true) {
-          console.log(data.clientSecret);
-          setClientSecret(data.clientSecret);
-          setElementsOptions({ clientSecret: data.clientSecret });
-        }
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, [host, token, planId]);
+  const appearance = {
+    theme: "stripe",
+  };
+  const options = {
+    clientSecret,
+    appearance,
+  };
 
   useEffect(() => {
-    createPaymentData();
+    if (isMounted.current) {
+      function getClientSeceret() {
+        try {
+          const cnfig = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          };
+
+          axios
+            .post(`${host}/create-stripe-payment`, { planId: planId }, cnfig)
+            .then(({ data }) => {
+              if (data.status === true) {
+                setClientSecret(data.clientSecret);
+              }
+            });
+        } catch (err) {
+          console.log(err.message);
+          toast({
+            title: err.message,
+            status: "warning",
+            duration: 3000,
+            isClosable: true,
+            position: "top-right",
+          });
+        }
+      }
+
+      getClientSeceret();
+      isMounted.current = false;
+    }
+
     // eslint-disable-next-line
   }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}
-    >
-      <h1>Payment</h1>
-      {elementsOptions && stripePromise && (
-        <Elements
-          stripe={stripePromise}
-          options={elementsOptions}
-          key={clientSecret}
+    <div>
+      {token ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
         >
-          <CheckoutForm />
-        </Elements>
+          <h1>Payment</h1>
+          {clientSecret && stripePromise && (
+            <Elements
+              options={options}
+              stripe={stripePromise}
+              key={clientSecret}
+            >
+              <CheckoutForm />
+            </Elements>
+          )}
+        </div>
+      ) : (
+        navigate("/404")
       )}
     </div>
   );

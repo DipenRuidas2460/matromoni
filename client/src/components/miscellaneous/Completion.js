@@ -35,28 +35,34 @@ function Completion({ token, stripePromise }) {
   }, [stripePromise]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}
-    >
-      <h1>Thank you!</h1>
-      <button
-        className="btn btn-primary mt-4 mb-4"
-        onClick={() => navigate("/Dashboard")}
-      >
-        Back to Dashboard
-      </button>
-      <div
-        id="messages"
-        role="alert"
-        style={messageBody ? { display: "block" } : {}}
-      >
-        {messageBody}
-      </div>
+    <div>
+      {token ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <h1>Thank you!</h1>
+          <button
+            className="btn btn-primary mt-4 mb-4"
+            onClick={() => navigate("/Dashboard")}
+          >
+            Back to Dashboard
+          </button>
+          <div
+            id="messages"
+            role="alert"
+            style={messageBody ? { display: "block" } : {}}
+          >
+            {messageBody}
+          </div>
+        </div>
+      ) : (
+        navigate("/404")
+      )}
     </div>
   );
 }
