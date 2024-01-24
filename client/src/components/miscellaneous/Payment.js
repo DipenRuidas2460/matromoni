@@ -71,11 +71,11 @@ function Payment({ token, stripePromise }) {
           }}
         >
           <h1>Payment</h1>
+          <p className="mb-2 mt-3">Do not refresh page or not press back button!</p>
           {clientSecret && stripePromise && (
             <Elements
               options={options}
               stripe={stripePromise}
-              key={clientSecret}
             >
               <CheckoutForm />
             </Elements>

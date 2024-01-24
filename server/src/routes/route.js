@@ -47,6 +47,19 @@ const {
   deletePlanById,
 } = require("../controllers/planController");
 
+const {
+  createConnRequest,
+  fetchConnRequestById,
+  updateConnRequestById,
+  deleteConnRequestById,
+} = require("../controllers/connectionRequestController");
+
+const {
+  createConnction,
+  fetchConnById,
+  deleteConnById,
+} = require("../controllers/connectionController");
+
 // -------------------- User Profile Route ----------------------------------------------------------------------------------
 
 router.post("/customer/register", addUser);
@@ -126,6 +139,36 @@ router.get("/fetchAllPlan", validateTokenMiddleware, fetchAllPlan);
 
 router.put("/update-plan/:planId", validateTokenMiddleware, updatePlanById);
 
-router.put("/delete-plan/:planId", validateTokenMiddleware, deletePlanById);
+router.delete("/delete-plan/:planId", validateTokenMiddleware, deletePlanById);
+
+// ********** Connection-Request-Route *******************
+
+router.post("/create-conn-request", validateTokenMiddleware, createConnRequest);
+
+router.get(
+  "/fetch-conn-request/:connRequestId",
+  validateTokenMiddleware,
+  fetchConnRequestById
+);
+
+router.put(
+  "/update-conn-request/:connRequestId",
+  validateTokenMiddleware,
+  updateConnRequestById
+);
+
+router.delete(
+  "/delete-conn-request/:connRequestId",
+  validateTokenMiddleware,
+  deleteConnRequestById
+);
+
+// ******** Connection Route *****************
+
+router.post("/create-conn", validateTokenMiddleware, createConnction);
+
+router.get("/fetch-conn/:connId", validateTokenMiddleware, fetchConnById);
+
+router.delete("/delete-conn/:connId", validateTokenMiddleware, deleteConnById);
 
 module.exports = router;

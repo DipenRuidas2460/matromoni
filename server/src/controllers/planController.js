@@ -76,15 +76,9 @@ const updatePlanById = async (req, res) => {
 const deletePlanById = async (req, res) => {
   try {
     const planId = req.params.planId;
-    const response = await Plan.destroy({
+    await Plan.destroy({
       where: { id: planId },
     });
-
-    if (!response) {
-      return res
-        .status(404)
-        .send({ status: false, msg: "Plan Data not found!" });
-    }
 
     return res.status(200).json({
       status: true,

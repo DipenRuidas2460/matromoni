@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const path = require("path")
+const path = require("path");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const {
@@ -377,7 +377,7 @@ const getUserById = asyncHandler(async (req, res) => {
     return res.status(200).json({
       status: "success",
       data: response,
-      profileImage:`/assets/image/${req.person.id}_profile.jpg`,
+      profileImage: `/assets/image/${req.person.id}_profile.jpg`,
       message: response ? "Successfully fetch data" : "User Not Present!",
     });
   } catch (error) {
@@ -400,10 +400,19 @@ const getAllUsersByQuery = asyncHandler(async (req, res) => {
         }
       : {};
 
+    const loggedUserInfo = await User.findOne({ where: { id: req.person.id } });
+    let gender = null;
+    if (loggedUserInfo.gender === "Male") {
+      gender = "Female";
+    } else {
+      gender = "Male";
+    }
+
     const response = await User.findAll({
       where: {
         ...keyword,
         id: { [Op.not]: req.person.id },
+        gender: gender,
       },
     });
 

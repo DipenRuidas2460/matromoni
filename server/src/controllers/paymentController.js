@@ -2,8 +2,8 @@ const Payment = require("../models/payment");
 const Stripe = require("stripe");
 require("dotenv").config();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-// const moment = require("moment");
 const Plan = require("../models/plan");
+// const moment = require("moment");
 
 // const [basic, premium] = [
 //   "price_1OaBwdSCtwAeEksSdZpb0Ez1",
