@@ -121,7 +121,7 @@ router.get(
   fetchPaymentDetails
 );
 
-router.get("/config", validateTokenMiddleware, publishKeySend);
+router.get("/config", publishKeySend);
 
 // router.put(
 //   "/payment-status/:paymentId",
@@ -146,7 +146,7 @@ router.delete("/delete-plan/:planId", validateTokenMiddleware, deletePlanById);
 router.post("/create-conn-request", validateTokenMiddleware, createConnRequest);
 
 router.get(
-  "/fetch-conn-request/:connRequestId",
+  "/fetch-conn-request/:followedUserId",
   validateTokenMiddleware,
   fetchConnRequestById
 );
@@ -158,7 +158,7 @@ router.put(
 );
 
 router.delete(
-  "/delete-conn-request/:connRequestId",
+  "/delete-conn-request/:withUserId",
   validateTokenMiddleware,
   deleteConnRequestById
 );

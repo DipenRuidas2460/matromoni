@@ -81,7 +81,7 @@ function HeadingDashboard({ token }) {
   }, []);
 
   return (
-    <div>
+    <div className="heading-forAll">
       <div className="header-con"></div>
       <div className="navbar-con">
         <img

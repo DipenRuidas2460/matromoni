@@ -257,7 +257,7 @@ const forgetPass = asyncHandler(async (req, res) => {
   </head>
   <body>
     <h3>Click this link for changing Password</h3>
-    <p>http://192.168.1.19:3000/resetpass/${token}</p>
+    <p>${process.env.FRN_HOST}/resetpass/${token}</p>
   </body>
 </html>
 `,
@@ -388,49 +388,6 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
-const getAllUsersByQuery = asyncHandler(async (req, res) => {
-  try {
-    const keyword = req.query.search
-      ? {
-          [Op.or]: [
-            { firstName: { [Op.like]: `%${req.query.search}%` } },
-            { lastName: { [Op.like]: `%${req.query.search}%` } },
-            { email: { [Op.like]: `%${req.query.search}%` } },
-          ],
-        }
-      : {};
-
-    const loggedUserInfo = await User.findOne({ where: { id: req.person.id } });
-    let gender = null;
-    if (loggedUserInfo.gender === "Male") {
-      gender = "Female";
-    } else {
-      gender = "Male";
-    }
-
-    const response = await User.findAll({
-      where: {
-        ...keyword,
-        id: { [Op.not]: req.person.id },
-        gender: gender,
-      },
-    });
-
-    return res.status(200).json({
-      status: "success",
-      data: response,
-      message: response.length ? "Successfully fetch data" : "No data found",
-    });
-  } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({
-      status: 500,
-      message: "Something went wrong",
-      messageInfo: error,
-    });
-  }
-});
-
 const updatePassword = asyncHandler(async (req, res) => {
   try {
     const response = await User.findOne({ where: { id: req.person.id } });
@@ -473,6 +430,49 @@ const updatePassword = asyncHandler(async (req, res) => {
     return res
       .status(500)
       .json({ status: 500, message: "Something went wrong" });
+  }
+});
+
+const getAllUsersByQuery = asyncHandler(async (req, res) => {
+  try {
+    const keyword = req.query.search
+      ? {
+          [Op.or]: [
+            { firstName: { [Op.like]: `%${req.query.search}%` } },
+            { lastName: { [Op.like]: `%${req.query.search}%` } },
+            { email: { [Op.like]: `%${req.query.search}%` } },
+          ],
+        }
+      : {};
+
+    const loggedUserInfo = await User.findOne({ where: { id: req.person.id } });
+    let gender = null;
+    if (loggedUserInfo.gender === "Male") {
+      gender = "Female";
+    } else {
+      gender = "Male";
+    }
+
+    const response = await User.findAll({
+      where: {
+        ...keyword,
+        id: { [Op.not]: req.person.id },
+        gender: gender,
+      },
+    });
+
+    return res.status(200).json({
+      status: "success",
+      data: response,
+      message: response.length ? "Successfully fetch data" : "No data found",
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      status: 500,
+      message: "Something went wrong",
+      messageInfo: error,
+    });
   }
 });
 

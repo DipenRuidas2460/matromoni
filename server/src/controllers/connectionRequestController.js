@@ -28,23 +28,31 @@ const createConnRequest = asyncHandler(async (req, res) => {
 
 const fetchConnRequestById = asyncHandler(async (req, res) => {
   try {
-    const connRequestId = req.params.connRequestId;
+    const followedUserId = req.params.followedUserId;
 
-    const findReqData = await ConnectionRequest.findOne({
-      where: { id: connRequestId },
+    const relationships = await ConnectionRequest.findAll({
+      attributes: ["withUser"],
+      where: {
+        withUser: followedUserId,
+      },
     });
 
-    if (!findReqData) {
+    if (relationships.length === 0) {
       return res.status(404).send({
         status: false,
         msg: "Connection Request Data not found!",
       });
     }
 
+    const followerUserIds = relationships.map(
+      (relationship) => relationship.user
+    );
+
     return res.status(201).send({
       status: true,
-      msg: "Connection Request Created Successfully!",
-      connReqData: connReqData,
+      msg: "Connection Request fetch Successfully!",
+      relationships,
+      followerUserIds,
     });
   } catch (err) {
     console.log(err.message);
@@ -85,10 +93,10 @@ const updateConnRequestById = asyncHandler(async (req, res) => {
 
 const deleteConnRequestById = asyncHandler(async (req, res) => {
   try {
-    const connRequestId = req.params.connRequestId;
+    const withUserId = req.params.withUserId;
 
     await ConnectionRequest.destroy({
-      where: { id: connRequestId },
+      where: { user: req.person.id, withUser: withUserId },
     });
 
     return res.status(200).send({

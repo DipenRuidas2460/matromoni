@@ -1,4 +1,4 @@
-import { useToast } from "@chakra-ui/react";
+// import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ function ChatProvider({ children }) {
   const [notification, setNotification] = useState([]);
   const [chats, setChats] = useState([]);
   const navigate = useNavigate();
-  const toast = useToast();
+  // const toast = useToast();
   const host = config.BCKHOST;
   const token = localStorage.getItem("token");
   const [currentReceiver, setCurrentReceiver] = useState({})
@@ -36,20 +36,21 @@ function ChatProvider({ children }) {
             localStorage.removeItem("token");
             navigate("/");
           } else {
-            toast({
-              title: err.message,
-              status: "warning",
-              duration: 3000,
-              isClosable: true,
-              position: "top-right",
-            });
+            // toast({
+            //   title: err.message,
+            //   status: "warning",
+            //   duration: 3000,
+            //   isClosable: true,
+            //   position: "top-right",
+            // });
+            console.log(err.message);
           }
         });
     } else {
       navigate("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [token]);
 
   return (
     <ChatContext.Provider

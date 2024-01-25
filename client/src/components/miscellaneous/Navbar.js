@@ -10,7 +10,7 @@ const Navbar = () => {
   };
 
   return (
-    <div>
+    <div className="navabar-main-com">
       <Header />
       <div className="navbar-con">
         <img
