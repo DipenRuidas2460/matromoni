@@ -2,38 +2,34 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dbConfig");
 const User = require("./user");
 
-const Connection = sequelize.define(
-  "Connection",
+const Partner = sequelize.define(
+  "Partner",
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      allowNull: false,
     },
-
-    user: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-
-    withUser: {
+    partnerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-
   },
   {
-    tableName: "Connection",
+    tableName: "Partner",
     updatedAt: false,
   }
 );
 
 (async () => {
-  await Connection.sync({ force: false });
+  await Partner.sync({ force: false });
 })();
 
-Connection.belongsTo(User, { foreignKey: "user" });
-Connection.belongsTo(User, { foreignKey: "withUser" });
+Partner.belongsTo(User, { foreignKey: "userId" });
+Partner.belongsTo(User, { foreignKey: "partnerId" });
 
-module.exports = Connection;
+module.exports = Partner;

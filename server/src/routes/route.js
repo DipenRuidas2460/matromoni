@@ -48,17 +48,15 @@ const {
 } = require("../controllers/planController");
 
 const {
-  createConnRequest,
-  fetchConnRequestById,
+  sendConnRequest,
   updateConnRequestById,
   deleteConnRequestById,
+  getConnRequests,
+  acceptConnRequest,
+  getSendedConnRequests,
+  getPartners,
+  removePartner,
 } = require("../controllers/connectionRequestController");
-
-const {
-  createConnction,
-  fetchConnById,
-  deleteConnById,
-} = require("../controllers/connectionController");
 
 // -------------------- User Profile Route ----------------------------------------------------------------------------------
 
@@ -143,13 +141,23 @@ router.delete("/delete-plan/:planId", validateTokenMiddleware, deletePlanById);
 
 // ********** Connection-Request-Route *******************
 
-router.post("/create-conn-request", validateTokenMiddleware, createConnRequest);
+router.post("/create-conn-request", validateTokenMiddleware, sendConnRequest);
+
+router.post(
+  "/accept-conn-request/:senderProfileId",
+  validateTokenMiddleware,
+  acceptConnRequest
+);
+
+router.get("/fetch-All-conn-request", validateTokenMiddleware, getConnRequests);
 
 router.get(
-  "/fetch-conn-request/:followedUserId",
+  "/getAll-sender-conn-request",
   validateTokenMiddleware,
-  fetchConnRequestById
+  getSendedConnRequests
 );
+
+router.get("/getAll-partners", validateTokenMiddleware, getPartners);
 
 router.put(
   "/update-conn-request/:connRequestId",
@@ -163,12 +171,10 @@ router.delete(
   deleteConnRequestById
 );
 
-// ******** Connection Route *****************
-
-router.post("/create-conn", validateTokenMiddleware, createConnction);
-
-router.get("/fetch-conn/:connId", validateTokenMiddleware, fetchConnById);
-
-router.delete("/delete-conn/:connId", validateTokenMiddleware, deleteConnById);
+router.delete(
+  "/remove-partner/:partnershipId",
+  validateTokenMiddleware,
+  removePartner
+);
 
 module.exports = router;

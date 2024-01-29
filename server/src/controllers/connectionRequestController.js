@@ -1,13 +1,37 @@
 const asyncHandler = require("express-async-handler");
 const ConnectionRequest = require("../models/connectionRequest");
+const User = require("../models/user");
+const sequelize = require("../config/dbConfig");
+const Partner = require("../models/partner");
 
-const createConnRequest = asyncHandler(async (req, res) => {
+const sendConnRequest = asyncHandler(async (req, res) => {
   try {
     const { withUserId } = req.body;
     const data = {
       user: req.person.id,
       withUser: withUserId,
     };
+
+    const existingRequest = await ConnectionRequest.findOne({
+      where: {
+        user: req.person.id,
+        withUser: withUserId,
+      },
+    });
+
+    if (existingRequest) {
+      return res.status(400).json({ error: "Request already sent!" });
+    }
+
+    const receiverProfile = await User.findOne({
+      where: {
+        id: withUserId,
+      },
+    });
+
+    if (!receiverProfile) {
+      return res.status(404).json({ error: "Profile not found" });
+    }
 
     const connReqData = await ConnectionRequest.create(data);
 
@@ -26,14 +50,47 @@ const createConnRequest = asyncHandler(async (req, res) => {
   }
 });
 
-const fetchConnRequestById = asyncHandler(async (req, res) => {
+const acceptConnRequest = asyncHandler(async (req, res) => {
   try {
-    const followedUserId = req.params.followedUserId;
+    const senderProfileId = req.params.senderProfileId;
 
-    const relationships = await ConnectionRequest.findAll({
-      attributes: ["withUser"],
+    const partnerRequest = await ConnectionRequest.findOne({
       where: {
-        withUser: followedUserId,
+        user: senderProfileId,
+        withUser: req.person.id,
+      },
+    });
+
+    if (!partnerRequest) {
+      return res.status(404).json({ error: "Connection request not found!" });
+    }
+
+    await sequelize.transaction(async (t) => {
+      await Partner.create(
+        { userId: senderProfileId, partnerId: req.person.id },
+        { transaction: t }
+      );
+      await ConnectionRequest.destroy({
+        where: { user: senderProfileId, withUser: req.person.id },
+        transaction: t,
+      });
+    });
+
+    res.json({
+      message: `You have accepted the partner's request from profile with ID=${senderProfileId}`,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+const getConnRequests = asyncHandler(async (req, res) => {
+  try {
+    const relationships = await ConnectionRequest.findAll({
+      attributes: ["id", "user"],
+      where: {
+        withUser: req.person.id,
       },
     });
 
@@ -44,15 +101,10 @@ const fetchConnRequestById = asyncHandler(async (req, res) => {
       });
     }
 
-    const followerUserIds = relationships.map(
-      (relationship) => relationship.user
-    );
-
     return res.status(201).send({
       status: true,
       msg: "Connection Request fetch Successfully!",
       relationships,
-      followerUserIds,
     });
   } catch (err) {
     console.log(err.message);
@@ -61,6 +113,75 @@ const fetchConnRequestById = asyncHandler(async (req, res) => {
       message: "Internal Server Error",
       error: err.message,
     });
+  }
+});
+
+const getSendedConnRequests = asyncHandler(async (req, res) => {
+  try {
+    const sentConnRequests = await ConnectionRequest.findAll({
+      attributes: ["id", "withUser"],
+      where: {
+        user: req.person.id,
+      },
+    });
+
+    if (sentConnRequests.length === 0) {
+      return res.status(404).send({
+        status: false,
+        msg: "Connection Request Data not found!",
+      });
+    }
+
+    return res.status(201).send({
+      status: true,
+      msg: "Connection Request fetch Successfully!",
+      sentConnRequests,
+    });
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).json({
+      status: false,
+      message: "Internal Server Error",
+      error: err.message,
+    });
+  }
+});
+
+const getPartners = asyncHandler(async (req, res) => {
+  try {
+    const partners = await Partner.findAll({
+      attributes: ["id", "userId", "partnerId"],
+      include: [
+        {
+          model: User,
+          attributes: ["firstName", "lastName"],
+        },
+      ],
+      where: {
+        [sequelize.Op.or]: [
+          { userId: req.person.id },
+          { partnerId: req.person.id },
+        ],
+      },
+      raw: true,
+    });
+
+    const formattedPartners = partners.map((partnership) => {
+      const partnerProfileId =
+        partnership.userId === req.person.id
+          ? partnership.partnerId
+          : partnership.userId;
+
+      return {
+        id: partnership.id,
+        partnerProfileId,
+      };
+    });
+
+    res.json(formattedPartners);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -95,9 +216,13 @@ const deleteConnRequestById = asyncHandler(async (req, res) => {
   try {
     const withUserId = req.params.withUserId;
 
-    await ConnectionRequest.destroy({
+    const result = await ConnectionRequest.destroy({
       where: { user: req.person.id, withUser: withUserId },
     });
+
+    if (result === 0) {
+      return res.status(404).json({ error: "Connection request not found!" });
+    }
 
     return res.status(200).send({
       status: true,
@@ -113,9 +238,34 @@ const deleteConnRequestById = asyncHandler(async (req, res) => {
   }
 });
 
+const removePartner = asyncHandler(async (req, res) => {
+  try {
+    const partnershipId = req.params.partnershipId;
+
+    const result = await Partner.destroy({
+      where: {
+        id: partnershipId,
+      },
+    });
+
+    if (result === 0) {
+      return res.status(404).json({ error: "Partner not found!" });
+    }
+
+    return res.json({ message: "Partner deleted successfully!" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = {
-  createConnRequest,
-  fetchConnRequestById,
+  sendConnRequest,
+  getConnRequests,
   updateConnRequestById,
   deleteConnRequestById,
+  getSendedConnRequests,
+  acceptConnRequest,
+  getPartners,
+  removePartner,
 };
